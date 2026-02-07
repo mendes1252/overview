@@ -1,0 +1,266 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// NextAuth Models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// User Model
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+
+  // Profile settings
+  timezone            String  @default("America/Sao_Paulo")
+  weekStartsOn        Int     @default(1) // 0 = Sunday, 1 = Monday
+  reportTime          String  @default("18:00")
+  coachTone           String  @default("motivational") // motivational, calm, direct, friendly
+  primaryGoal         String?
+  onboardingCompleted Boolean @default(false)
+
+  // Subscription
+  stripeCustomerId       String?   @unique
+  stripeSubscriptionId   String?   @unique
+  stripePriceId          String?
+  stripeCurrentPeriodEnd DateTime?
+  plan                   String    @default("free") // free, pro, enterprise
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts   Account[]
+  sessions   Session[]
+  tasks      Task[]
+  habits     Habit[]
+  habitLogs  HabitLog[]
+  goals      Goal[]
+  categories Category[]
+  reports    Report[]
+}
+
+// Category Model
+model Category {
+  id     String @id @default(cuid())
+  name   String
+  color  String @default("#3B82F6")
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  tasks  Task[]
+  habits Habit[]
+  goals  Goal[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, userId])
+  @@index([userId])
+}
+
+// Task Model
+model Task {
+  id            String    @id @default(cuid())
+  title         String
+  description   String?   @db.Text
+  status        String    @default("todo") // todo, in_progress, done
+  priority      String    @default("medium") // low, medium, high
+  dueDate       DateTime?
+  estimatedTime Int? // in minutes
+  completedAt   DateTime?
+
+  // Recurrence
+  isRecurring    Boolean @default(false)
+  recurrenceRule String? // e.g., "daily", "weekly", "weekdays"
+
+  // Relations
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  subtasks Subtask[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([categoryId])
+  @@index([dueDate])
+  @@index([status])
+}
+
+// Subtask Model
+model Subtask {
+  id        String  @id @default(cuid())
+  title     String
+  completed Boolean @default(false)
+  taskId    String
+  task      Task    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([taskId])
+}
+
+// Habit Model
+model Habit {
+  id         String  @id @default(cuid())
+  name       String
+  color      String  @default("#10B981")
+  frequency  String  @default("daily") // daily, weekdays, weekends, custom
+  targetDays Int[]   @default([0, 1, 2, 3, 4, 5, 6]) // 0 = Sunday, 6 = Saturday
+  isArchived Boolean @default(false)
+
+  // Streak tracking
+  currentStreak Int @default(0)
+  bestStreak    Int @default(0)
+
+  // Relations
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  logs HabitLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([categoryId])
+}
+
+// Habit Log Model
+model HabitLog {
+  id        String   @id @default(cuid())
+  date      DateTime @db.Date
+  completed Boolean  @default(true)
+  notes     String?
+
+  habitId String
+  habit   Habit  @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([habitId, date])
+  @@index([userId])
+  @@index([habitId])
+  @@index([date])
+}
+
+// Goal Model
+model Goal {
+  id          String  @id @default(cuid())
+  title       String
+  description String? @db.Text
+  type        String  @default("binary") // binary, quantifiable
+  period      String  @default("weekly") // weekly, monthly, quarterly
+
+  // For quantifiable goals
+  targetValue  Float?
+  currentValue Float?  @default(0)
+  unit         String?
+
+  // Status
+  status      String    @default("in_progress") // in_progress, achieved, not_achieved
+  startDate   DateTime
+  endDate     DateTime
+  completedAt DateTime?
+  notes       String?   @db.Text
+
+  // Relations
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([categoryId])
+  @@index([period])
+  @@index([startDate])
+  @@index([endDate])
+}
+
+// AI Report Model
+model Report {
+  id        String   @id @default(cuid())
+  weekStart DateTime @db.Date
+  weekEnd   DateTime @db.Date
+
+  // Report content
+  summary         String @db.Text
+  insights        String @db.Text
+  recommendations String @db.Text
+  highlights      String @db.Text
+
+  // Stats snapshot
+  tasksCompleted    Int
+  tasksTotal        Int
+  habitsConsistency Float
+  goalsAchieved     Int
+  goalsTotal        Int
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, weekStart])
+  @@index([userId])
+  @@index([weekStart])
+}
