@@ -33,7 +33,7 @@ const taskSchema = z.object({
   priority: z.enum(["low", "medium", "high"]),
   dueDate: z.string().optional(),
   estimatedTime: z.number().optional(),
-  isRecurring: z.boolean().default(false),
+  isRecurring: z.boolean(),
   recurrenceRule: z.string().optional(),
 });
 

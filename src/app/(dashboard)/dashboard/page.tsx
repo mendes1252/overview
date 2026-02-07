@@ -89,22 +89,22 @@ async function getDashboardData(userId: string) {
   ]);
 
   // Calculate week stats
-  const completedTasks = weekTasks.filter((t) => t.status === "done").length;
+  const completedTasks = weekTasks.filter((t: { status: string }) => t.status === "done").length;
   const totalTasks = weekTasks.length;
 
   // Calculate habits consistency
-  const totalHabitDays = habits.reduce((acc, habit) => {
+  const totalHabitDays = habits.reduce((acc: number, habit) => {
     const targetDays = habit.targetDays.length;
     return acc + targetDays;
   }, 0);
-  const completedHabitDays = habits.reduce((acc, habit) => {
-    return acc + habit.logs.filter((log) => log.completed).length;
+  const completedHabitDays = habits.reduce((acc: number, habit) => {
+    return acc + habit.logs.filter((log: { completed: boolean }) => log.completed).length;
   }, 0);
   const habitsConsistency =
     totalHabitDays > 0 ? (completedHabitDays / totalHabitDays) * 100 : 0;
 
   // Goals achieved
-  const goalsAchieved = weeklyGoals.filter((g) => g.status === "achieved").length;
+  const goalsAchieved = weeklyGoals.filter((g: { status: string }) => g.status === "achieved").length;
 
   return {
     user: { name: user?.name },

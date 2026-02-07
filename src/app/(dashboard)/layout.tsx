@@ -18,7 +18,7 @@ export default async function DashboardLayout({
     <div className="min-h-screen bg-gray-50">
       <Sidebar />
       <div className="lg:pl-64">
-        <Header user={session.user} />
+        <Header user={session.user || { name: null, email: null, image: null }} />
         <main className="p-4 lg:p-8">{children}</main>
       </div>
     </div>
