@@ -1,21 +1,24 @@
 // Asaas API Integration
 // Docs: https://docs.asaas.com/reference
 
-const ASAAS_API_URL = process.env.ASAAS_SANDBOX === "true"
-  ? "https://sandbox.asaas.com/api/v3"
-  : "https://api.asaas.com/api/v3";
-
-const ASAAS_API_KEY = process.env.ASAAS_API_KEY!;
+function getAsaasConfig() {
+  const apiUrl = process.env.ASAAS_SANDBOX === "true"
+    ? "https://sandbox.asaas.com/api/v3"
+    : "https://api.asaas.com/api/v3";
+  const apiKey = process.env.ASAAS_API_KEY || "";
+  return { apiUrl, apiKey };
+}
 
 async function asaasRequest<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const response = await fetch(`${ASAAS_API_URL}${endpoint}`, {
+  const { apiUrl, apiKey } = getAsaasConfig();
+  const response = await fetch(`${apiUrl}${endpoint}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
-      access_token: ASAAS_API_KEY,
+      access_token: apiKey,
       ...options.headers,
     },
   });
