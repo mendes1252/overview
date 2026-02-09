@@ -90,7 +90,7 @@ export default function OnboardingPage() {
       router.push("/login");
     }
     if (session?.user?.name) {
-      setData((prev) => ({ ...prev, name: session.user.name || "" }));
+      setData((prev) => ({ ...prev, name: session.user?.name || "" }));
     }
     // Auto-detect timezone
     const detectedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
