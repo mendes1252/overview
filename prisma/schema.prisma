@@ -66,11 +66,10 @@ model User {
   onboardingCompleted Boolean @default(false)
 
   // Subscription
-  stripeCustomerId       String?   @unique
-  stripeSubscriptionId   String?   @unique
-  stripePriceId          String?
-  stripeCurrentPeriodEnd DateTime?
-  plan                   String    @default("free") // free, pro, enterprise
+  asaasCustomerId       String?   @unique
+  asaasSubscriptionId   String?   @unique
+  plan                  String    @default("free") // free, pro, enterprise
+  planCurrentPeriodEnd  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -83,6 +82,66 @@ model User {
   goals      Goal[]
   categories Category[]
   reports    Report[]
+  payments   Payment[]
+}
+
+// Payment Model
+model Payment {
+  id              String   @id @default(cuid())
+  asaasPaymentId  String   @unique
+  status          String   @default("PENDING") // PENDING, CONFIRMED, RECEIVED, OVERDUE, REFUNDED, CANCELLED
+  billingType     String   // PIX, CREDIT_CARD, BOLETO
+  value           Float
+  description     String?
+  invoiceUrl      String?
+  pixQrCode       String?  @db.Text
+  pixCopyPaste    String?  @db.Text
+  boletoUrl       String?
+  dueDate         DateTime
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([asaasPaymentId])
+}
+
+// Upsell Campaign Model
+model UpsellCampaign {
+  id          String  @id @default(cuid())
+  name        String
+  slug        String  @unique
+  active      Boolean @default(true)
+
+  // Display
+  headline    String
+  description String  @db.Text
+  badgeText   String? // e.g., "50% OFF", "MAIS POPULAR"
+  imageUrl    String?
+
+  // Pricing
+  originalPrice  Float
+  offerPrice     Float
+  targetPlan     String // pro, enterprise
+
+  // Urgency
+  expiresAt      DateTime?
+  limitedSlots   Int?
+  slotsUsed      Int      @default(0)
+
+  // Tracking
+  views       Int @default(0)
+  conversions Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active])
+  @@index([slug])
 }
 
 // Category Model

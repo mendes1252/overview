@@ -288,7 +288,7 @@ export default function LandingPage() {
                   Exportacao de dados
                 </li>
               </ul>
-              <Link href="/cadastro?plan=pro">
+              <Link href="/checkout?plan=pro">
                 <Button className="w-full" size="lg">
                   Assinar Pro
                 </Button>
