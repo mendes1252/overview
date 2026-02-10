@@ -6,13 +6,13 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
-  title: "PULSO - Produtividade Inteligente",
-  description: "Sistema de gestão de produtividade pessoal com IA integrada. Gerencie tarefas, hábitos e metas com relatórios inteligentes.",
-  keywords: ["produtividade", "gestão de tarefas", "hábitos", "metas", "IA", "inteligência artificial"],
-  authors: [{ name: "PULSO" }],
+  title: "pulse — Produtividade Intencional",
+  description: "Transforme sua produtividade com IA empatica. Nao faca mais, faca melhor. Gerencie tarefas, habitos e metas com inteligencia artificial.",
+  keywords: ["produtividade", "gestao de tarefas", "habitos", "metas", "IA", "inteligencia artificial", "pulse"],
+  authors: [{ name: "pulse" }],
   openGraph: {
-    title: "PULSO - Produtividade Inteligente",
-    description: "Sistema de gestão de produtividade pessoal com IA integrada",
+    title: "pulse — Produtividade Intencional",
+    description: "Transforme sua produtividade com IA empatica. Nao faca mais, faca melhor.",
     type: "website",
   },
 };

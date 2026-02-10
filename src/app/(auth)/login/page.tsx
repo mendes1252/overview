@@ -81,8 +81,8 @@ export default function LoginPage() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-2">Bem-vindo de volta</h2>
-      <p className="text-gray-600 mb-8">
+      <h2 className="text-2xl font-medium text-[#1A1A2E] mb-2">Bem-vindo de volta</h2>
+      <p className="text-[#718096] font-light mb-8">
         Entre na sua conta para continuar
       </p>
 
@@ -119,7 +119,7 @@ export default function LoginPage() {
 
       <div className="relative mb-6">
         <Separator />
-        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-sm text-gray-500">
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-sm text-[#718096] font-light">
           ou
         </span>
       </div>
