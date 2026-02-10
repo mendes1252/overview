@@ -1,5 +1,5 @@
-import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 const protectedRoutes = [
   "/dashboard",
@@ -13,9 +13,14 @@ const protectedRoutes = [
 
 const authRoutes = ["/login", "/cadastro"];
 
-export default auth((req) => {
+export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const isLoggedIn = !!req.auth;
+
+  // Check for session token cookie (NextAuth v5 sets this)
+  const token =
+    req.cookies.get("authjs.session-token")?.value ||
+    req.cookies.get("__Secure-authjs.session-token")?.value;
+  const isLoggedIn = !!token;
 
   // Protected routes - redirect to login if not authenticated
   const isProtected = protectedRoutes.some(
@@ -34,7 +39,7 @@ export default auth((req) => {
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: [
