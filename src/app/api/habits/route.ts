@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { checkLimit } from "@/lib/plan-limits";
 
 export async function GET() {
   try {
@@ -45,6 +46,21 @@ export async function POST(req: Request) {
       return NextResponse.json(
         { error: "Nome obrigatorio" },
         { status: 400 }
+      );
+    }
+
+    // Check plan limits
+    const { allowed, current, limit, plan } = await checkLimit(session.user.id, "habits");
+    if (!allowed) {
+      return NextResponse.json(
+        {
+          error: `Limite de habitos atingido (${current}/${limit}). Faca upgrade para o plano Pro para habitos ilimitados.`,
+          code: "PLAN_LIMIT_REACHED",
+          current,
+          limit,
+          plan,
+        },
+        { status: 403 }
       );
     }
 
