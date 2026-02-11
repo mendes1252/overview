@@ -1,324 +1,93 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-// NextAuth Models
-model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
+model Cliente {
+  id             String    @id @default(uuid()) @db.Uuid
+  nome           String
+  cpf            String?   @unique
+  telefone       String
+  whatsapp       String?
+  email          String?
+  dataNascimento DateTime? @map("data_nascimento") @db.Date
+  endereco       String?
+  categoria      String    @default("regular")
+  totalGasto     Decimal   @default(0) @map("total_gasto") @db.Decimal(10, 2)
+  totalPedidos   Int       @default(0) @map("total_pedidos")
+  observacoes    String?
+  ativo          Boolean   @default(true)
+  createdAt      DateTime  @default(now()) @map("created_at")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pedidos      Pedido[]
+  notificacoes Notificacao[]
 
-  @@unique([provider, providerAccountId])
-  @@index([userId])
+  @@index([telefone])
+  @@index([cpf])
+  @@index([nome])
+  @@map("clientes")
 }
 
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Pedido {
+  id                  String    @id @default(uuid()) @db.Uuid
+  protocolo           String    @unique
+  clienteId           String    @map("cliente_id") @db.Uuid
+  status              String    @default("recebido")
+  valorTotal          Decimal   @default(0) @map("valor_total") @db.Decimal(10, 2)
+  desconto            Decimal   @default(0) @db.Decimal(10, 2)
+  valorFinal          Decimal   @default(0) @map("valor_final") @db.Decimal(10, 2)
+  observacoes         String?
+  dataPrevisaoEntrega DateTime? @map("data_previsao_entrega")
+  dataEntrega         DateTime? @map("data_entrega")
+  formaPagamento      String?   @map("forma_pagamento")
+  pago                Boolean   @default(false)
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @default(now()) @updatedAt @map("updated_at")
 
-  @@index([userId])
-}
+  cliente      Cliente       @relation(fields: [clienteId], references: [id])
+  itens        PedidoItem[]
+  notificacoes Notificacao[]
 
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
-
-// User Model
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?
-
-  // Profile settings
-  timezone            String  @default("America/Sao_Paulo")
-  weekStartsOn        Int     @default(1) // 0 = Sunday, 1 = Monday
-  reportTime          String  @default("18:00")
-  coachTone           String  @default("motivational") // motivational, calm, direct, friendly
-  primaryGoal         String?
-  onboardingCompleted Boolean @default(false)
-
-  // Subscription
-  asaasCustomerId       String?   @unique
-  asaasSubscriptionId   String?   @unique
-  plan                  String    @default("free") // free, pro, enterprise
-  planCurrentPeriodEnd  DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  accounts   Account[]
-  sessions   Session[]
-  tasks      Task[]
-  habits     Habit[]
-  habitLogs  HabitLog[]
-  goals      Goal[]
-  categories Category[]
-  reports    Report[]
-  payments   Payment[]
-}
-
-// Payment Model
-model Payment {
-  id              String   @id @default(cuid())
-  asaasPaymentId  String   @unique
-  status          String   @default("PENDING") // PENDING, CONFIRMED, RECEIVED, OVERDUE, REFUNDED, CANCELLED
-  billingType     String   // PIX, CREDIT_CARD, BOLETO
-  value           Float
-  description     String?
-  invoiceUrl      String?
-  pixQrCode       String?  @db.Text
-  pixCopyPaste    String?  @db.Text
-  boletoUrl       String?
-  dueDate         DateTime
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
+  @@index([protocolo])
+  @@index([clienteId])
   @@index([status])
-  @@index([asaasPaymentId])
+  @@index([createdAt])
+  @@map("pedidos")
 }
 
-// Upsell Campaign Model
-model UpsellCampaign {
-  id          String  @id @default(cuid())
-  name        String
-  slug        String  @unique
-  active      Boolean @default(true)
+model PedidoItem {
+  id            String  @id @default(uuid()) @db.Uuid
+  pedidoId      String  @map("pedido_id") @db.Uuid
+  descricao     String
+  tipoServico   String? @map("tipo_servico")
+  quantidade    Int     @default(1)
+  precoUnitario Decimal @map("preco_unitario") @db.Decimal(10, 2)
+  precoTotal    Decimal @map("preco_total") @db.Decimal(10, 2)
+  cor           String?
+  defeitos      String?
 
-  // Display
-  headline    String
-  description String  @db.Text
-  badgeText   String? // e.g., "50% OFF", "MAIS POPULAR"
-  imageUrl    String?
+  pedido Pedido @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
 
-  // Pricing
-  originalPrice  Float
-  offerPrice     Float
-  targetPlan     String // pro, enterprise
-
-  // Urgency
-  expiresAt      DateTime?
-  limitedSlots   Int?
-  slotsUsed      Int      @default(0)
-
-  // Tracking
-  views       Int @default(0)
-  conversions Int @default(0)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([active])
-  @@index([slug])
+  @@map("pedidos_itens")
 }
 
-// Category Model
-model Category {
-  id     String @id @default(cuid())
-  name   String
-  color  String @default("#3B82F6")
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Notificacao {
+  id            String   @id @default(uuid()) @db.Uuid
+  clienteId     String?  @map("cliente_id") @db.Uuid
+  pedidoId      String?  @map("pedido_id") @db.Uuid
+  tipo          String?
+  canal         String   @default("email")
+  mensagem      String?
+  status        String?
+  erroDescricao String?  @map("erro_descricao")
+  enviadoEm     DateTime @default(now()) @map("enviado_em")
 
-  tasks  Task[]
-  habits Habit[]
-  goals  Goal[]
+  cliente Cliente? @relation(fields: [clienteId], references: [id])
+  pedido  Pedido?  @relation(fields: [pedidoId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([name, userId])
-  @@index([userId])
-}
-
-// Task Model
-model Task {
-  id            String    @id @default(cuid())
-  title         String
-  description   String?   @db.Text
-  status        String    @default("todo") // todo, in_progress, done
-  priority      String    @default("medium") // low, medium, high
-  dueDate       DateTime?
-  estimatedTime Int? // in minutes
-  completedAt   DateTime?
-
-  // Recurrence
-  isRecurring    Boolean @default(false)
-  recurrenceRule String? // e.g., "daily", "weekly", "weekdays"
-
-  // Relations
-  userId     String
-  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  categoryId String?
-  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-
-  subtasks Subtask[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
-  @@index([categoryId])
-  @@index([dueDate])
-  @@index([status])
-}
-
-// Subtask Model
-model Subtask {
-  id        String  @id @default(cuid())
-  title     String
-  completed Boolean @default(false)
-  taskId    String
-  task      Task    @relation(fields: [taskId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([taskId])
-}
-
-// Habit Model
-model Habit {
-  id         String  @id @default(cuid())
-  name       String
-  color      String  @default("#10B981")
-  frequency  String  @default("daily") // daily, weekdays, weekends, custom
-  targetDays Int[]   @default([0, 1, 2, 3, 4, 5, 6]) // 0 = Sunday, 6 = Saturday
-  isArchived Boolean @default(false)
-
-  // Streak tracking
-  currentStreak Int @default(0)
-  bestStreak    Int @default(0)
-
-  // Relations
-  userId     String
-  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  categoryId String?
-  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-
-  logs HabitLog[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
-  @@index([categoryId])
-}
-
-// Habit Log Model
-model HabitLog {
-  id        String   @id @default(cuid())
-  date      DateTime @db.Date
-  completed Boolean  @default(true)
-  notes     String?
-
-  habitId String
-  habit   Habit  @relation(fields: [habitId], references: [id], onDelete: Cascade)
-  userId  String
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-
-  @@unique([habitId, date])
-  @@index([userId])
-  @@index([habitId])
-  @@index([date])
-}
-
-// Goal Model
-model Goal {
-  id          String  @id @default(cuid())
-  title       String
-  description String? @db.Text
-  type        String  @default("binary") // binary, quantifiable
-  period      String  @default("weekly") // weekly, monthly, quarterly
-
-  // For quantifiable goals
-  targetValue  Float?
-  currentValue Float?  @default(0)
-  unit         String?
-
-  // Status
-  status      String    @default("in_progress") // in_progress, achieved, not_achieved
-  startDate   DateTime
-  endDate     DateTime
-  completedAt DateTime?
-  notes       String?   @db.Text
-
-  // Relations
-  userId     String
-  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  categoryId String?
-  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
-  @@index([categoryId])
-  @@index([period])
-  @@index([startDate])
-  @@index([endDate])
-}
-
-// AI Report Model
-model Report {
-  id        String   @id @default(cuid())
-  weekStart DateTime @db.Date
-  weekEnd   DateTime @db.Date
-
-  // Report content
-  summary         String @db.Text
-  insights        String @db.Text
-  recommendations String @db.Text
-  highlights      String @db.Text
-
-  // Stats snapshot
-  tasksCompleted    Int
-  tasksTotal        Int
-  habitsConsistency Float
-  goalsAchieved     Int
-  goalsTotal        Int
-
-  // Relations
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-
-  @@unique([userId, weekStart])
-  @@index([userId])
-  @@index([weekStart])
+  @@map("notificacoes_enviadas")
 }

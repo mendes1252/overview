@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Predileta Lavanderia - Sistema de Gestão
 
-## Getting Started
+Sistema de gestão para lavanderia com foco em PDV, automação de notificações e relatórios básicos.
 
-First, run the development server:
+## Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Framework:** Next.js 14 (App Router)
+- **Linguagem:** TypeScript
+- **Estilização:** Tailwind CSS + shadcn/ui
+- **Database:** Supabase (PostgreSQL) + Prisma ORM
+- **Email:** Resend
+- **State:** React Query
+- **Forms:** React Hook Form + Zod
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **F1:** Autenticação simples com senha fixa
+- **F2:** CRUD completo de clientes com busca e paginação
+- **F3:** Sistema de pedidos (PDV) com wizard de 3 etapas e geração de protocolo
+- **F4:** Notificações automáticas por email (recebimento, pronto, lembrete)
+- **F5:** Relatórios com exportação para Excel
+- **F6:** Dashboard com resumo do dia
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Setup
 
-## Learn More
+1. Clone o repositório
+2. Instale dependências: `npm install`
+3. Copie `.env.example` para `.env.local` e configure as variáveis
+4. Execute o schema SQL no Supabase
+5. Gere o client Prisma: `npx prisma generate`
+6. Inicie o servidor: `npm run dev`
 
-To learn more about Next.js, take a look at the following resources:
+## Variáveis de Ambiente
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Veja `.env.example` para a lista completa. As principais são:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `DATABASE_URL` - Connection string do Supabase
+- `RESEND_API_KEY` - Chave API do Resend para emails
+- `APP_PASSWORD` - Senha de acesso ao sistema
+- `CRON_SECRET` - Secret para proteger cron jobs
 
-## Deploy on Vercel
+## Deploy na Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Conecte o repositório GitHub na Vercel
+2. Configure todas as variáveis de ambiente
+3. Deploy automático em cada push
+4. O `vercel.json` configura o cron job de lembretes (diário às 9h)

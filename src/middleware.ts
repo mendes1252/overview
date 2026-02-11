@@ -2,40 +2,32 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const protectedRoutes = [
-  "/dashboard",
-  "/tarefas",
-  "/habitos",
-  "/metas",
+  "/",
+  "/clientes",
+  "/pedidos",
   "/relatorios",
-  "/configuracoes",
-  "/onboarding",
 ];
-
-const authRoutes = ["/login", "/cadastro"];
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Check for session token cookie (NextAuth v5 sets this)
-  const token =
-    req.cookies.get("authjs.session-token")?.value ||
-    req.cookies.get("__Secure-authjs.session-token")?.value;
-  const isLoggedIn = !!token;
+  const token = req.cookies.get("auth-token")?.value;
+  const isLoggedIn = token === "authenticated";
 
-  // Protected routes - redirect to login if not authenticated
   const isProtected = protectedRoutes.some(
-    (route) => pathname === route || pathname.startsWith(route + "/")
+    (route) => pathname === route || (route !== "/" && pathname.startsWith(route + "/"))
   );
-  if (isProtected && !isLoggedIn) {
-    const loginUrl = new URL("/login", req.url);
-    loginUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(loginUrl);
+
+  if (pathname === "/" && !isLoggedIn) {
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  // Auth routes - redirect to dashboard if already logged in
-  const isAuthRoute = authRoutes.some((route) => pathname === route);
-  if (isAuthRoute && isLoggedIn) {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+  if (isProtected && !isLoggedIn) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
+
+  if (pathname === "/login" && isLoggedIn) {
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   return NextResponse.next();
