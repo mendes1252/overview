@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyWebhookToken } from "@/lib/asaas";
+import { sendEmail, generatePaymentConfirmedEmail } from "@/lib/email";
 
 interface AsaasWebhookPayload {
   event: string;
@@ -60,6 +61,21 @@ export async function POST(req: Request) {
               planCurrentPeriodEnd: periodEnd,
             },
           });
+        }
+
+        // Send payment confirmation email
+        if (user?.email) {
+          const billingLabel = payment.billingType === "PIX" ? "PIX" : payment.billingType === "BOLETO" ? "Boleto" : "Cartao de Credito";
+          sendEmail({
+            to: user.email,
+            subject: "Pagamento confirmado - pulse",
+            html: generatePaymentConfirmedEmail(
+              user.name || "Usuario",
+              "Pro",
+              payment.value.toFixed(2),
+              billingLabel
+            ),
+          }).catch((err) => console.error("Failed to send payment email:", err));
         }
         break;
       }

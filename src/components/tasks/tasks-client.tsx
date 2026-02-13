@@ -150,12 +150,12 @@ export function TasksClient({ initialTasks, categories }: TasksClientProps) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Tarefas</h1>
-          <p className="text-gray-600">
+          <h1 className="text-2xl font-medium text-[#1A1A2E]">Tarefas</h1>
+          <p className="text-[#718096] font-light">
             {filteredTasks.length} tarefa{filteredTasks.length !== 1 ? "s" : ""}
           </p>
         </div>
-        <Button onClick={() => setIsDialogOpen(true)} className="gap-2">
+        <Button onClick={() => setIsDialogOpen(true)} className="gap-2 bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl">
           <Plus className="w-4 h-4" /> Nova Tarefa
         </Button>
       </div>
@@ -164,7 +164,7 @@ export function TasksClient({ initialTasks, categories }: TasksClientProps) {
       <div className="flex flex-col lg:flex-row gap-4 mb-6">
         {/* Search */}
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#718096]" />
           <Input
             placeholder="Buscar tarefas..."
             value={filters.search}

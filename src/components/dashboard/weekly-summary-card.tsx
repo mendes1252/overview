@@ -21,10 +21,10 @@ export function WeeklySummaryCard({
     : 0;
 
   return (
-    <Card>
+    <Card className="rounded-2xl border-black/[0.04]">
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-semibold flex items-center gap-2">
-          <BarChart3 className="w-5 h-5 text-pink-600" />
+        <CardTitle className="text-lg font-medium text-[#1A1A2E] flex items-center gap-2">
+          <BarChart3 className="w-5 h-5 text-[#4A9FFF]" />
           Resumo Semanal
         </CardTitle>
       </CardHeader>
@@ -33,16 +33,16 @@ export function WeeklySummaryCard({
           {/* Task Completion */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
-                <CheckCircle className="w-4 h-4 text-blue-600" />
+              <div className="w-8 h-8 rounded-xl bg-[#4A9FFF]/10 flex items-center justify-center">
+                <CheckCircle className="w-4 h-4 text-[#4A9FFF]" />
               </div>
-              <span className="text-sm text-gray-600">Tarefas</span>
+              <span className="text-sm text-[#718096] font-light">Tarefas</span>
             </div>
             <div className="text-right">
-              <span className="text-lg font-bold text-gray-900">
+              <span className="text-lg font-medium text-[#1A1A2E]">
                 {taskCompletionRate}%
               </span>
-              <span className="text-xs text-gray-500 block">
+              <span className="text-xs text-[#718096] font-light block">
                 {completedTasks}/{totalTasks}
               </span>
             </div>
@@ -51,32 +51,32 @@ export function WeeklySummaryCard({
           {/* Habits Consistency */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
-                <TrendingUp className="w-4 h-4 text-green-600" />
+              <div className="w-8 h-8 rounded-xl bg-[#4A9FFF]/10 flex items-center justify-center">
+                <TrendingUp className="w-4 h-4 text-[#4A9FFF]" />
               </div>
-              <span className="text-sm text-gray-600">Habitos</span>
+              <span className="text-sm text-[#718096] font-light">Habitos</span>
             </div>
             <div className="text-right">
-              <span className="text-lg font-bold text-gray-900">
+              <span className="text-lg font-medium text-[#1A1A2E]">
                 {Math.round(habitsConsistency)}%
               </span>
-              <span className="text-xs text-gray-500 block">consistencia</span>
+              <span className="text-xs text-[#718096] font-light block">consistencia</span>
             </div>
           </div>
 
           {/* Goals */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
-                <Target className="w-4 h-4 text-purple-600" />
+              <div className="w-8 h-8 rounded-xl bg-[#4A9FFF]/10 flex items-center justify-center">
+                <Target className="w-4 h-4 text-[#4A9FFF]" />
               </div>
-              <span className="text-sm text-gray-600">Metas</span>
+              <span className="text-sm text-[#718096] font-light">Metas</span>
             </div>
             <div className="text-right">
-              <span className="text-lg font-bold text-gray-900">
+              <span className="text-lg font-medium text-[#1A1A2E]">
                 {goalsAchieved}/{totalGoals}
               </span>
-              <span className="text-xs text-gray-500 block">alcancadas</span>
+              <span className="text-xs text-[#718096] font-light block">alcancadas</span>
             </div>
           </div>
         </div>

@@ -38,15 +38,15 @@ export function HabitsCard({ habits, weekStart }: HabitsCardProps) {
   };
 
   return (
-    <Card>
+    <Card className="rounded-2xl border-black/[0.04]">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-semibold flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-green-600" />
+          <CardTitle className="text-lg font-medium text-[#1A1A2E] flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-[#4A9FFF]" />
             Habitos Rastreados
           </CardTitle>
           <Link href="/habitos?new=true">
-            <Button size="sm" className="gap-1">
+            <Button size="sm" className="gap-1 bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl">
               <Plus className="w-4 h-4" /> Novo
             </Button>
           </Link>
@@ -55,14 +55,14 @@ export function HabitsCard({ habits, weekStart }: HabitsCardProps) {
       <CardContent>
         {habits.length === 0 ? (
           <div className="text-center py-8">
-            <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-3">
-              <TrendingUp className="w-6 h-6 text-green-500" />
+            <div className="w-12 h-12 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-3">
+              <TrendingUp className="w-6 h-6 text-[#4A9FFF]" />
             </div>
-            <p className="text-gray-500 mb-3">
+            <p className="text-[#718096] font-light mb-3">
               Voce ainda nao tem habitos cadastrados
             </p>
             <Link href="/habitos?new=true">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="rounded-xl">
                 Criar primeiro habito
               </Button>
             </Link>
@@ -70,14 +70,14 @@ export function HabitsCard({ habits, weekStart }: HabitsCardProps) {
         ) : (
           <div className="space-y-4">
             {habits.map((habit) => (
-              <div key={habit.id} className="border rounded-lg p-3">
+              <div key={habit.id} className="border border-black/[0.04] rounded-xl p-3">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <div
                       className="w-3 h-3 rounded-full"
                       style={{ backgroundColor: habit.color }}
                     />
-                    <span className="font-medium text-sm">{habit.name}</span>
+                    <span className="font-medium text-sm text-[#1A1A2E]">{habit.name}</span>
                     {habit.currentStreak > 0 && (
                       <span className="text-xs bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full flex items-center gap-1">
                         <Flame className="w-3 h-3" />
@@ -98,7 +98,7 @@ export function HabitsCard({ habits, weekStart }: HabitsCardProps) {
 
                     return (
                       <div key={index} className="text-center">
-                        <span className="text-xs text-gray-400 block mb-1">
+                        <span className="text-xs text-[#718096] font-light block mb-1">
                           {dayNames[day.getDay()]}
                         </span>
                         <button
@@ -110,13 +110,13 @@ export function HabitsCard({ habits, weekStart }: HabitsCardProps) {
                             "w-8 h-8 rounded-lg text-xs font-medium transition-all",
                             isTarget
                               ? isCompleted
-                                ? "bg-green-500 text-white"
+                                ? "bg-[#4A9FFF] text-white"
                                 : isToday
-                                ? "border-2 border-primary bg-primary/10"
+                                ? "border-2 border-[#4A9FFF] bg-[#4A9FFF]/10"
                                 : isPast
                                 ? "bg-red-100 text-red-400 border border-red-200"
-                                : "bg-gray-100 hover:bg-gray-200"
-                              : "bg-gray-50 text-gray-300 cursor-not-allowed"
+                                : "bg-[#F5F7FA] hover:bg-[#4A9FFF]/10"
+                              : "bg-[#F5F7FA] text-[#718096]/30 cursor-not-allowed"
                           )}
                         >
                           {day.getDate()}
@@ -132,7 +132,7 @@ export function HabitsCard({ habits, weekStart }: HabitsCardProps) {
         {habits.length > 0 && (
           <Link
             href="/habitos"
-            className="block text-center text-sm text-primary hover:underline mt-4"
+            className="block text-center text-sm text-[#4A9FFF] hover:underline mt-4"
           >
             Ver todos os habitos
           </Link>

@@ -18,13 +18,13 @@ export function NextReportCard({ report }: NextReportCardProps) {
   nextFriday.setDate(now.getDate() + daysUntilFriday);
 
   return (
-    <Card className="overflow-hidden">
-      <div className="gradient-primary p-4 text-white">
+    <Card className="overflow-hidden rounded-2xl border-black/[0.04]">
+      <div className="gradient-hero p-4 text-white">
         <div className="flex items-center gap-2 mb-2">
           <Brain className="w-5 h-5" />
-          <span className="font-semibold">Proximo Relatorio IA</span>
+          <span className="font-medium">Proximo Relatorio IA</span>
         </div>
-        <div className="flex items-center gap-2 text-white/80 text-sm">
+        <div className="flex items-center gap-2 text-white/60 text-sm font-light">
           <Clock className="w-4 h-4" />
           <span>
             {daysUntilFriday === 0
@@ -36,22 +36,22 @@ export function NextReportCard({ report }: NextReportCardProps) {
       <CardContent className="p-4">
         {report ? (
           <>
-            <p className="text-sm text-gray-600 mb-3 line-clamp-3">
+            <p className="text-sm text-[#718096] font-light mb-3 line-clamp-3">
               {report.summary.substring(0, 150)}...
             </p>
             <Link href="/relatorios">
-              <Button variant="ghost" size="sm" className="gap-1 w-full">
+              <Button variant="ghost" size="sm" className="gap-1 w-full text-[#4A9FFF]">
                 Ver Relatorios <ChevronRight className="w-4 h-4" />
               </Button>
             </Link>
           </>
         ) : (
           <>
-            <p className="text-sm text-gray-500 mb-3">
+            <p className="text-sm text-[#718096] font-light mb-3">
               Seu primeiro relatorio sera gerado na proxima sexta-feira com
               base nos seus dados da semana.
             </p>
-            <div className="text-xs text-gray-400">
+            <div className="text-xs text-[#718096]/60 font-light">
               Continue registrando suas atividades para receber insights
               personalizados.
             </div>

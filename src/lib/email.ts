@@ -18,7 +18,7 @@ interface SendEmailParams {
 export async function sendEmail({ to, subject, html }: SendEmailParams) {
   try {
     const data = await getResend().emails.send({
-      from: "PULSO <noreply@pulso.app>",
+      from: "pulse <noreply@pulso.app>",
       to,
       subject,
       html,
@@ -30,6 +30,100 @@ export async function sendEmail({ to, subject, html }: SendEmailParams) {
   }
 }
 
+// --- Email Templates (pulse Design System) ---
+
+const emailWrapper = (content: string) => `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="font-family: 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #1A1A2E; max-width: 600px; margin: 0 auto; padding: 0; background: #F5F7FA;">
+  <div style="background: linear-gradient(135deg, #0F1419 0%, #1A1A2E 100%); padding: 32px; text-align: center;">
+    <span style="color: white; font-size: 24px; font-weight: 300; letter-spacing: -0.5px;">pulse</span>
+  </div>
+  <div style="padding: 32px; background: white;">
+    ${content}
+  </div>
+  <div style="padding: 24px; text-align: center; background: #F5F7FA;">
+    <p style="color: #718096; font-size: 12px; margin: 0; font-weight: 300;">
+      pulse — Produtividade Intencional<br>
+      <a href="${process.env.NEXT_PUBLIC_APP_URL}/configuracoes" style="color: #4A9FFF; text-decoration: none;">Gerenciar preferencias</a>
+    </p>
+  </div>
+</body>
+</html>
+`;
+
+const pulseButton = (url: string, text: string) =>
+  `<div style="text-align: center; margin: 28px 0;">
+    <a href="${url}" style="display: inline-block; background: #4A9FFF; color: white; padding: 14px 32px; border-radius: 999px; text-decoration: none; font-weight: 500; font-size: 14px;">${text}</a>
+  </div>`;
+
+// Welcome email
+export function generateWelcomeEmail(userName: string): string {
+  return emailWrapper(`
+    <h2 style="font-weight: 400; font-size: 22px; color: #1A1A2E; margin-top: 0;">Bem-vindo ao pulse, ${userName}!</h2>
+    <p style="color: #718096; font-weight: 300;">Estamos felizes em te ter aqui. O pulse foi feito para ajudar voce a transformar produtividade em intencao.</p>
+
+    <div style="background: #F5F7FA; border-radius: 16px; padding: 24px; margin: 24px 0;">
+      <h3 style="font-weight: 500; font-size: 14px; color: #1A1A2E; margin-top: 0; text-transform: uppercase; letter-spacing: 1px;">Proximos passos</h3>
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="padding: 8px 0; color: #4A9FFF; font-weight: 500; width: 24px;">1</td>
+          <td style="padding: 8px 0; color: #718096; font-weight: 300;">Adicione sua primeira tarefa</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #4A9FFF; font-weight: 500;">2</td>
+          <td style="padding: 8px 0; color: #718096; font-weight: 300;">Crie um habito para acompanhar</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #4A9FFF; font-weight: 500;">3</td>
+          <td style="padding: 8px 0; color: #718096; font-weight: 300;">Defina uma meta para a semana</td>
+        </tr>
+      </table>
+    </div>
+
+    ${pulseButton(`${process.env.NEXT_PUBLIC_APP_URL}/dashboard`, "Ir para o Dashboard")}
+  `);
+}
+
+// Payment confirmed email
+export function generatePaymentConfirmedEmail(
+  userName: string,
+  plan: string,
+  value: string,
+  billingType: string
+): string {
+  return emailWrapper(`
+    <h2 style="font-weight: 400; font-size: 22px; color: #1A1A2E; margin-top: 0;">Pagamento confirmado!</h2>
+    <p style="color: #718096; font-weight: 300;">Ola, ${userName}. Seu pagamento foi confirmado com sucesso.</p>
+
+    <div style="background: #F5F7FA; border-radius: 16px; padding: 24px; margin: 24px 0;">
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="padding: 8px 0; color: #718096; font-weight: 300;">Plano</td>
+          <td style="padding: 8px 0; color: #1A1A2E; font-weight: 500; text-align: right;">${plan}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #718096; font-weight: 300;">Valor</td>
+          <td style="padding: 8px 0; color: #1A1A2E; font-weight: 500; text-align: right;">R$ ${value}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #718096; font-weight: 300;">Metodo</td>
+          <td style="padding: 8px 0; color: #1A1A2E; font-weight: 500; text-align: right;">${billingType}</td>
+        </tr>
+      </table>
+    </div>
+
+    <p style="color: #718096; font-weight: 300;">Seus recursos premium ja estao disponiveis. Aproveite!</p>
+
+    ${pulseButton(`${process.env.NEXT_PUBLIC_APP_URL}/dashboard`, "Acessar Dashboard")}
+  `);
+}
+
+// Weekly report email
 export function generateWeeklyReportEmail(
   userName: string,
   reportData: {
@@ -48,110 +142,60 @@ export function generateWeeklyReportEmail(
     ? Math.round((reportData.tasksCompleted / reportData.tasksTotal) * 100)
     : 0;
 
-  return `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seu Relatório Semanal - PULSO</title>
-</head>
-<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-  <div style="text-align: center; margin-bottom: 30px;">
-    <h1 style="color: #6366F1; margin: 0;">PULSO</h1>
-    <p style="color: #666; margin-top: 5px;">Seu Relatório Semanal</p>
-  </div>
+  return emailWrapper(`
+    <h2 style="font-weight: 400; font-size: 22px; color: #1A1A2E; margin-top: 0;">Seu Relatorio Semanal</h2>
+    <p style="color: #718096; font-weight: 300;">Ola, ${userName}. Aqui esta o resumo da sua semana.</p>
 
-  <p style="font-size: 18px;">Olá, ${userName}!</p>
+    <p style="color: #1A1A2E; font-weight: 300;">${reportData.summary}</p>
 
-  <p>${reportData.summary}</p>
-
-  <div style="background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); color: white; padding: 20px; border-radius: 12px; margin: 20px 0;">
-    <h2 style="margin-top: 0; font-size: 16px; opacity: 0.9;">Números da Semana</h2>
-    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; text-align: center;">
-      <div>
-        <div style="font-size: 28px; font-weight: bold;">${completionRate}%</div>
-        <div style="font-size: 12px; opacity: 0.8;">Tarefas</div>
-      </div>
-      <div>
-        <div style="font-size: 28px; font-weight: bold;">${Math.round(reportData.habitsConsistency)}%</div>
-        <div style="font-size: 12px; opacity: 0.8;">Hábitos</div>
-      </div>
-      <div>
-        <div style="font-size: 28px; font-weight: bold;">${reportData.goalsAchieved}/${reportData.goalsTotal}</div>
-        <div style="font-size: 12px; opacity: 0.8;">Metas</div>
-      </div>
+    <!-- Stats -->
+    <div style="background: linear-gradient(135deg, #0F1419 0%, #1A1A2E 100%); color: white; padding: 24px; border-radius: 16px; margin: 24px 0;">
+      <table style="width: 100%; border-collapse: collapse; text-align: center;">
+        <tr>
+          <td style="padding: 8px;">
+            <div style="font-size: 32px; font-weight: 300;">${completionRate}%</div>
+            <div style="font-size: 11px; opacity: 0.5; font-weight: 300;">Tarefas</div>
+          </td>
+          <td style="padding: 8px;">
+            <div style="font-size: 32px; font-weight: 300;">${Math.round(reportData.habitsConsistency)}%</div>
+            <div style="font-size: 11px; opacity: 0.5; font-weight: 300;">Habitos</div>
+          </td>
+          <td style="padding: 8px;">
+            <div style="font-size: 32px; font-weight: 300;">${reportData.goalsAchieved}/${reportData.goalsTotal}</div>
+            <div style="font-size: 11px; opacity: 0.5; font-weight: 300;">Metas</div>
+          </td>
+        </tr>
+      </table>
     </div>
-  </div>
 
-  <div style="background: #F3F4F6; padding: 20px; border-radius: 12px; margin: 20px 0;">
-    <h3 style="margin-top: 0; color: #6366F1;">✨ Destaques</h3>
-    <ul style="margin: 0; padding-left: 20px;">
-      ${reportData.highlights.split("|").map(h => `<li>${h.trim()}</li>`).join("")}
-    </ul>
-  </div>
+    <!-- Highlights -->
+    <div style="background: #F5F7FA; padding: 20px; border-radius: 16px; margin: 20px 0;">
+      <h3 style="margin-top: 0; color: #1A1A2E; font-weight: 500; font-size: 14px;">Destaques</h3>
+      <ul style="margin: 0; padding-left: 20px;">
+        ${reportData.highlights.split("|").map(h => `<li style="color: #718096; font-weight: 300; margin-bottom: 4px;">${h.trim()}</li>`).join("")}
+      </ul>
+    </div>
 
-  <div style="background: #FEF3C7; padding: 20px; border-radius: 12px; margin: 20px 0;">
-    <h3 style="margin-top: 0; color: #D97706;">💡 Insights</h3>
-    <ul style="margin: 0; padding-left: 20px;">
-      ${reportData.insights.split("|").map(i => `<li>${i.trim()}</li>`).join("")}
-    </ul>
-  </div>
+    <!-- Insights -->
+    <div style="background: #EFF6FF; padding: 20px; border-radius: 16px; margin: 20px 0; border-left: 3px solid #4A9FFF;">
+      <h3 style="margin-top: 0; color: #1A1A2E; font-weight: 500; font-size: 14px;">Insights</h3>
+      <ul style="margin: 0; padding-left: 20px;">
+        ${reportData.insights.split("|").map(i => `<li style="color: #718096; font-weight: 300; margin-bottom: 4px;">${i.trim()}</li>`).join("")}
+      </ul>
+    </div>
 
-  <div style="background: #DBEAFE; padding: 20px; border-radius: 12px; margin: 20px 0;">
-    <h3 style="margin-top: 0; color: #2563EB;">🎯 Recomendações para Próxima Semana</h3>
-    <ul style="margin: 0; padding-left: 20px;">
-      ${reportData.recommendations.split("|").map(r => `<li>${r.trim()}</li>`).join("")}
-    </ul>
-  </div>
-
-  <div style="text-align: center; margin-top: 30px;">
-    <a href="${process.env.NEXT_PUBLIC_APP_URL}/relatorios"
-       style="display: inline-block; background: #6366F1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 500;">
-      Ver Relatório Completo
-    </a>
-  </div>
-
-  <hr style="border: none; border-top: 1px solid #E5E7EB; margin: 30px 0;">
-
-  <p style="color: #666; font-size: 12px; text-align: center;">
-    Você está recebendo este email porque está inscrito no PULSO.<br>
-    <a href="${process.env.NEXT_PUBLIC_APP_URL}/configuracoes" style="color: #6366F1;">Gerenciar preferências de email</a>
-  </p>
-</body>
-</html>
-  `;
+    ${pulseButton(`${process.env.NEXT_PUBLIC_APP_URL}/relatorios`, "Ver Relatorio Completo")}
+  `);
 }
 
+// Password reset email
 export function generatePasswordResetEmail(resetUrl: string): string {
-  return `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Redefinir Senha - PULSO</title>
-</head>
-<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-  <div style="text-align: center; margin-bottom: 30px;">
-    <h1 style="color: #6366F1; margin: 0;">PULSO</h1>
-  </div>
+  return emailWrapper(`
+    <h2 style="font-weight: 400; font-size: 22px; color: #1A1A2E; margin-top: 0;">Redefinir senha</h2>
+    <p style="color: #718096; font-weight: 300;">Voce solicitou a redefinicao da sua senha. Clique no botao abaixo para criar uma nova.</p>
 
-  <h2>Redefinir sua senha</h2>
+    ${pulseButton(resetUrl, "Redefinir Senha")}
 
-  <p>Você solicitou a redefinição da sua senha. Clique no botão abaixo para criar uma nova senha:</p>
-
-  <div style="text-align: center; margin: 30px 0;">
-    <a href="${resetUrl}"
-       style="display: inline-block; background: #6366F1; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 500;">
-      Redefinir Senha
-    </a>
-  </div>
-
-  <p style="color: #666; font-size: 14px;">
-    Se você não solicitou esta redefinição, pode ignorar este email.<br>
-    Este link expira em 1 hora.
-  </p>
-</body>
-</html>
-  `;
+    <p style="color: #718096; font-size: 13px; font-weight: 300;">Se voce nao solicitou, pode ignorar este email. O link expira em 1 hora.</p>
+  `);
 }

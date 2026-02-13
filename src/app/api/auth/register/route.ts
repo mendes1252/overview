@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { sendEmail, generateWelcomeEmail } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
@@ -46,6 +47,13 @@ export async function POST(req: Request) {
         { name: "Estudos", color: "#8B5CF6", userId: user.id },
       ],
     });
+
+    // Send welcome email (non-blocking)
+    sendEmail({
+      to: email,
+      subject: "Bem-vindo ao pulse!",
+      html: generateWelcomeEmail(name),
+    }).catch((err) => console.error("Failed to send welcome email:", err));
 
     return NextResponse.json(
       { message: "Usuario criado com sucesso", userId: user.id },

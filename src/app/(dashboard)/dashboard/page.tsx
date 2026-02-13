@@ -134,10 +134,10 @@ export default async function DashboardPage() {
     <div className="max-w-7xl mx-auto pb-20 lg:pb-0">
       {/* Welcome */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-medium text-[#1A1A2E]">
           Ola, {data.user.name?.split(" ")[0] || "Usuario"}!
         </h1>
-        <p className="text-gray-600">
+        <p className="text-[#718096] font-light">
           Aqui esta o resumo da sua semana. Continue firme!
         </p>
       </div>

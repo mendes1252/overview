@@ -33,7 +33,6 @@ export function TodayTasksCard({ tasks }: TodayTasksCardProps) {
           completedAt: completed ? new Date().toISOString() : null,
         }),
       });
-      // Refresh the page to get updated data
       window.location.reload();
     } catch (error) {
       console.error("Error updating task:", error);
@@ -54,15 +53,15 @@ export function TodayTasksCard({ tasks }: TodayTasksCardProps) {
   };
 
   return (
-    <Card>
+    <Card className="rounded-2xl border-black/[0.04]">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-semibold flex items-center gap-2">
-            <CheckSquare className="w-5 h-5 text-blue-600" />
+          <CardTitle className="text-lg font-medium text-[#1A1A2E] flex items-center gap-2">
+            <CheckSquare className="w-5 h-5 text-[#4A9FFF]" />
             Tarefas de Hoje
           </CardTitle>
           <Link href="/tarefas?new=true">
-            <Button size="sm" className="gap-1">
+            <Button size="sm" className="gap-1 bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl">
               <Plus className="w-4 h-4" /> Nova
             </Button>
           </Link>
@@ -72,6 +71,7 @@ export function TodayTasksCard({ tasks }: TodayTasksCardProps) {
             variant={filter === "all" ? "default" : "ghost"}
             size="sm"
             onClick={() => setFilter("all")}
+            className={filter === "all" ? "bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl" : "rounded-xl"}
           >
             Todas
           </Button>
@@ -79,6 +79,7 @@ export function TodayTasksCard({ tasks }: TodayTasksCardProps) {
             variant={filter === "pending" ? "default" : "ghost"}
             size="sm"
             onClick={() => setFilter("pending")}
+            className={filter === "pending" ? "bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl" : "rounded-xl"}
           >
             Pendentes
           </Button>
@@ -86,6 +87,7 @@ export function TodayTasksCard({ tasks }: TodayTasksCardProps) {
             variant={filter === "done" ? "default" : "ghost"}
             size="sm"
             onClick={() => setFilter("done")}
+            className={filter === "done" ? "bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl" : "rounded-xl"}
           >
             Concluidas
           </Button>
@@ -94,16 +96,16 @@ export function TodayTasksCard({ tasks }: TodayTasksCardProps) {
       <CardContent>
         {filteredTasks.length === 0 ? (
           <div className="text-center py-8">
-            <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-3">
-              <CheckSquare className="w-6 h-6 text-blue-500" />
+            <div className="w-12 h-12 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-3">
+              <CheckSquare className="w-6 h-6 text-[#4A9FFF]" />
             </div>
-            <p className="text-gray-500 mb-3">
+            <p className="text-[#718096] font-light mb-3">
               {filter === "done"
                 ? "Nenhuma tarefa concluida ainda hoje"
                 : "Nenhuma tarefa para hoje"}
             </p>
             <Link href="/tarefas?new=true">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="rounded-xl">
                 Adicionar primeira tarefa
               </Button>
             </Link>
@@ -114,10 +116,10 @@ export function TodayTasksCard({ tasks }: TodayTasksCardProps) {
               <div
                 key={task.id}
                 className={cn(
-                  "flex items-start gap-3 p-3 rounded-lg border transition-colors",
+                  "flex items-start gap-3 p-3 rounded-xl border transition-colors",
                   task.status === "done"
-                    ? "bg-gray-50 border-gray-100"
-                    : "bg-white hover:bg-gray-50"
+                    ? "bg-[#F5F7FA] border-black/[0.04]"
+                    : "bg-white hover:bg-[#F5F7FA] border-black/[0.04]"
                 )}
               >
                 <Checkbox
@@ -132,8 +134,8 @@ export function TodayTasksCard({ tasks }: TodayTasksCardProps) {
                     {priorityIcon(task.priority)}
                     <span
                       className={cn(
-                        "text-sm font-medium truncate",
-                        task.status === "done" && "line-through text-gray-400"
+                        "text-sm font-medium truncate text-[#1A1A2E]",
+                        task.status === "done" && "line-through text-[#718096]"
                       )}
                     >
                       {task.title}
@@ -143,7 +145,7 @@ export function TodayTasksCard({ tasks }: TodayTasksCardProps) {
                     {task.category && (
                       <Badge
                         variant="secondary"
-                        className="text-xs"
+                        className="text-xs rounded-lg"
                         style={{
                           backgroundColor: `${task.category.color}20`,
                           color: task.category.color,
@@ -153,7 +155,7 @@ export function TodayTasksCard({ tasks }: TodayTasksCardProps) {
                       </Badge>
                     )}
                     {task.estimatedTime && (
-                      <span className="text-xs text-gray-400 flex items-center gap-1">
+                      <span className="text-xs text-[#718096] font-light flex items-center gap-1">
                         <Clock className="w-3 h-3" />
                         {task.estimatedTime}min
                       </span>
@@ -167,7 +169,7 @@ export function TodayTasksCard({ tasks }: TodayTasksCardProps) {
         {tasks.length > 0 && (
           <Link
             href="/tarefas"
-            className="block text-center text-sm text-primary hover:underline mt-4"
+            className="block text-center text-sm text-[#4A9FFF] hover:underline mt-4"
           >
             Ver todas as tarefas
           </Link>

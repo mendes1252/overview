@@ -128,8 +128,8 @@ export function HabitsClient({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Habitos</h1>
-          <p className="text-gray-600">
+          <h1 className="text-2xl font-medium text-[#1A1A2E]">Habitos</h1>
+          <p className="text-[#718096] font-light">
             {activeHabits.length} habito{activeHabits.length !== 1 ? "s" : ""} ativo
             {activeHabits.length !== 1 ? "s" : ""}
           </p>
@@ -138,12 +138,12 @@ export function HabitsClient({
           <Button
             variant={showArchived ? "default" : "outline"}
             onClick={() => setShowArchived(!showArchived)}
-            className="gap-2"
+            className="gap-2 rounded-xl"
           >
             <Archive className="w-4 h-4" />
             {showArchived ? "Ver Ativos" : `Arquivados (${archivedHabits.length})`}
           </Button>
-          <Button onClick={() => setIsDialogOpen(true)} className="gap-2">
+          <Button onClick={() => setIsDialogOpen(true)} className="gap-2 bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl">
             <Plus className="w-4 h-4" /> Novo Habito
           </Button>
         </div>

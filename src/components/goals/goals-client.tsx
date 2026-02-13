@@ -145,13 +145,13 @@ export function GoalsClient({ initialGoals, categories }: GoalsClientProps) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Metas</h1>
-          <p className="text-gray-600">
+          <h1 className="text-2xl font-medium text-[#1A1A2E]">Metas</h1>
+          <p className="text-[#718096] font-light">
             {filteredGoals.length} meta{filteredGoals.length !== 1 ? "s" : ""}{" "}
             {period === "weekly" ? "semanais" : period === "monthly" ? "mensais" : "trimestrais"}
           </p>
         </div>
-        <Button onClick={() => setIsDialogOpen(true)} className="gap-2">
+        <Button onClick={() => setIsDialogOpen(true)} className="gap-2 bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl">
           <Plus className="w-4 h-4" /> Nova Meta
         </Button>
       </div>
@@ -166,18 +166,18 @@ export function GoalsClient({ initialGoals, categories }: GoalsClientProps) {
 
         <TabsContent value={period}>
           {filteredGoals.length === 0 ? (
-            <div className="text-center py-12 bg-white rounded-lg border">
-              <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
-                <Target className="w-6 h-6 text-purple-500" />
+            <div className="text-center py-12 bg-white rounded-2xl border border-black/[0.04]">
+              <div className="w-12 h-12 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-4">
+                <Target className="w-6 h-6 text-[#4A9FFF]" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-1">
+              <h3 className="text-lg font-medium text-[#1A1A2E] mb-1">
                 Nenhuma meta{" "}
                 {period === "weekly" ? "semanal" : period === "monthly" ? "mensal" : "trimestral"}
               </h3>
-              <p className="text-gray-500 mb-4">
+              <p className="text-[#718096] font-light mb-4">
                 Defina metas para acompanhar seu progresso.
               </p>
-              <Button onClick={() => setIsDialogOpen(true)} variant="outline">
+              <Button onClick={() => setIsDialogOpen(true)} variant="outline" className="rounded-xl">
                 Criar Meta
               </Button>
             </div>
@@ -187,8 +187,8 @@ export function GoalsClient({ initialGoals, categories }: GoalsClientProps) {
                 <Card
                   key={goal.id}
                   className={cn(
-                    "transition-colors",
-                    goal.status === "achieved" && "bg-green-50 border-green-200"
+                    "transition-colors rounded-2xl",
+                    goal.status === "achieved" ? "bg-green-50 border-green-200" : "border-black/[0.04]"
                   )}
                 >
                   <CardContent className="p-4">
@@ -208,21 +208,21 @@ export function GoalsClient({ initialGoals, categories }: GoalsClientProps) {
                               "w-5 h-5 mt-0.5 flex-shrink-0",
                               goal.status === "achieved"
                                 ? "text-green-500"
-                                : "text-gray-400"
+                                : "text-[#718096]"
                             )}
                           />
                         )}
                         <div className="min-w-0">
                           <h3
                             className={cn(
-                              "font-semibold text-gray-900",
-                              goal.status === "achieved" && "line-through"
+                              "font-medium text-[#1A1A2E]",
+                              goal.status === "achieved" && "line-through text-[#718096]"
                             )}
                           >
                             {goal.title}
                           </h3>
                           {goal.description && (
-                            <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                            <p className="text-sm text-[#718096] font-light mt-1 line-clamp-2">
                               {goal.description}
                             </p>
                           )}
@@ -276,10 +276,10 @@ export function GoalsClient({ initialGoals, categories }: GoalsClientProps) {
                     {goal.type === "quantifiable" && goal.targetValue && (
                       <div className="mb-3">
                         <div className="flex items-center justify-between text-sm mb-1">
-                          <span className="text-gray-500">
+                          <span className="text-[#718096] font-light">
                             {goal.currentValue || 0} / {goal.targetValue} {goal.unit}
                           </span>
-                          <span className="font-medium">
+                          <span className="font-medium text-[#1A1A2E]">
                             {calculateProgress(goal.currentValue || 0, goal.targetValue)}%
                           </span>
                         </div>
@@ -291,7 +291,7 @@ export function GoalsClient({ initialGoals, categories }: GoalsClientProps) {
                     )}
 
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <div className="flex items-center gap-2 text-sm text-[#718096] font-light">
                         <Calendar className="w-4 h-4" />
                         <span>
                           {formatDate(goal.startDate)} - {formatDate(goal.endDate)}
