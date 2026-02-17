@@ -137,6 +137,17 @@ else
 fi
 
 # -----------------------------------------------------------
+# 8. Validar configuração de ambiente
+# -----------------------------------------------------------
+print_step "Validando configuracao de ambiente..."
+
+if [ -f scripts/validate-env.js ]; then
+  node scripts/validate-env.js || true
+else
+  print_warn "Script de validacao nao encontrado. Execute 'npm run validate' manualmente."
+fi
+
+# -----------------------------------------------------------
 # Concluído
 # -----------------------------------------------------------
 echo ""
@@ -150,4 +161,6 @@ echo "  2. Configure o PostgreSQL e atualize DATABASE_URL"
 echo "  3. Execute: npx prisma db push"
 echo "  4. Execute: npm run dev"
 echo "  5. Acesse: http://localhost:3000"
+echo ""
+echo "Dica: Execute 'npm run validate' para verificar suas variaveis de ambiente."
 echo ""

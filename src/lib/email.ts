@@ -9,14 +9,73 @@ function getResend(): Resend {
   return _resend;
 }
 
+// --- Email Configuration Validation ---
+
+export interface EmailConfigStatus {
+  isConfigured: boolean;
+  issues: string[];
+  warnings: string[];
+}
+
+export function validateEmailConfig(): EmailConfigStatus {
+  const issues: string[] = [];
+  const warnings: string[] = [];
+
+  if (!process.env.RESEND_API_KEY) {
+    issues.push("RESEND_API_KEY is not set. Email sending will fail.");
+  } else if (!process.env.RESEND_API_KEY.startsWith("re_")) {
+    issues.push("RESEND_API_KEY does not start with 're_'. This may not be a valid Resend API key.");
+  }
+
+  const from = process.env.EMAIL_FROM || "";
+  if (!from) {
+    warnings.push("EMAIL_FROM is not set. Defaulting to 'pulse <onboarding@resend.dev>'.");
+  }
+
+  if (from.includes("onboarding@resend.dev") || from.includes("resend.dev") || !from) {
+    warnings.push(
+      "Using Resend sandbox address (onboarding@resend.dev). " +
+      "Emails can ONLY be sent to the email registered on your Resend account. " +
+      "To send to any address, verify your domain at https://resend.com/domains"
+    );
+  }
+
+  if (!process.env.NEXT_PUBLIC_APP_URL) {
+    warnings.push("NEXT_PUBLIC_APP_URL is not set. Email links will default to http://localhost:3000.");
+  }
+
+  return {
+    isConfigured: issues.length === 0,
+    issues,
+    warnings,
+  };
+}
+
+// --- Email Sending ---
+
 interface SendEmailParams {
   to: string;
   subject: string;
   html: string;
 }
 
+let _configLogged = false;
+
 export async function sendEmail({ to, subject, html }: SendEmailParams) {
   const from = process.env.EMAIL_FROM || "pulse <onboarding@resend.dev>";
+
+  // Log config warnings on first call
+  if (!_configLogged) {
+    _configLogged = true;
+    const config = validateEmailConfig();
+    if (config.issues.length > 0) {
+      console.warn("[EMAIL CONFIG] Issues:", config.issues.join(" | "));
+    }
+    if (config.warnings.length > 0) {
+      console.warn("[EMAIL CONFIG] Warnings:", config.warnings.join(" | "));
+    }
+  }
+
   console.log(`[EMAIL] Sending to=${to} from=${from} subject="${subject}"`);
 
   try {
@@ -31,6 +90,19 @@ export async function sendEmail({ to, subject, html }: SendEmailParams) {
   } catch (error: any) {
     console.error("[EMAIL] Failed to send:", error?.message || error);
     console.error("[EMAIL] Full error:", JSON.stringify(error, null, 2));
+
+    // Actionable hints for common errors
+    if (error?.message?.includes("not a verified") || error?.message?.includes("not verified") || error?.message?.includes("verify")) {
+      console.error(
+        "[EMAIL] HINT: Your sender domain is not verified in Resend. " +
+        "Go to https://resend.com/domains to add and verify your domain. " +
+        "Until then, you can only send to the email registered on your Resend account."
+      );
+    }
+    if (error?.message?.includes("API key") || error?.statusCode === 401 || error?.statusCode === 403) {
+      console.error("[EMAIL] HINT: Check that RESEND_API_KEY is correct and starts with 're_'.");
+    }
+
     return { success: false, error };
   }
 }

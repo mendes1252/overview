@@ -70,8 +70,9 @@ cp .env.example .env.local
 |----------|-----------|
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Login via Google OAuth |
 | `OPENAI_API_KEY` | Coach IA e relatórios semanais |
-| `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` / `STRIPE_PRO_PRICE_ID` | Pagamentos e assinaturas |
+| `ASAAS_API_KEY` / `ASAAS_WEBHOOK_TOKEN` | Pagamentos via Asaas |
 | `RESEND_API_KEY` | Envio de emails transacionais |
+| `EMAIL_FROM` | Endereco de envio de email (requer dominio verificado para producao — veja secao abaixo) |
 
 ### 3. Configurar Banco de Dados
 
@@ -138,9 +139,55 @@ prisma/
 | `npm run build` | Build de produção |
 | `npm run start` | Servidor de produção |
 | `npm run lint` | Verificação de lint (ESLint) |
+| `npm run validate` | Validar variáveis de ambiente |
 | `npx prisma studio` | Interface visual do banco de dados |
 | `npx prisma generate` | Regenerar Prisma Client |
 | `npx prisma db push` | Sincronizar schema com o banco |
+
+---
+
+## Configuração de Email (Resend)
+
+O pulse usa o [Resend](https://resend.com) para envio de emails transacionais (boas-vindas, recuperacao de senha, confirmacao de pagamento).
+
+### Desenvolvimento (Sandbox)
+
+O endereco padrao `onboarding@resend.dev` e um sandbox do Resend. Ele **so envia emails para o email cadastrado na sua conta Resend**. Isso e suficiente para testes locais.
+
+```env
+RESEND_API_KEY="re_sua-chave-aqui"
+EMAIL_FROM="pulse <onboarding@resend.dev>"
+```
+
+### Producao (Dominio Verificado)
+
+Para enviar emails para qualquer usuario em producao, voce precisa verificar seu dominio no Resend:
+
+1. Acesse [resend.com/domains](https://resend.com/domains)
+2. Clique **"Add Domain"** e insira seu dominio (ex: `pulseprodutividade.com.br`)
+3. O Resend mostrara registros DNS necessarios:
+   - **MX Record** — para recebimento
+   - **SPF (TXT Record)** — autenticacao de envio
+   - **DKIM (TXT Records)** — assinatura de email
+4. Adicione esses registros no seu provedor DNS:
+   - **Vercel**: Projeto > Settings > Domains > DNS Records
+   - **Cloudflare**: DNS > Records > Add Record
+5. Volte ao Resend e clique **"Verify"** (geralmente leva poucos minutos)
+6. Atualize `EMAIL_FROM` no Vercel:
+   ```
+   EMAIL_FROM="pulse <noreply@pulseprodutividade.com.br>"
+   ```
+7. Faca **redeploy** no Vercel
+
+### Verificando a Configuracao
+
+```bash
+# Validar variaveis de ambiente localmente
+npm run validate
+
+# Verificar status dos servicos em producao
+curl https://seu-dominio.com.br/api/health
+```
 
 ---
 
@@ -154,3 +201,11 @@ Execute `npx prisma generate` para regenerar o client.
 
 ### Erro de build com tipos TypeScript
 Execute `npm run build` para ver os erros detalhados e corrija os tipos indicados.
+
+### Emails nao chegam em producao
+Se os emails funcionam para o seu email pessoal mas nao para outros usuarios:
+1. Execute `npm run validate` para diagnosticar problemas de configuracao
+2. Verifique se o dominio esta verificado no Resend ([resend.com/domains](https://resend.com/domains))
+3. Acesse `/api/health` para confirmar que o email esta configurado corretamente
+4. Verifique os logs no Vercel (Runtime Logs) para mensagens com prefixo `[EMAIL]`
+5. Confirme que `EMAIL_FROM` usa um dominio verificado (nao `resend.dev`)
