@@ -11,7 +11,7 @@ const protectedRoutes = [
   "/onboarding",
 ];
 
-const authRoutes = ["/login", "/cadastro"];
+const authRoutes = ["/login", "/cadastro", "/recuperar-senha", "/redefinir-senha"];
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
