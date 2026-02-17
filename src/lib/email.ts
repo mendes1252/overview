@@ -17,8 +17,9 @@ interface SendEmailParams {
 
 export async function sendEmail({ to, subject, html }: SendEmailParams) {
   try {
+    const from = process.env.EMAIL_FROM || "pulse <onboarding@resend.dev>";
     const data = await getResend().emails.send({
-      from: "pulse <noreply@pulso.app>",
+      from,
       to,
       subject,
       html,
