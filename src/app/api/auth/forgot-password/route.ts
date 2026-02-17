@@ -49,11 +49,15 @@ export async function POST(req: Request) {
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
     const resetUrl = `${appUrl}/redefinir-senha?token=${token}&email=${encodeURIComponent(email)}`;
 
-    await sendEmail({
+    const emailResult = await sendEmail({
       to: email,
       subject: "Redefinir senha - pulse",
       html: generatePasswordResetEmail(resetUrl),
     });
+
+    if (!emailResult.success) {
+      console.error("Failed to send reset email to:", email, emailResult.error);
+    }
 
     return successResponse;
   } catch (error) {

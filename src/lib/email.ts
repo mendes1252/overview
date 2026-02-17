@@ -16,17 +16,21 @@ interface SendEmailParams {
 }
 
 export async function sendEmail({ to, subject, html }: SendEmailParams) {
+  const from = process.env.EMAIL_FROM || "pulse <onboarding@resend.dev>";
+  console.log(`[EMAIL] Sending to=${to} from=${from} subject="${subject}"`);
+
   try {
-    const from = process.env.EMAIL_FROM || "pulse <onboarding@resend.dev>";
     const data = await getResend().emails.send({
       from,
       to,
       subject,
       html,
     });
+    console.log("[EMAIL] Sent successfully:", JSON.stringify(data));
     return { success: true, data };
-  } catch (error) {
-    console.error("Error sending email:", error);
+  } catch (error: any) {
+    console.error("[EMAIL] Failed to send:", error?.message || error);
+    console.error("[EMAIL] Full error:", JSON.stringify(error, null, 2));
     return { success: false, error };
   }
 }
