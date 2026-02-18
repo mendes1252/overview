@@ -1,0 +1,329 @@
+Categoria,Propriedade,Valor,Notas
+# ============================================================
+# IDENTIDADE DA MARCA
+# ============================================================
+Marca,Nome,pulse,Sempre minusculo
+Marca,Slogan,Produtividade Intencional,
+Marca,Tom,Minimalista premium calmo e funcional,Nao gamificado nem infantil
+Marca,Publico,Adultos brasileiros 25-45 anos,Profissionais e empreendedores
+Marca,Idioma,Portugues brasileiro,
+# ============================================================
+# PALETA DE CORES
+# ============================================================
+Cor Primaria,Pulse Blue,#4A9FFF,Cor principal CTAs destaque
+Cor Primaria,Blue Light,#6BB5FF,Hover e gradientes
+Cor Primaria,Deep Navy,#1A1A2E,Textos e backgrounds escuros
+Cor Primaria,Ghost White,#F5F7FA,Background claro superficies
+Cor Primaria,Slate Gray,#718096,Texto secundario muted
+Cor Primaria,White,#FFFFFF,Cards e superficies claras
+Cor Primaria,Dark Base,#0F1419,Base do gradiente hero
+Cor Semantica,Sucesso,#10b981,Estados positivos
+Cor Semantica,Sucesso Dark,#059669,Gradiente sucesso
+Cor Semantica,Erro,#dc2626,Estados de erro
+Cor Semantica,Alerta,#eab308,Avisos
+Cor Semantica,Info,#4A9FFF,Informativo (usa Pulse Blue)
+Cor Semantica,Vermelho (Prioridade Alta),#ef4444,Badge prioridade
+Cor Semantica,Amarelo (Prioridade Media),#eab308,Badge prioridade
+Cor Semantica,Verde (Prioridade Baixa),#22c55e,Badge prioridade
+Gradiente,Hero,"linear-gradient(135deg, #0F1419 0%, #1A1A2E 100%)",Secoes escuras
+Gradiente,Primary,"linear-gradient(135deg, #4A9FFF 0%, #6BB5FF 100%)",Botoes badges destaques
+Gradiente,Radial Glow,"radial-gradient(circle, rgba(74,159,255,0.15) 0%, transparent 70%)",Efeito glow decorativo
+Gradiente,Success,"linear-gradient(135deg, #10b981 0%, #059669 100%)",Estados de sucesso
+Transparencia,Glass Light,"rgba(255,255,255,0.8)",Glass morphism claro
+Transparencia,Glass Dark,"rgba(26,26,46,0.8)",Glass morphism escuro
+Transparencia,Overlay Sutil,"rgba(255,255,255,0.05)",Overlay em dark
+Transparencia,Overlay Medio,"rgba(255,255,255,0.10)",Card em dark
+Transparencia,Blue Glow,"rgba(74,159,255,0.15)",Glow azul
+Transparencia,Selection,"rgba(74,159,255,0.2)",Texto selecionado
+# ============================================================
+# TIPOGRAFIA
+# ============================================================
+Fonte,Principal,Manrope,Google Fonts sans-serif
+Fonte,Mono,JetBrains Mono,Dados numericos e codigo
+Peso,Light,300,Textos secundarios descricoes subtitulos
+Peso,Regular,400,Corpo de texto padrao
+Peso,Medium,500,Labels badges titulos de card
+Peso,Semibold,600,Titulos de secao
+Peso,Bold,700,Headings principais CTAs
+Tipografia,H1 Hero,72-120px font-light tracking -0.03em,Landing page titulo principal
+Tipografia,H2 Secoes,36-56px font-light tracking -0.02em,Titulos de secao
+Tipografia,H3 Cards,18-22px font-medium,Titulos dentro de cards
+Tipografia,Body Large,18-20px font-light,Subtitulos e textos de destaque
+Tipografia,Body Base,16px font-light ou font-regular,Texto padrao
+Tipografia,Body Small,14px font-light,Texto auxiliar
+Tipografia,Caption,12-13px font-light ou font-medium,Legendas e metadados
+Tipografia,Label,12px font-medium uppercase tracking wider,Labels de formulario e badges
+Tipografia,Badge,12px font-semibold,Texto dentro de badges
+# ============================================================
+# ESPACAMENTO
+# ============================================================
+Espacamento,XS,2px (gap-0.5),Minimo
+Espacamento,Small,4px (gap-1),Pequeno
+Espacamento,Medium,8px (gap-2),Medio
+Espacamento,Regular,12px (gap-3),Regular
+Espacamento,Large,16px (gap-4),Grande
+Espacamento,XLarge,24px (gap-6),Extra grande
+Espacamento,2XL,32px (gap-8),Duplo extra grande
+Espacamento,Secao Padding Vertical,96-128px (py-24 sm:py-32),Padding entre secoes
+Espacamento,Secao Padding Horizontal,24px (px-6),Lateral das secoes
+Espacamento,Container Max Width,1200px,max-w-[1200px] mx-auto
+Espacamento,Header Altura,64px (h-16),Altura do header
+Espacamento,Card Padding,24-40px (p-6 ou p-8 sm:p-10),Interno dos cards
+Espacamento,Grid Gap,24-32px (gap-6 ou gap-8),Entre cards no grid
+Espacamento,Nav Item Padding,px-3 py-2.5,Itens de navegacao
+Espacamento,Titulo para Subtitulo,16-24px (mb-4 ou mb-6),Abaixo do titulo
+Espacamento,Subtitulo para Conteudo,32-48px (mb-8 ou mb-12),Abaixo do subtitulo
+Espacamento,Form Groups,16-24px (space-y-4 ou space-y-6),Entre campos de formulario
+# ============================================================
+# BORDER RADIUS
+# ============================================================
+Border Radius,Extra Small,6px (rounded-md),Inputs padrao
+Border Radius,Small,12px (rounded-xl),Inputs e badges
+Border Radius,Medium,16px (rounded-2xl),Cards padrao
+Border Radius,Large,24px (rounded-3xl),Cards hero
+Border Radius,Full,9999px (rounded-full),Botoes e pills
+# ============================================================
+# SOMBRAS
+# ============================================================
+Sombra,Default,shadow-sm (0 1px 2px rgba(0,0,0,0.05)),Cards em repouso
+Sombra,Card Hover,"0 20px 60px rgba(74,159,255,0.15)",Card ao passar o mouse
+Sombra,Button Hover,"0 8px 24px rgba(74,159,255,0.3)",Botao ao passar o mouse
+Sombra,Dropdown,shadow-lg,Menus e modais
+Sombra,Glow Min,"0 0 20px rgba(74,159,255,0.2)",Pulse glow minimo
+Sombra,Glow Max,"0 0 40px rgba(74,159,255,0.4)",Pulse glow maximo
+# ============================================================
+# BLUR E GLASS
+# ============================================================
+Blur,Glass Padrao,backdrop-filter: blur(12px),Efeito glass principal
+Blur,Header,backdrop-filter: blur(8px),Header mais leve
+# ============================================================
+# BORDAS
+# ============================================================
+Borda,Card Light,1px solid rgba(0,0,0,0.04),Borda padrao de cards claros
+Borda,Card Dark,1px solid rgba(255,255,255,0.10),Borda em cards escuros
+Borda,Card Dark Sutil,1px solid rgba(255,255,255,0.05),Borda sutil em dark
+Borda,Hover,1px solid #4A9FFF,Borda ao hover
+Borda,Active,2px solid #4A9FFF,Estado ativo/selecionado
+Borda,Erro,1px solid #fecaca (red-200),Campo com erro
+Borda,Sucesso,1px solid #bbf7d0 (green-200),Campo valido
+# ============================================================
+# ANIMACOES
+# ============================================================
+Animacao,fadeIn,"opacity 0→1, 0.4s cubic-bezier(0.4,0,0.2,1)",Entrada de elementos
+Animacao,slideUp,"translateY(30px)→0 + opacity, 0.6s cubic-bezier(0.4,0,0.2,1)",Entrada de baixo
+Animacao,slideDown,"translateY(-10px)→0 + opacity, 0.4s cubic-bezier(0.4,0,0.2,1)",Entrada de cima
+Animacao,breathe,"scale 1→1.15 + opacity 0.3→0.6, 8s infinite",Glow decorativo pulsante
+Animacao,pulseLine,"width 40px→48px, 2s infinite",Linha animada
+Animacao,pulse-glow,"box-shadow pulsa azul, 3s infinite",Glow em botao
+Transicao,Botao Hover,"all 0.2s cubic-bezier(0.4,0,0.2,1)",Transicao de botao
+Transicao,Card Hover,"all 0.3s cubic-bezier(0.4,0,0.2,1)",Transicao de card
+Interacao,Botao Hover,transform: scale(1.05) + shadow,Escala e brilho
+Interacao,Botao Active,transform: scale(0.98),Pressionado
+Interacao,Card Hover,translateY(-8px) + border azul + shadow,Elevacao
+# ============================================================
+# BOTOES
+# ============================================================
+Botao,Primario,"bg #4A9FFF, texto branco, rounded-full",CTA principal
+Botao,Primario Hover,"bg #4A9FFF/90, scale 1.05, glow shadow",
+Botao,Outline,"border 1-2px #4A9FFF, texto #4A9FFF, rounded-full",Secundario
+Botao,Outline Hover,"bg #4A9FFF, texto branco",Preenchimento
+Botao,Ghost,transparente texto cinza ou branco,Acao terciaria
+Botao,Ghost Hover,bg sutil,
+Botao,Destrutivo,"bg #dc2626, texto branco",Acoes perigosas
+Botao,Tamanho SM,36px altura px-3,Pequeno
+Botao,Tamanho MD,40px altura px-4 py-2,Padrao
+Botao,Tamanho LG,44px altura px-8,Grande
+Botao,Icone,40px quadrado,Apenas icone
+Botao,Fonte,font-medium ou font-semibold text-sm ou text-base,
+# ============================================================
+# INPUTS E FORMULARIOS
+# ============================================================
+Input,Altura,40px (h-10),
+Input,Padding,px-3 py-2,
+Input,Background,#F5F7FA,
+Input,Borda,1px solid sutil,
+Input,Border Radius,6px ou 12px (rounded-md ou rounded-xl),
+Input,Texto,14px font-light,
+Input,Placeholder,#718096,Cor do placeholder
+Input,Focus,"ring 2px #4A9FFF/30 + border #4A9FFF",Estado de foco
+Label,Fonte,font-light ou font-medium 14px,
+Label,Cor,#1A1A2E ou text-gray-900,
+Label,Espacamento,mt-1 ou mt-2 abaixo do label,
+# ============================================================
+# CARDS
+# ============================================================
+Card,Background,#FFFFFF,
+Card,Borda,"1px solid rgba(0,0,0,0.04)",
+Card,Border Radius,16px (rounded-2xl),
+Card,Padding,24px (p-6),
+Card,Sombra,shadow-sm em repouso,
+Card,Hover,"translateY(-8px), border #4A9FFF, shadow 0 20px 60px rgba(74,159,255,0.15)",
+Card,Titulo,font-semibold 22px,
+Card,Header Padding,p-6 space-y-1.5,
+Card,Content Padding,p-6 pt-0,
+Card Dark,Background,"rgba(255,255,255,0.05-0.10)",
+Card Dark,Borda,"1px solid rgba(255,255,255,0.10)",
+# ============================================================
+# BADGES
+# ============================================================
+Badge,Formato,Pill (rounded-full),
+Badge,Padding,px-3 py-1,
+Badge,Fonte,12px font-semibold,
+Badge,Variante Azul,"bg #4A9FFF/20, texto #4A9FFF",
+Badge,Variante Verde,"bg #10b981/20, texto #10b981",
+Badge,Variante Amarelo,"bg #eab308/20, texto #eab308",
+Badge,Variante Vermelho,"bg #ef4444/20, texto #ef4444",
+Badge,Variante Cinza,"bg #718096/20, texto #718096",
+Badge,Streak,"bg orange-100, texto orange-600, icone Flame",
+# ============================================================
+# PROGRESS BAR
+# ============================================================
+Progress,Altura,12px (h-3),
+Progress,Border Radius,rounded-full,
+Progress,Track,cinza claro (bg-muted),
+Progress,Fill,"gradiente #4A9FFF → #6BB5FF",
+# ============================================================
+# ICONES
+# ============================================================
+Icone,Biblioteca,Lucide React,Outline stroke 1.5-2px
+Icone,Tamanho Botao,16px (w-4 h-4),
+Icone,Tamanho Nav,20px (w-5 h-5),
+Icone,Tamanho Header,24px (w-6 h-6),
+Icone,Tamanho Badge,12px (w-3 h-3),
+Icone,Tamanho Decorativo,40px+ (w-10 h-10),
+Icone,Dashboard,LayoutDashboard,
+Icone,Tarefas,CheckSquare,
+Icone,Habitos,TrendingUp,
+Icone,Metas,Target,
+Icone,Relatorios,BarChart3,
+Icone,Config,Settings,
+Icone,IA,"Brain, Sparkles, Zap",
+Icone,Premium,Crown,
+Icone,Cor Primaria,#4A9FFF,
+Icone,Cor Secundaria,#718096,
+Icone,Cor Light,#FFFFFF,
+# ============================================================
+# LAYOUT - LANDING PAGE
+# ============================================================
+Landing Navbar,Posicao,Fixa top z-50,
+Landing Navbar,Altura,64px,
+Landing Navbar,Background,glass-dark,
+Landing Navbar,Max Width,1200px centralizado,
+Landing Navbar,Logo,20px font-light text-white,
+Landing Hero,Altura Minima,100vh,
+Landing Hero,Background,gradient-hero,
+Landing Hero,Alinhamento,flex center text-center,
+Landing Hero,Padding,py-32,
+Landing Hero,Efeito,breathe glow animado,
+Landing Features,Background,#F5F7FA,
+Landing Features,Grid,"md:grid-cols-2 lg:grid-cols-3 gap-8",
+Landing Features,Padding,py-24 sm:py-32 px-6,
+Landing IA,Background,gradient-hero (escuro),
+Landing IA,Grid,sm:grid-cols-3,
+Landing IA,Cards,card-dark style,
+Landing Testimonial,Background,#FFFFFF,
+Landing Testimonial,Max Width,max-w-3xl centralizado,
+Landing Testimonial,Quote Icon,40px #4A9FFF/30,
+Landing Testimonial,Font Size,24-32px,
+Landing Pricing,Background,#F5F7FA,
+Landing Pricing,Grid,"md:grid-cols-2 gap-8 max-w-4xl",
+Landing Pricing,Pro Badge,"border-2 #4A9FFF, badge -top-3 centralizado",
+# ============================================================
+# LAYOUT - DASHBOARD
+# ============================================================
+Dashboard Sidebar,Largura,256px,
+Dashboard Sidebar,Posicao,fixed inset-y-0,
+Dashboard Sidebar,Background,gradient-hero,
+Dashboard Sidebar,Borda Direita,"1px solid rgba(255,255,255,0.05)",
+Dashboard Sidebar,Logo Area,64px altura,
+Dashboard Sidebar,Nav Item Ativo,"bg #4A9FFF/15 text #4A9FFF",
+Dashboard Sidebar,Nav Item Inativo,"text white/70, hover bg white/5",
+Dashboard Sidebar,Upgrade Banner,"rounded-2xl bg white/5 border white/10 p-4",
+Dashboard Main,Margin Left,pl-64 (em lg),
+Dashboard Main,Padding,p-4 lg:p-8,
+Dashboard Main,Background,#F5F7FA,
+Dashboard Header,Altura,64px,
+Dashboard Header,Background,"bg white/80 backdrop-blur-md",
+Dashboard Header,Borda,"border-b rgba(0,0,0,0.04)",
+Dashboard Grid,Layout,grid gap-6 lg:grid-cols-3,
+Dashboard Grid,Coluna Esquerda,lg:col-span-2 space-y-6,
+Dashboard Grid,Coluna Direita,space-y-6,
+Dashboard Mobile Nav,Posicao,"fixed bottom-0 left-0 right-0 (lg:hidden)",
+Dashboard Mobile Nav,Background,glass-dark,
+Dashboard Mobile Nav,Padding,py-2,
+# ============================================================
+# LAYOUT - PAGINAS INTERNAS
+# ============================================================
+Login,Layout,Formulario centralizado max-w-400px,
+Login,Divisor,Linha com "ou" centralizado,
+Login,Google Button,"Icone 20px + texto, outline variant",
+Login,Link,text-sm entre login/cadastro,
+Onboarding,Background,gradient-to-b from-gray-50 to-white,
+Onboarding,Header,Fixo top com logo e progress bar,
+Onboarding,Progress Bar,h-2 fill smooth,
+Onboarding,Content,max-w-xl centralizado,
+Onboarding,Step Grid,grid-cols-3 gap-4 (step 1),
+Onboarding,Tone Selector,grid-cols-2 gap-3 com emoji 28px,
+Tarefas,Lista,Cards empilhados com filtros topo,
+Tarefas,Card,"Titulo, badge prioridade, data, checkbox",
+Tarefas,Modal,Dialog para criar/editar,
+Tarefas,Empty State,Ilustracao + mensagem encorajadora,
+Habitos,Grid,Habitos com calendario semanal 7 dias,
+Habitos,Streak,Icone fogo + contador,
+Habitos,Toggle,Circulo clicavel por dia,
+Habitos,Barra,Barra de consistencia com %,
+Metas,Cards,Card com progress bar e status,
+Metas,Status,"Em progresso (azul), Alcancada (verde), Nao alcancada (cinza)",
+Metas,Periodo,"Semanal, mensal, trimestral",
+Relatorios,Layout,Lista lateral + conteudo principal,
+Relatorios,Stats,3 metricas: tarefas % habitos % metas,
+Relatorios,Secoes,"Resumo, Destaques, Insights, Recomendacoes",
+Relatorios,Botao Gerar,Loading state com spinner,
+Config,Max Width,max-w-2xl,
+Config,Container,"Card branco rounded-xl border p-6 space-y-6",
+Config,Labels,text-sm font-medium,
+Checkout,Background,bg-gray-50,
+Checkout,Layout,grid lg:grid-cols-2 gap-8 max-w-5xl,
+Checkout,Garantia,"bg green-50 border green-200 rounded-xl p-4",
+Checkout,Features,"space-y-4 com CheckCircle icons",
+Legal,Hero,Gradiente escuro com titulo,
+Legal,Conteudo,Prosa limpa centralizada,
+# ============================================================
+# RESPONSIVIDADE
+# ============================================================
+Breakpoint,Mobile,375px,Default (mobile first)
+Breakpoint,SM,640px,Small
+Breakpoint,MD,768px,Tablet
+Breakpoint,LG,1024px,Desktop
+Breakpoint,XL,1280px,Wide
+Responsivo,Grid,"3 cols → 2 cols → 1 col",
+Responsivo,Sidebar,Sidebar → bottom nav no mobile,
+Responsivo,Tipografia,Reduz ~30% no mobile,
+Responsivo,Padding,"p-4 mobile, p-8 desktop",
+# ============================================================
+# ESTADOS INTERATIVOS
+# ============================================================
+Estado,Hover Botao,scale(1.05) + glow shadow,
+Estado,Active Botao,scale(0.98),
+Estado,Hover Card,translateY(-8px) + border azul + shadow,
+Estado,Nav Ativo,"bg #4A9FFF/15 text #4A9FFF",
+Estado,Toggle Ativo,"border-primary bg-primary/5 text-primary",
+Estado,Disabled,"opacity 0.5, pointer-events none",
+Estado,Loading,animate-spin + texto Carregando,
+Estado,Focus,"outline 2px solid #4A9FFF offset 2px",
+Estado,Selection,"bg rgba(74,159,255,0.2) text #1A1A2E",
+# ============================================================
+# MELHORIAS SUGERIDAS
+# ============================================================
+Melhoria,Micro-interacoes,Check animado ao completar tarefa e confetti ao atingir meta,Prioridade Alta
+Melhoria,Empty States,Ilustracoes simples com mensagens encorajadoras,Prioridade Alta
+Melhoria,Data Visualization,Charts mais elaborados no dashboard e relatorios,Prioridade Alta
+Melhoria,Hierarquia Visual,Olho do usuario vai primeiro para info mais importante,Prioridade Alta
+Melhoria,White Space,Espaco em branco generoso para o app respirar,Prioridade Alta
+Melhoria,Dark Mode,Versao dark usando cores Navy existentes,Prioridade Media
+Melhoria,Onboarding Visual,Ilustracoes e animacoes no wizard,Prioridade Media
+Melhoria,Notificacoes,Sistema de toast consistente e elegante,Prioridade Media
+Melhoria,Skeleton Loading,Substituir spinners por skeleton screens,Prioridade Media
+Melhoria,Premium Feel,Gradientes dourados e elementos visuais para diferenciar Pro,Prioridade Baixa
+Melhoria,Pagina 404,Design minimalista com CTA para voltar,Prioridade Baixa
+Melhoria,OG Tags por Pagina,Meta tags OpenGraph em todas as paginas publicas,Prioridade Baixa
