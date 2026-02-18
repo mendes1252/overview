@@ -45,8 +45,8 @@ export async function POST(req: Request) {
       },
     });
 
-    // Send reset email
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    // Send reset email — trim env var to prevent stray newlines in URL
+    const appUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").trim().replace(/\/+$/, "");
     const resetUrl = `${appUrl}/redefinir-senha?token=${token}&email=${encodeURIComponent(email)}`;
 
     const emailResult = await sendEmail({

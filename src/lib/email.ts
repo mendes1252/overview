@@ -4,7 +4,7 @@ let _resend: Resend | null = null;
 
 function getResend(): Resend {
   if (!_resend) {
-    _resend = new Resend(process.env.RESEND_API_KEY);
+    _resend = new Resend(process.env.RESEND_API_KEY?.trim());
   }
   return _resend;
 }
@@ -62,7 +62,7 @@ interface SendEmailParams {
 let _configLogged = false;
 
 export async function sendEmail({ to, subject, html }: SendEmailParams) {
-  const from = process.env.EMAIL_FROM || "pulse <onboarding@resend.dev>";
+  const from = (process.env.EMAIL_FROM || "pulse <onboarding@resend.dev>").trim();
 
   // Log config warnings on first call
   if (!_configLogged) {
@@ -109,6 +109,9 @@ export async function sendEmail({ to, subject, html }: SendEmailParams) {
 
 // --- Email Templates (pulse Design System) ---
 
+// Sanitize app URL — remove trailing whitespace/newlines from env vars
+const getAppUrl = () => (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").trim().replace(/\/+$/, "");
+
 const emailWrapper = (content: string) => `
 <!DOCTYPE html>
 <html>
@@ -126,7 +129,7 @@ const emailWrapper = (content: string) => `
   <div style="padding: 24px; text-align: center; background: #F5F7FA;">
     <p style="color: #718096; font-size: 12px; margin: 0; font-weight: 300;">
       pulse — Produtividade Intencional<br>
-      <a href="${process.env.NEXT_PUBLIC_APP_URL}/configuracoes" style="color: #4A9FFF; text-decoration: none;">Gerenciar preferencias</a>
+      <a href="${getAppUrl()}/configuracoes" style="color: #4A9FFF; text-decoration: none;">Gerenciar preferencias</a>
     </p>
   </div>
 </body>
@@ -162,7 +165,7 @@ export function generateWelcomeEmail(userName: string): string {
       </table>
     </div>
 
-    ${pulseButton(`${process.env.NEXT_PUBLIC_APP_URL}/dashboard`, "Ir para o Dashboard")}
+    ${pulseButton(`${getAppUrl()}/dashboard`, "Ir para o Dashboard")}
   `);
 }
 
@@ -196,7 +199,7 @@ export function generatePaymentConfirmedEmail(
 
     <p style="color: #718096; font-weight: 300;">Seus recursos premium ja estao disponiveis. Aproveite!</p>
 
-    ${pulseButton(`${process.env.NEXT_PUBLIC_APP_URL}/dashboard`, "Acessar Dashboard")}
+    ${pulseButton(`${getAppUrl()}/dashboard`, "Acessar Dashboard")}
   `);
 }
 
@@ -261,7 +264,7 @@ export function generateWeeklyReportEmail(
       </ul>
     </div>
 
-    ${pulseButton(`${process.env.NEXT_PUBLIC_APP_URL}/relatorios`, "Ver Relatorio Completo")}
+    ${pulseButton(`${getAppUrl()}/relatorios`, "Ver Relatorio Completo")}
   `);
 }
 
