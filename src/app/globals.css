@@ -153,6 +153,16 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes slideLeft {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
 @keyframes breathe {
   0%, 100% { transform: scale(1); opacity: 0.3; }
   50% { transform: scale(1.15); opacity: 0.6; }
@@ -168,6 +178,21 @@
   50% { box-shadow: 0 0 40px rgba(74, 159, 255, 0.4); }
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .animate-fadeIn {
   animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -178,6 +203,14 @@
 
 .animate-slideDown {
   animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-slideLeft {
+  animation: slideLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-slideRight {
+  animation: slideRight 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-breathe {
@@ -191,6 +224,24 @@
 .animate-pulse-glow {
   animation: pulse-glow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(74, 159, 255, 0.08) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Staggered animation delays */
+.delay-100 { animation-delay: 100ms; animation-fill-mode: both; }
+.delay-200 { animation-delay: 200ms; animation-fill-mode: both; }
+.delay-300 { animation-delay: 300ms; animation-fill-mode: both; }
+.delay-400 { animation-delay: 400ms; animation-fill-mode: both; }
+.delay-500 { animation-delay: 500ms; animation-fill-mode: both; }
+.delay-600 { animation-delay: 600ms; animation-fill-mode: both; }
 
 /* Gradient backgrounds - Pulse Design System */
 .gradient-hero {
@@ -264,4 +315,80 @@
   background: rgba(26, 26, 46, 0.8);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Feature number badge */
+.feature-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: #4A9FFF;
+  opacity: 0.5;
+}
+
+/* Step connector line */
+.step-line {
+  position: relative;
+}
+
+.step-line::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -24px;
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(74, 159, 255, 0.3) 0%, transparent 100%);
+}
+
+@media (max-width: 768px) {
+  .step-line::after {
+    display: none;
+  }
+}
+
+/* Decorative grid pattern */
+.bg-grid-pattern {
+  background-image:
+    linear-gradient(rgba(74, 159, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74, 159, 255, 0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Decorative dot pattern */
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(74, 159, 255, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Pricing card popular glow */
+.pricing-popular {
+  position: relative;
+}
+
+.pricing-popular::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 1.5rem;
+  background: linear-gradient(135deg, #4A9FFF 0%, #6BB5FF 50%, #4A9FFF 100%);
+  z-index: -1;
+  opacity: 0.6;
+  filter: blur(8px);
+}
+
+/* Testimonial card */
+.testimonial-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #4A9FFF, transparent);
 }
