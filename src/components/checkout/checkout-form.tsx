@@ -19,7 +19,7 @@ import {
 type BillingType = "PIX" | "CREDIT_CARD" | "BOLETO";
 
 interface CheckoutFormProps {
-  plan: "pro" | "enterprise";
+  plan: "pro";
   planName: string;
   price: number;
   offerPrice?: number;
@@ -257,24 +257,23 @@ export function CheckoutForm({
   return (
     <div className="space-y-6">
       {/* Plan Summary */}
-      <div className="bg-primary/5 border border-primary/20 rounded-xl p-4">
+      <div className="bg-[#4A9FFF]/5 border border-[#4A9FFF]/15 rounded-2xl p-4">
         <div className="flex justify-between items-center">
           <div>
-            <h3 className="font-semibold text-gray-900">Plano {planName}</h3>
-            <p className="text-sm text-gray-600">Cobranca mensal</p>
+            <h3 className="font-medium text-[#1A1A2E]">Plano {planName}</h3>
+            <p className="text-sm text-[#718096] font-light">Compra única — validade de 1 ano</p>
           </div>
           <div className="text-right">
             {discount > 0 && (
-              <span className="text-sm text-gray-400 line-through">
+              <span className="text-sm text-[#718096] line-through">
                 R${price.toFixed(2)}
               </span>
             )}
-            <div className="text-2xl font-bold text-gray-900">
+            <div className="text-2xl font-medium text-[#1A1A2E]">
               R${finalPrice.toFixed(2)}
-              <span className="text-sm font-normal text-gray-600">/mes</span>
             </div>
             {discount > 0 && (
-              <span className="inline-block bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded-full">
+              <span className="inline-block bg-[#4A9FFF]/10 text-[#4A9FFF] text-xs font-medium px-2 py-0.5 rounded-full">
                 -{discount}% OFF
               </span>
             )}
@@ -463,7 +462,7 @@ export function CheckoutForm({
             Processando...
           </>
         ) : (
-          `Assinar por R$${finalPrice.toFixed(2)}/mes`
+          `Garantir acesso por R$${finalPrice.toFixed(2)}`
         )}
       </Button>
 
@@ -474,7 +473,7 @@ export function CheckoutForm({
           Pagamento seguro
         </div>
         <div>Processado por Asaas</div>
-        <div>Cancele quando quiser</div>
+        <div>Garantia de 7 dias</div>
       </div>
     </div>
   );

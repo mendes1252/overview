@@ -379,8 +379,11 @@ export default function LandingPage() {
               <h3 className="text-xl font-medium text-[#1A1A2E] mb-1">Pro</h3>
               <p className="text-sm text-[#718096] font-light mb-8">Para quem leva produtividade a sério</p>
               <div className="mb-8">
-                <span className="text-5xl font-light text-[#1A1A2E] tracking-tight">R$29,90</span>
-                <span className="text-[#718096] font-light text-sm ml-1">/mes</span>
+                <span className="text-5xl font-light text-[#1A1A2E] tracking-tight">R$297</span>
+                <div className="flex flex-col items-start mt-1">
+                  <span className="text-[#718096] font-light text-sm">compra única</span>
+                  <span className="text-xs text-[#4A9FFF] font-medium">Validade de 1 ano</span>
+                </div>
               </div>
               <ul className="space-y-3.5 mb-10">
                 {["Tarefas ilimitadas", "Hábitos ilimitados", "Metas ilimitadas", "Relatórios semanais com IA", "Coach de IA personalizado", "Suporte prioritário"].map((f) => (
@@ -392,7 +395,7 @@ export default function LandingPage() {
               </ul>
               <Link href="/checkout?plan=pro">
                 <Button className="w-full bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-full btn-pulse py-6 text-sm font-semibold" size="lg">
-                  Assinar Pro
+                  Garantir acesso Pro
                 </Button>
               </Link>
             </div>
@@ -405,7 +408,7 @@ export default function LandingPage() {
             </div>
             <div className="flex items-center gap-2 text-xs text-[#718096]/60 font-light">
               <Clock className="w-4 h-4" />
-              Cancele a qualquer momento
+              Garantia de 7 dias
             </div>
             <div className="flex items-center gap-2 text-xs text-[#718096]/60 font-light">
               <Users className="w-4 h-4" />
@@ -431,7 +434,7 @@ export default function LandingPage() {
             {[
               { q: "O plano gratuito tem limitações de tempo?", a: "Não. O plano gratuito é gratuito para sempre. Você pode usar com as funcionalidades básicas sem prazo de validade." },
               { q: "Como funciona a IA do Pulse?", a: "Nossa IA analisa seus dados de tarefas, hábitos e metas semanalmente para gerar relatórios com insights personalizados, padrões de comportamento e recomendações acionáveis." },
-              { q: "Posso cancelar o plano Pro a qualquer momento?", a: "Sim. Sem multa, sem burocracia. Você continua com acesso até o final do período pago." },
+              { q: "Como funciona a compra do plano Pro?", a: "Você paga uma única vez R$297 e tem acesso completo por 1 ano. Sem cobranças recorrentes, sem surpresas." },
               { q: "Meus dados estão seguros?", a: "Sim. Usamos criptografia em trânsito e em repouso. Seus dados nunca são compartilhados com terceiros." },
               { q: "Funciona no celular?", a: "Sim. O Pulse é um PWA (Progressive Web App) e pode ser instalado no seu celular como um app nativo, com acesso offline." },
             ].map((faq) => (
