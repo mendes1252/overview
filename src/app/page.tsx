@@ -35,7 +35,7 @@ export default function LandingPage() {
                 Como Funciona
               </Link>
               <Link href="#precos" className="text-sm text-white/50 hover:text-white transition-colors font-light">
-                Precos
+                Preços
               </Link>
             </div>
             <div className="flex items-center gap-3">
@@ -46,7 +46,7 @@ export default function LandingPage() {
               </Link>
               <Link href="/cadastro">
                 <Button className="bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-full btn-pulse px-5 text-sm">
-                  Comecar Gratis
+                  Começar Grátis
                 </Button>
               </Link>
             </div>
@@ -68,20 +68,20 @@ export default function LandingPage() {
           </div>
 
           <h1 className="text-5xl sm:text-7xl lg:text-[110px] font-light text-white leading-[0.9] tracking-[-0.03em] mb-8 animate-slideUp">
-            Nao faca<br />
+            Não faça<br />
             <span className="text-gradient font-medium">mais.</span><br />
-            Faca <span className="text-gradient font-medium">melhor.</span>
+            Faça <span className="text-gradient font-medium">melhor.</span>
           </h1>
 
           <p className="text-lg sm:text-xl text-white/50 max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fadeIn delay-200">
-            Gestao de tarefas, habitos e metas com IA que entende seus padroes
-            e transforma dados em acao.
+            Gestão de tarefas, hábitos e metas com IA que entende seus padrões
+            e transforma dados em ação.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fadeIn delay-300">
             <Link href="/cadastro">
               <Button size="lg" className="bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-full btn-pulse gap-2 text-base px-8 py-6 font-semibold">
-                Comecar Gratis <ArrowRight className="w-5 h-5" />
+                Começar Grátis <ArrowRight className="w-5 h-5" />
               </Button>
             </Link>
             <Link href="#como-funciona">
@@ -92,15 +92,15 @@ export default function LandingPage() {
           </div>
 
           <p className="text-xs text-white/30 mt-6 font-light tracking-wide">
-            Sem cartao de credito. Cancele quando quiser.
+            Sem cartão de crédito. Cancele quando quiser.
           </p>
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-6 sm:gap-12 max-w-lg mx-auto mt-24">
             {[
               { value: "87%", label: "mais produtividade" },
-              { value: "3x", label: "mais consistencia" },
-              { value: "92%", label: "satisfacao com IA" },
+              { value: "3x", label: "mais consistência" },
+              { value: "92%", label: "satisfação com IA" },
             ].map((stat) => (
               <div key={stat.label}>
                 <div className="text-2xl sm:text-4xl font-light text-white tracking-tight">{stat.value}</div>
@@ -138,23 +138,23 @@ export default function LandingPage() {
               Funcionalidades
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-[#1A1A2E] leading-tight tracking-[-0.02em] mb-5">
-              Tudo que voce precisa.<br />
-              <span className="text-gradient font-medium">Nada que nao precisa.</span>
+              Tudo que você precisa.<br />
+              <span className="text-gradient font-medium">Nada que não precisa.</span>
             </h2>
             <p className="text-base sm:text-lg text-[#718096] max-w-xl mx-auto font-light leading-relaxed">
-              Ferramentas essenciais combinadas com inteligencia artificial
+              Ferramentas essenciais combinadas com inteligência artificial
               para maximizar seu potencial.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { icon: CheckCircle2, num: "01", title: "Gestao de Tarefas", desc: "Organize com prioridades, categorias e prazos. Recorrencia automatica para rotinas." },
-              { icon: TrendingUp, num: "02", title: "Rastreamento de Habitos", desc: "Streaks, visualizacao semanal e lembretes. Consistencia gera resultados." },
+              { icon: CheckCircle2, num: "01", title: "Gestão de Tarefas", desc: "Organize com prioridades, categorias e prazos. Recorrência automática para rotinas." },
+              { icon: TrendingUp, num: "02", title: "Rastreamento de Hábitos", desc: "Streaks, visualização semanal e lembretes. Consistência gera resultados." },
               { icon: Target, num: "03", title: "Metas Inteligentes", desc: "Semanais, mensais e trimestrais com progresso em tempo real." },
-              { icon: Brain, num: "04", title: "Coach de IA", desc: "Coaching personalizado que entende seus padroes e sugere melhorias reais." },
-              { icon: BarChart3, num: "05", title: "Relatorios Semanais", desc: "Insights, padroes e recomendacoes gerados automaticamente por IA." },
-              { icon: Zap, num: "06", title: "Dashboard Completo", desc: "Visao da semana, metricas consolidadas e proximos passos num so lugar." },
+              { icon: Brain, num: "04", title: "Coach de IA", desc: "Coaching personalizado que entende seus padrões e sugere melhorias reais." },
+              { icon: BarChart3, num: "05", title: "Relatórios Semanais", desc: "Insights, padrões e recomendações gerados automaticamente por IA." },
+              { icon: Zap, num: "06", title: "Dashboard Completo", desc: "Visão da semana, métricas consolidadas e próximos passos num só lugar." },
             ].map((feature) => (
               <div key={feature.title} className="group p-8 rounded-2xl border border-black/[0.04] bg-white card-hover relative">
                 <span className="feature-number">{feature.num}</span>
@@ -177,18 +177,18 @@ export default function LandingPage() {
               Como Funciona
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-[#1A1A2E] leading-tight tracking-[-0.02em] mb-5">
-              Simples de <span className="text-gradient font-medium">comecar.</span>
+              Simples de <span className="text-gradient font-medium">começar.</span>
             </h2>
             <p className="text-base sm:text-lg text-[#718096] max-w-xl mx-auto font-light">
-              Em menos de 2 minutos voce esta pronto para transformar sua produtividade.
+              Em menos de 2 minutos você está pronto para transformar sua produtividade.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 sm:gap-12 max-w-4xl mx-auto">
             {[
-              { step: "01", title: "Crie sua conta", desc: "Cadastro rapido com email ou Google. Sem cartao de credito.", icon: Mail },
-              { step: "02", title: "Configure preferencias", desc: "Escolha seu tom de coach, dia de inicio da semana e horarios.", icon: Sparkles },
-              { step: "03", title: "Comece a produzir", desc: "Adicione tarefas, habitos e metas. A IA cuida do resto.", icon: Zap },
+              { step: "01", title: "Crie sua conta", desc: "Cadastro rápido com e-mail ou Google. Sem cartão de crédito.", icon: Mail },
+              { step: "02", title: "Configure preferências", desc: "Escolha seu tom de coach, dia de início da semana e horários.", icon: Sparkles },
+              { step: "03", title: "Comece a produzir", desc: "Adicione tarefas, hábitos e metas. A IA cuida do resto.", icon: Zap },
             ].map((item, i) => (
               <div key={item.step} className={`text-center ${i < 2 ? 'step-line' : ''}`}>
                 <div className="w-16 h-16 rounded-2xl bg-[#4A9FFF]/8 flex items-center justify-center mx-auto mb-6">
@@ -213,7 +213,7 @@ export default function LandingPage() {
             <div>
               <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 text-[#4A9FFF] px-4 py-2 rounded-full text-sm font-light tracking-wider mb-8">
                 <Brain className="w-3.5 h-3.5" />
-                Inteligencia Artificial
+                Inteligência Artificial
               </div>
 
               <h2 className="text-3xl sm:text-4xl lg:text-[48px] font-light text-white leading-tight tracking-[-0.02em] mb-6">
@@ -221,15 +221,15 @@ export default function LandingPage() {
               </h2>
 
               <p className="text-base sm:text-lg text-white/50 mb-10 font-light leading-relaxed max-w-lg">
-                Nossa IA analisa seus padroes semanais e gera relatorios com insights
-                acionaveis, celebra conquistas e sugere melhorias especificas.
+                Nossa IA analisa seus padrões semanais e gera relatórios com insights
+                acionáveis, celebra conquistas e sugere melhorias específicas.
               </p>
 
               <div className="space-y-5">
                 {[
-                  { label: "Analise de padroes", desc: "Identifica seus ciclos de produtividade e pontos de atencao" },
-                  { label: "Sugestoes proativas", desc: "Recomendacoes baseadas em seus dados reais, nao genericas" },
-                  { label: "Coach personalizado", desc: "Escolha entre 4 tons: motivador, calmo, direto ou amigavel" },
+                  { label: "Análise de padrões", desc: "Identifica seus ciclos de produtividade e pontos de atenção" },
+                  { label: "Sugestões proativas", desc: "Recomendações baseadas em seus dados reais, não genéricas" },
+                  { label: "Coach personalizado", desc: "Escolha entre 4 tons: motivador, calmo, direto ou amigável" },
                 ].map((item) => (
                   <div key={item.label} className="flex gap-4">
                     <div className="w-8 h-8 rounded-lg bg-[#4A9FFF]/15 flex items-center justify-center shrink-0 mt-0.5">
@@ -252,7 +252,7 @@ export default function LandingPage() {
                     <BarChart3 className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <div className="text-white font-medium text-sm">Relatorio Semanal</div>
+                    <div className="text-white font-medium text-sm">Relatório Semanal</div>
                     <div className="text-white/30 text-xs font-light">Gerado por IA</div>
                   </div>
                 </div>
@@ -276,7 +276,7 @@ export default function LandingPage() {
                     <span className="text-xs text-white/50 font-medium uppercase tracking-wider">Insight</span>
                   </div>
                   <p className="text-sm text-white/70 font-light leading-relaxed">
-                    &ldquo;Voce completou 15% mais tarefas de alta prioridade esta semana. Seu pico de foco e entre 9h-11h.&rdquo;
+                    &ldquo;Você completou 15% mais tarefas de alta prioridade esta semana. Seu pico de foco é entre 9h-11h.&rdquo;
                   </p>
                 </div>
               </div>
@@ -301,9 +301,9 @@ export default function LandingPage() {
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
-              { quote: "O pulse mudou minha relacao com produtividade. Nao e sobre fazer mais, e sobre fazer o que importa.", name: "Maria Silva", role: "Product Designer" },
-              { quote: "Os relatorios semanais com IA sao incriveis. Consigo ver padroes que eu nunca percebia sozinho.", name: "Lucas Mendes", role: "Desenvolvedor Full Stack" },
-              { quote: "Testei dezenas de apps de produtividade. O pulse e o unico que consegui manter por mais de 3 meses.", name: "Ana Costa", role: "Empreendedora" },
+              { quote: "O Pulse mudou minha relação com produtividade. Não é sobre fazer mais, é sobre fazer o que importa.", name: "Maria Silva", role: "Product Designer" },
+              { quote: "Os relatórios semanais com IA são incríveis. Consigo ver padrões que eu nunca percebia sozinho.", name: "Lucas Mendes", role: "Desenvolvedor Full Stack" },
+              { quote: "Testei dezenas de apps de produtividade. O Pulse é o único que consegui manter por mais de 3 meses.", name: "Ana Costa", role: "Empreendedora" },
             ].map((t) => (
               <div key={t.name} className="testimonial-card p-8 rounded-2xl border border-black/[0.04] bg-white">
                 <div className="flex gap-0.5 mb-5">
@@ -337,13 +337,13 @@ export default function LandingPage() {
         <div className="relative max-w-[1200px] mx-auto">
           <div className="text-center mb-20">
             <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
-              Precos
+              Preços
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-[#1A1A2E] leading-tight tracking-[-0.02em] mb-5">
               Simples. <span className="text-gradient font-medium">Transparente.</span>
             </h2>
             <p className="text-base sm:text-lg text-[#718096] font-light">
-              Comece gratis e evolua quando estiver pronto.
+              Comece grátis e evolua quando estiver pronto.
             </p>
           </div>
 
@@ -351,13 +351,13 @@ export default function LandingPage() {
             {/* Free */}
             <div className="p-8 sm:p-10 rounded-2xl border border-black/[0.04] bg-white">
               <h3 className="text-xl font-medium text-[#1A1A2E] mb-1">Gratuito</h3>
-              <p className="text-sm text-[#718096] font-light mb-8">Para comecar sua jornada</p>
+              <p className="text-sm text-[#718096] font-light mb-8">Para começar sua jornada</p>
               <div className="mb-8">
                 <span className="text-5xl font-light text-[#1A1A2E] tracking-tight">R$0</span>
                 <span className="text-[#718096] font-light text-sm ml-1">/mes</span>
               </div>
               <ul className="space-y-3.5 mb-10">
-                {["Ate 10 tarefas ativas", "Ate 3 habitos", "1 meta por periodo", "Relatorios mensais", "Dashboard completo"].map((f) => (
+                {["Até 10 tarefas ativas", "Até 3 hábitos", "1 meta por período", "Relatórios mensais", "Dashboard completo"].map((f) => (
                   <li key={f} className="flex items-center gap-3 text-sm text-[#718096] font-light">
                     <CheckCircle2 className="w-4 h-4 text-[#4A9FFF] shrink-0" />
                     {f}
@@ -366,7 +366,7 @@ export default function LandingPage() {
               </ul>
               <Link href="/cadastro">
                 <Button variant="outline" className="w-full rounded-full border border-black/[0.08] text-[#1A1A2E] hover:bg-[#F5F7FA] py-6 text-sm font-medium" size="lg">
-                  Comecar Gratis
+                  Começar Grátis
                 </Button>
               </Link>
             </div>
@@ -377,13 +377,13 @@ export default function LandingPage() {
                 Mais Popular
               </div>
               <h3 className="text-xl font-medium text-[#1A1A2E] mb-1">Pro</h3>
-              <p className="text-sm text-[#718096] font-light mb-8">Para quem leva produtividade a serio</p>
+              <p className="text-sm text-[#718096] font-light mb-8">Para quem leva produtividade a sério</p>
               <div className="mb-8">
                 <span className="text-5xl font-light text-[#1A1A2E] tracking-tight">R$29,90</span>
                 <span className="text-[#718096] font-light text-sm ml-1">/mes</span>
               </div>
               <ul className="space-y-3.5 mb-10">
-                {["Tarefas ilimitadas", "Habitos ilimitados", "Metas ilimitadas", "Relatorios semanais com IA", "Coach de IA personalizado", "Suporte prioritario"].map((f) => (
+                {["Tarefas ilimitadas", "Hábitos ilimitados", "Metas ilimitadas", "Relatórios semanais com IA", "Coach de IA personalizado", "Suporte prioritário"].map((f) => (
                   <li key={f} className="flex items-center gap-3 text-sm text-[#718096] font-light">
                     <CheckCircle2 className="w-4 h-4 text-[#4A9FFF] shrink-0" />
                     {f}
@@ -420,7 +420,7 @@ export default function LandingPage() {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-16">
             <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
-              Duvidas
+              Dúvidas
             </span>
             <h2 className="text-3xl sm:text-4xl font-light text-[#1A1A2E] tracking-[-0.02em]">
               Perguntas <span className="text-gradient font-medium">frequentes</span>
@@ -429,11 +429,11 @@ export default function LandingPage() {
 
           <div className="space-y-4">
             {[
-              { q: "O plano gratuito tem limitacoes de tempo?", a: "Nao. O plano gratuito e gratuito para sempre. Voce pode usar com as funcionalidades basicas sem prazo de validade." },
-              { q: "Como funciona a IA do pulse?", a: "Nossa IA analisa seus dados de tarefas, habitos e metas semanalmente para gerar relatorios com insights personalizados, padroes de comportamento e recomendacoes acionaveis." },
-              { q: "Posso cancelar o plano Pro a qualquer momento?", a: "Sim. Sem multa, sem burocracia. Voce continua com acesso ate o final do periodo pago." },
-              { q: "Meus dados estao seguros?", a: "Sim. Usamos criptografia em transito e em repouso. Seus dados nunca sao compartilhados com terceiros." },
-              { q: "Funciona no celular?", a: "Sim. O pulse e um PWA (Progressive Web App) e pode ser instalado no seu celular como um app nativo, com acesso offline." },
+              { q: "O plano gratuito tem limitações de tempo?", a: "Não. O plano gratuito é gratuito para sempre. Você pode usar com as funcionalidades básicas sem prazo de validade." },
+              { q: "Como funciona a IA do Pulse?", a: "Nossa IA analisa seus dados de tarefas, hábitos e metas semanalmente para gerar relatórios com insights personalizados, padrões de comportamento e recomendações acionáveis." },
+              { q: "Posso cancelar o plano Pro a qualquer momento?", a: "Sim. Sem multa, sem burocracia. Você continua com acesso até o final do período pago." },
+              { q: "Meus dados estão seguros?", a: "Sim. Usamos criptografia em trânsito e em repouso. Seus dados nunca são compartilhados com terceiros." },
+              { q: "Funciona no celular?", a: "Sim. O Pulse é um PWA (Progressive Web App) e pode ser instalado no seu celular como um app nativo, com acesso offline." },
             ].map((faq) => (
               <div key={faq.q} className="p-6 rounded-2xl border border-black/[0.04] bg-[#F5F7FA]/50">
                 <h4 className="font-medium text-[#1A1A2E] text-[15px] mb-2">{faq.q}</h4>
@@ -452,18 +452,18 @@ export default function LandingPage() {
 
         <div className="relative max-w-3xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-white leading-tight tracking-[-0.02em] mb-6">
-            Pronto para o seu<br /><span className="text-gradient font-medium">proximo nivel?</span>
+            Pronto para o seu<br /><span className="text-gradient font-medium">próximo nível?</span>
           </h2>
           <p className="text-base sm:text-lg text-white/50 mb-10 font-light max-w-lg mx-auto">
-            Junte-se a quem ja transformou produtividade em intencao.
+            Junte-se a quem já transformou produtividade em intenção.
           </p>
           <Link href="/cadastro">
             <Button size="lg" className="bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-full btn-pulse gap-2 text-base px-8 py-6 font-semibold">
-              Comecar Agora — E Gratis <ArrowRight className="w-5 h-5" />
+              Começar Agora — É Grátis <ArrowRight className="w-5 h-5" />
             </Button>
           </Link>
           <p className="text-xs text-white/25 mt-6 font-light">
-            Configuracao em menos de 2 minutos
+            Configuração em menos de 2 minutos
           </p>
         </div>
       </section>
@@ -475,7 +475,7 @@ export default function LandingPage() {
             <div className="col-span-2 sm:col-span-1">
               <span className="text-lg font-light text-white/80 tracking-tight">pulse</span>
               <p className="text-sm text-white/30 font-light mt-2 leading-relaxed max-w-[200px]">
-                Produtividade intencional com inteligencia artificial.
+                Produtividade intencional com inteligência artificial.
               </p>
             </div>
 
@@ -484,7 +484,7 @@ export default function LandingPage() {
               <ul className="space-y-2.5">
                 {[
                   { label: "Funcionalidades", href: "#funcionalidades" },
-                  { label: "Precos", href: "#precos" },
+                  { label: "Preços", href: "#precos" },
                   { label: "Como Funciona", href: "#como-funciona" },
                 ].map((link) => (
                   <li key={link.label}>
@@ -525,7 +525,7 @@ export default function LandingPage() {
 
           <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-white/20 text-xs font-light">2026 pulse. Todos os direitos reservados.</p>
-            <p className="text-white/20 text-xs font-light">Feito com intencao no Brasil.</p>
+            <p className="text-white/20 text-xs font-light">Feito com intenção no Brasil.</p>
           </div>
         </div>
       </footer>

@@ -24,6 +24,7 @@ import {
   Rocket,
   CheckCircle,
   Loader2,
+  Zap,
 } from "lucide-react";
 
 const TIMEZONES = [
@@ -168,61 +169,74 @@ export default function OnboardingPage() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="min-h-screen flex items-center justify-center bg-[#F5F7FA]">
+        <Loader2 className="w-8 h-8 animate-spin text-[#4A9FFF]" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex flex-col">
+    <div className="min-h-screen bg-[#F5F7FA] flex flex-col relative">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 bg-dot-pattern opacity-20 pointer-events-none" />
+
       {/* Progress bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/[0.04]">
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 rounded-lg bg-[#4A9FFF]/10 flex items-center justify-center">
+                <Zap className="w-4 h-4 text-[#4A9FFF]" />
               </div>
-              <span className="font-bold text-gray-900">PULSO</span>
+              <span className="font-light text-[#1A1A2E] tracking-tight">pulse</span>
             </div>
-            <span className="text-sm text-gray-500">Passo {step} de 4</span>
+            <span className="text-sm text-[#718096] font-light">Passo {step} de 4</span>
           </div>
           <Progress value={(step / 4) * 100} className="h-2" />
         </div>
       </div>
 
       {/* Content */}
-      <div className="flex-1 flex items-center justify-center px-4 pt-24 pb-8">
+      <div className="flex-1 flex items-center justify-center px-4 pt-24 pb-8 relative">
         <div className="w-full max-w-xl">
           {/* Step 1: Welcome */}
           {step === 1 && (
             <div className="text-center animate-fadeIn">
-              <div className="w-20 h-20 rounded-2xl gradient-primary flex items-center justify-center mx-auto mb-6">
-                <Sparkles className="w-10 h-10 text-white" />
+              <div className="w-20 h-20 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-6">
+                <Sparkles className="w-10 h-10 text-[#4A9FFF]" />
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                Bem-vindo ao PULSO!
+              <h1 className="text-3xl font-medium text-[#1A1A2E] mb-4">
+                Bem-vindo ao Pulse!
               </h1>
-              <p className="text-xl text-gray-600 mb-8 max-w-md mx-auto">
+              <p className="text-lg text-[#718096] font-light mb-8 max-w-md mx-auto">
                 Estamos muito felizes em te-lo aqui. Vamos configurar sua conta
                 em poucos passos para personalizar sua experiencia.
               </p>
               <div className="grid grid-cols-3 gap-4 max-w-md mx-auto mb-8">
-                <div className="p-4 rounded-xl bg-blue-50 text-center">
-                  <CheckCircle className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                  <span className="text-sm text-gray-600">Gerencie tarefas</span>
+                <div className="p-4 rounded-2xl bg-white border border-black/[0.04] text-center shadow-sm">
+                  <div className="w-10 h-10 rounded-xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-2">
+                    <CheckCircle className="w-5 h-5 text-[#4A9FFF]" />
+                  </div>
+                  <span className="text-sm text-[#718096] font-light">Gerencie tarefas</span>
                 </div>
-                <div className="p-4 rounded-xl bg-green-50 text-center">
-                  <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <span className="text-sm text-gray-600">Construa habitos</span>
+                <div className="p-4 rounded-2xl bg-white border border-black/[0.04] text-center shadow-sm">
+                  <div className="w-10 h-10 rounded-xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-2">
+                    <CheckCircle className="w-5 h-5 text-[#4A9FFF]" />
+                  </div>
+                  <span className="text-sm text-[#718096] font-light">Construa habitos</span>
                 </div>
-                <div className="p-4 rounded-xl bg-purple-50 text-center">
-                  <CheckCircle className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                  <span className="text-sm text-gray-600">Alcance metas</span>
+                <div className="p-4 rounded-2xl bg-white border border-black/[0.04] text-center shadow-sm">
+                  <div className="w-10 h-10 rounded-xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-2">
+                    <CheckCircle className="w-5 h-5 text-[#4A9FFF]" />
+                  </div>
+                  <span className="text-sm text-[#718096] font-light">Alcance metas</span>
                 </div>
               </div>
-              <Button size="lg" onClick={handleNext} className="gap-2">
+              <Button
+                size="lg"
+                onClick={handleNext}
+                className="gap-2 bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl h-12 px-8 transition-colors"
+              >
                 Vamos comecar <ArrowRight className="w-5 h-5" />
               </Button>
             </div>
@@ -231,90 +245,96 @@ export default function OnboardingPage() {
           {/* Step 2: Profile */}
           {step === 2 && (
             <div className="animate-fadeIn">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
-                  <User className="w-6 h-6 text-blue-600" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    Perfil Basico
-                  </h2>
-                  <p className="text-gray-600">Conte-nos um pouco sobre voce</p>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <div>
-                  <Label htmlFor="name">Como podemos te chamar?</Label>
-                  <Input
-                    id="name"
-                    value={data.name}
-                    onChange={(e) =>
-                      setData({ ...data, name: e.target.value })
-                    }
-                    placeholder="Seu nome"
-                    className="mt-2"
-                  />
+              <div className="bg-white rounded-2xl p-8 border border-black/[0.04] shadow-sm">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center">
+                    <User className="w-6 h-6 text-[#4A9FFF]" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-medium text-[#1A1A2E]">
+                      Perfil Basico
+                    </h2>
+                    <p className="text-[#718096] font-light">Conte-nos um pouco sobre voce</p>
+                  </div>
                 </div>
 
-                <div>
-                  <Label>Seu fuso horario</Label>
-                  <Select
-                    value={data.timezone}
-                    onValueChange={(value) =>
-                      setData({ ...data, timezone: value })
-                    }
-                  >
-                    <SelectTrigger className="mt-2">
-                      <SelectValue placeholder="Selecione seu fuso horario" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {TIMEZONES.map((tz) => (
-                        <SelectItem key={tz.value} value={tz.value}>
-                          {tz.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label>Qual seu objetivo principal?</Label>
-                  <Select
-                    value={data.primaryGoal}
-                    onValueChange={(value) =>
-                      setData({ ...data, primaryGoal: value })
-                    }
-                  >
-                    <SelectTrigger className="mt-2">
-                      <SelectValue placeholder="Selecione seu objetivo" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {GOALS.map((goal) => (
-                        <SelectItem key={goal.value} value={goal.value}>
-                          {goal.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {data.primaryGoal === "other" && (
+                <div className="space-y-6">
+                  <div>
+                    <Label htmlFor="name" className="text-[#1A1A2E]">Como podemos te chamar?</Label>
                     <Input
-                      value={data.otherGoal}
+                      id="name"
+                      value={data.name}
                       onChange={(e) =>
-                        setData({ ...data, otherGoal: e.target.value })
+                        setData({ ...data, name: e.target.value })
                       }
-                      placeholder="Descreva seu objetivo"
-                      className="mt-2"
+                      placeholder="Seu nome"
+                      className="mt-2 rounded-xl"
                     />
-                  )}
+                  </div>
+
+                  <div>
+                    <Label className="text-[#1A1A2E]">Seu fuso horario</Label>
+                    <Select
+                      value={data.timezone}
+                      onValueChange={(value) =>
+                        setData({ ...data, timezone: value })
+                      }
+                    >
+                      <SelectTrigger className="mt-2 rounded-xl">
+                        <SelectValue placeholder="Selecione seu fuso horario" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {TIMEZONES.map((tz) => (
+                          <SelectItem key={tz.value} value={tz.value}>
+                            {tz.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label className="text-[#1A1A2E]">Qual seu objetivo principal?</Label>
+                    <Select
+                      value={data.primaryGoal}
+                      onValueChange={(value) =>
+                        setData({ ...data, primaryGoal: value })
+                      }
+                    >
+                      <SelectTrigger className="mt-2 rounded-xl">
+                        <SelectValue placeholder="Selecione seu objetivo" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {GOALS.map((goal) => (
+                          <SelectItem key={goal.value} value={goal.value}>
+                            {goal.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {data.primaryGoal === "other" && (
+                      <Input
+                        value={data.otherGoal}
+                        onChange={(e) =>
+                          setData({ ...data, otherGoal: e.target.value })
+                        }
+                        placeholder="Descreva seu objetivo"
+                        className="mt-2 rounded-xl"
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
 
-              <div className="flex justify-between mt-8">
-                <Button variant="ghost" onClick={handleBack}>
+              <div className="flex justify-between mt-6">
+                <Button variant="ghost" onClick={handleBack} className="text-[#718096] hover:text-[#1A1A2E]">
                   <ArrowLeft className="w-4 h-4 mr-2" /> Voltar
                 </Button>
-                <Button onClick={handleNext} disabled={!canProceed()}>
+                <Button
+                  onClick={handleNext}
+                  disabled={!canProceed()}
+                  className="bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl transition-colors"
+                >
                   Continuar <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </div>
@@ -324,97 +344,102 @@ export default function OnboardingPage() {
           {/* Step 3: Preferences */}
           {step === 3 && (
             <div className="animate-fadeIn">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
-                  <Settings className="w-6 h-6 text-purple-600" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    Preferencias
-                  </h2>
-                  <p className="text-gray-600">
-                    Personalize sua experiencia
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <div>
-                  <Label>Dia de inicio da semana</Label>
-                  <div className="grid grid-cols-2 gap-3 mt-2">
-                    <button
-                      onClick={() => setData({ ...data, weekStartsOn: 0 })}
-                      className={`p-4 rounded-xl border-2 text-left transition-all ${
-                        data.weekStartsOn === 0
-                          ? "border-primary bg-primary/5"
-                          : "border-gray-200 hover:border-gray-300"
-                      }`}
-                    >
-                      <span className="font-medium">Domingo</span>
-                    </button>
-                    <button
-                      onClick={() => setData({ ...data, weekStartsOn: 1 })}
-                      className={`p-4 rounded-xl border-2 text-left transition-all ${
-                        data.weekStartsOn === 1
-                          ? "border-primary bg-primary/5"
-                          : "border-gray-200 hover:border-gray-300"
-                      }`}
-                    >
-                      <span className="font-medium">Segunda-feira</span>
-                    </button>
+              <div className="bg-white rounded-2xl p-8 border border-black/[0.04] shadow-sm">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center">
+                    <Settings className="w-6 h-6 text-[#4A9FFF]" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-medium text-[#1A1A2E]">
+                      Preferencias
+                    </h2>
+                    <p className="text-[#718096] font-light">
+                      Personalize sua experiencia
+                    </p>
                   </div>
                 </div>
 
-                <div>
-                  <Label>Horario para receber relatorios</Label>
-                  <Select
-                    value={data.reportTime}
-                    onValueChange={(value) =>
-                      setData({ ...data, reportTime: value })
-                    }
-                  >
-                    <SelectTrigger className="mt-2">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {REPORT_TIMES.map((time) => (
-                        <SelectItem key={time.value} value={time.value}>
-                          {time.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label>Tom do coach de IA</Label>
-                  <p className="text-sm text-gray-500 mt-1 mb-3">
-                    Escolha como voce prefere receber feedback e sugestoes
-                  </p>
-                  <div className="grid grid-cols-2 gap-3">
-                    {COACH_TONES.map((tone) => (
+                <div className="space-y-6">
+                  <div>
+                    <Label className="text-[#1A1A2E]">Dia de inicio da semana</Label>
+                    <div className="grid grid-cols-2 gap-3 mt-2">
                       <button
-                        key={tone.value}
-                        onClick={() => setData({ ...data, coachTone: tone.value })}
+                        onClick={() => setData({ ...data, weekStartsOn: 0 })}
                         className={`p-4 rounded-xl border-2 text-left transition-all ${
-                          data.coachTone === tone.value
-                            ? "border-primary bg-primary/5"
-                            : "border-gray-200 hover:border-gray-300"
+                          data.weekStartsOn === 0
+                            ? "border-[#4A9FFF] bg-[#4A9FFF]/5"
+                            : "border-black/[0.08] hover:border-[#4A9FFF]/30"
                         }`}
                       >
-                        <span className="text-2xl mb-2 block">{tone.emoji}</span>
-                        <span className="font-medium text-sm">{tone.label}</span>
+                        <span className="font-medium text-[#1A1A2E]">Domingo</span>
                       </button>
-                    ))}
+                      <button
+                        onClick={() => setData({ ...data, weekStartsOn: 1 })}
+                        className={`p-4 rounded-xl border-2 text-left transition-all ${
+                          data.weekStartsOn === 1
+                            ? "border-[#4A9FFF] bg-[#4A9FFF]/5"
+                            : "border-black/[0.08] hover:border-[#4A9FFF]/30"
+                        }`}
+                      >
+                        <span className="font-medium text-[#1A1A2E]">Segunda-feira</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label className="text-[#1A1A2E]">Horario para receber relatorios</Label>
+                    <Select
+                      value={data.reportTime}
+                      onValueChange={(value) =>
+                        setData({ ...data, reportTime: value })
+                      }
+                    >
+                      <SelectTrigger className="mt-2 rounded-xl">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {REPORT_TIMES.map((time) => (
+                          <SelectItem key={time.value} value={time.value}>
+                            {time.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label className="text-[#1A1A2E]">Tom do coach de IA</Label>
+                    <p className="text-sm text-[#718096] font-light mt-1 mb-3">
+                      Escolha como voce prefere receber feedback e sugestoes
+                    </p>
+                    <div className="grid grid-cols-2 gap-3">
+                      {COACH_TONES.map((tone) => (
+                        <button
+                          key={tone.value}
+                          onClick={() => setData({ ...data, coachTone: tone.value })}
+                          className={`p-4 rounded-xl border-2 text-left transition-all ${
+                            data.coachTone === tone.value
+                              ? "border-[#4A9FFF] bg-[#4A9FFF]/5"
+                              : "border-black/[0.08] hover:border-[#4A9FFF]/30"
+                          }`}
+                        >
+                          <span className="text-2xl mb-2 block">{tone.emoji}</span>
+                          <span className="font-medium text-sm text-[#1A1A2E]">{tone.label}</span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="flex justify-between mt-8">
-                <Button variant="ghost" onClick={handleBack}>
+              <div className="flex justify-between mt-6">
+                <Button variant="ghost" onClick={handleBack} className="text-[#718096] hover:text-[#1A1A2E]">
                   <ArrowLeft className="w-4 h-4 mr-2" /> Voltar
                 </Button>
-                <Button onClick={handleNext}>
+                <Button
+                  onClick={handleNext}
+                  className="bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl transition-colors"
+                >
                   Continuar <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </div>
@@ -424,43 +449,43 @@ export default function OnboardingPage() {
           {/* Step 4: Tour / Finish */}
           {step === 4 && (
             <div className="animate-fadeIn text-center">
-              <div className="w-20 h-20 rounded-2xl bg-green-100 flex items-center justify-center mx-auto mb-6">
-                <Rocket className="w-10 h-10 text-green-600" />
+              <div className="w-20 h-20 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-6">
+                <Rocket className="w-10 h-10 text-[#4A9FFF]" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl font-medium text-[#1A1A2E] mb-4">
                 Tudo pronto, {data.name.split(" ")[0]}!
               </h2>
-              <p className="text-xl text-gray-600 mb-8 max-w-md mx-auto">
+              <p className="text-lg text-[#718096] font-light mb-8 max-w-md mx-auto">
                 Sua conta esta configurada. Agora voce pode comecar a usar o
-                PULSO para transformar sua produtividade.
+                Pulse para transformar sua produtividade.
               </p>
 
-              <div className="bg-gray-50 rounded-2xl p-6 mb-8 text-left max-w-md mx-auto">
-                <h3 className="font-semibold text-gray-900 mb-4">
+              <div className="bg-white rounded-2xl p-6 mb-8 text-left max-w-md mx-auto border border-black/[0.04] shadow-sm">
+                <h3 className="font-medium text-[#1A1A2E] mb-4">
                   Proximos passos sugeridos:
                 </h3>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-medium mt-0.5">
+                    <div className="w-6 h-6 rounded-full bg-[#4A9FFF]/10 text-[#4A9FFF] flex items-center justify-center text-sm font-medium mt-0.5">
                       1
                     </div>
-                    <span className="text-gray-600">
+                    <span className="text-[#718096] font-light">
                       Adicione sua primeira tarefa para hoje
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-medium mt-0.5">
+                    <div className="w-6 h-6 rounded-full bg-[#4A9FFF]/10 text-[#4A9FFF] flex items-center justify-center text-sm font-medium mt-0.5">
                       2
                     </div>
-                    <span className="text-gray-600">
+                    <span className="text-[#718096] font-light">
                       Crie um habito que deseja construir
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-medium mt-0.5">
+                    <div className="w-6 h-6 rounded-full bg-[#4A9FFF]/10 text-[#4A9FFF] flex items-center justify-center text-sm font-medium mt-0.5">
                       3
                     </div>
-                    <span className="text-gray-600">
+                    <span className="text-[#718096] font-light">
                       Defina uma meta para a semana
                     </span>
                   </li>
@@ -468,14 +493,14 @@ export default function OnboardingPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button variant="ghost" onClick={handleBack}>
+                <Button variant="ghost" onClick={handleBack} className="text-[#718096] hover:text-[#1A1A2E]">
                   <ArrowLeft className="w-4 h-4 mr-2" /> Voltar
                 </Button>
                 <Button
                   size="lg"
                   onClick={handleComplete}
                   disabled={isLoading}
-                  className="gap-2"
+                  className="gap-2 bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl h-12 px-8 transition-colors"
                 >
                   {isLoading ? (
                     <>
@@ -492,7 +517,7 @@ export default function OnboardingPage() {
 
               <button
                 onClick={handleSkipTour}
-                className="text-sm text-gray-500 hover:text-gray-700 mt-4 underline"
+                className="text-sm text-[#718096] hover:text-[#1A1A2E] mt-4 underline font-light transition-colors"
               >
                 Pular tour e comecar a usar
               </button>
