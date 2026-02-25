@@ -145,7 +145,7 @@ function ResetForm() {
             type="password"
             placeholder="Minimo 6 caracteres"
             {...register("password")}
-            className="mt-1"
+            className="mt-1 rounded-xl"
           />
           {errors.password && (
             <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
@@ -159,7 +159,7 @@ function ResetForm() {
             type="password"
             placeholder="Repita a nova senha"
             {...register("confirmPassword")}
-            className="mt-1"
+            className="mt-1 rounded-xl"
           />
           {errors.confirmPassword && (
             <p className="text-sm text-red-500 mt-1">{errors.confirmPassword.message}</p>
@@ -168,7 +168,7 @@ function ResetForm() {
 
         <Button
           type="submit"
-          className="w-full bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl"
+          className="w-full bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl h-11 transition-colors"
           disabled={isLoading}
         >
           {isLoading ? (

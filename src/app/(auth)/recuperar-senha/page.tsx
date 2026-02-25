@@ -107,7 +107,7 @@ export default function RecuperarSenhaPage() {
             type="email"
             placeholder="seu@email.com"
             {...register("email")}
-            className="mt-1"
+            className="mt-1 rounded-xl"
           />
           {errors.email && (
             <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
@@ -116,7 +116,7 @@ export default function RecuperarSenhaPage() {
 
         <Button
           type="submit"
-          className="w-full bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl"
+          className="w-full bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl h-11 transition-colors"
           disabled={isLoading}
         >
           {isLoading ? (
