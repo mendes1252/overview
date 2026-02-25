@@ -77,11 +77,11 @@ export default function RelatoriosPage() {
 
       setReports((prev) => [data, ...prev]);
       setSelectedReport(data);
-      toast({ title: "Relatorio gerado!", description: "Seu relatorio semanal esta pronto." });
+      toast({ title: "Relatório gerado!", description: "Seu relatório semanal está pronto." });
     } catch {
       toast({
         title: "Erro",
-        description: "Nao foi possivel gerar o relatorio. Verifique se ha dados suficientes.",
+        description: "Não foi possível gerar o relatório. Verifique se há dados suficientes.",
         variant: "destructive",
       });
     } finally {
@@ -109,8 +109,8 @@ export default function RelatoriosPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-medium text-[#1A1A2E]">Relatorios</h1>
-          <p className="text-[#718096] font-light">Analise semanal com inteligencia artificial</p>
+          <h1 className="text-2xl font-medium text-[#1A1A2E]">Relatórios</h1>
+          <p className="text-[#718096] font-light">Análise semanal com inteligência artificial</p>
         </div>
         <Button
           onClick={handleGenerate}
@@ -125,7 +125,7 @@ export default function RelatoriosPage() {
           ) : (
             <>
               <Brain className="w-4 h-4" />
-              Gerar Relatorio
+              Gerar Relatório
             </>
           )}
         </Button>
@@ -137,10 +137,10 @@ export default function RelatoriosPage() {
           <div className="w-16 h-16 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-6">
             <BarChart3 className="w-8 h-8 text-[#4A9FFF]" />
           </div>
-          <h2 className="text-xl font-medium text-[#1A1A2E] mb-3">Nenhum relatorio ainda</h2>
+          <h2 className="text-xl font-medium text-[#1A1A2E] mb-3">Nenhum relatório ainda</h2>
           <p className="text-[#718096] font-light max-w-md mx-auto mb-6">
-            Gere seu primeiro relatorio semanal. Nossa IA vai analisar suas tarefas,
-            habitos e metas para criar insights personalizados.
+            Gere seu primeiro relatório semanal. Nossa IA vai analisar suas tarefas,
+            hábitos e metas para criar insights personalizados.
           </p>
           <Button
             onClick={handleGenerate}
@@ -148,14 +148,14 @@ export default function RelatoriosPage() {
             className="bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl btn-pulse gap-2"
           >
             {isGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-            Gerar Primeiro Relatorio
+            Gerar Primeiro Relatório
           </Button>
         </div>
       ) : (
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Report list */}
           <div className="space-y-3">
-            <h3 className="text-sm font-medium text-[#718096] uppercase tracking-wider px-1">Historico</h3>
+            <h3 className="text-sm font-medium text-[#718096] uppercase tracking-wider px-1">Histórico</h3>
             {reports.map((report) => (
               <button
                 key={report.id}
@@ -174,7 +174,7 @@ export default function RelatoriosPage() {
                 </div>
                 <div className="flex gap-4 text-xs text-[#718096] font-light">
                   <span>{report.tasksCompleted}/{report.tasksTotal} tarefas</span>
-                  <span>{Math.round(report.habitsConsistency)}% habitos</span>
+                  <span>{Math.round(report.habitsConsistency)}% hábitos</span>
                 </div>
               </button>
             ))}
@@ -202,12 +202,12 @@ export default function RelatoriosPage() {
                 <div className="bg-white rounded-2xl border border-black/[0.04] p-5">
                   <div className="flex items-center gap-2 mb-3">
                     <TrendingUp className="w-4 h-4 text-[#4A9FFF]" />
-                    <span className="text-xs text-[#718096] font-light">Habitos</span>
+                    <span className="text-xs text-[#718096] font-light">Hábitos</span>
                   </div>
                   <div className="text-3xl font-light text-[#1A1A2E]">
                     {Math.round(selectedReport.habitsConsistency)}%
                   </div>
-                  <div className="text-xs text-[#718096] font-light mt-1">consistencia</div>
+                  <div className="text-xs text-[#718096] font-light mt-1">consistência</div>
                 </div>
                 <div className="bg-white rounded-2xl border border-black/[0.04] p-5">
                   <div className="flex items-center gap-2 mb-3">
@@ -217,7 +217,7 @@ export default function RelatoriosPage() {
                   <div className="text-3xl font-light text-[#1A1A2E]">
                     {selectedReport.goalsAchieved}/{selectedReport.goalsTotal}
                   </div>
-                  <div className="text-xs text-[#718096] font-light mt-1">alcancadas</div>
+                  <div className="text-xs text-[#718096] font-light mt-1">alcançadas</div>
                 </div>
               </div>
 
@@ -268,7 +268,7 @@ export default function RelatoriosPage() {
               <div className="gradient-hero rounded-2xl p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Target className="w-5 h-5 text-[#4A9FFF]" />
-                  <h3 className="font-medium text-white">Recomendacoes para Proxima Semana</h3>
+                  <h3 className="font-medium text-white">Recomendações para Próxima Semana</h3>
                 </div>
                 <ul className="space-y-3">
                   {selectedReport.recommendations.split("|").map((rec, i) => (
