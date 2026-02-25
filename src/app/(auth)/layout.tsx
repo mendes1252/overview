@@ -30,13 +30,13 @@ export default function AuthLayout({
             <span className="text-gradient font-medium">intencional</span>
           </h1>
           <p className="text-xl text-white/50 mb-10 font-light leading-relaxed">
-            Nao faca mais, faca melhor. Gerencie tarefas, construa habitos e
-            alcance metas com inteligencia artificial.
+            Não faça mais, faça melhor. Gerencie tarefas, construa hábitos e
+            alcance metas com inteligência artificial.
           </p>
           <div className="space-y-5">
             {[
-              "Organize suas tarefas diarias",
-              "Construa habitos consistentes",
+              "Organize suas tarefas diárias",
+              "Construa hábitos consistentes",
               "Receba insights personalizados",
             ].map((text, i) => (
               <div key={text} className="flex items-center gap-4 group">
@@ -51,7 +51,7 @@ export default function AuthLayout({
           {/* Social proof */}
           <div className="mt-12 pt-8 border-t border-white/10">
             <p className="text-white/30 text-sm font-light">
-              Mais de <span className="text-white/60 font-medium">500+</span> profissionais ja usam o Pulse
+              Mais de <span className="text-white/60 font-medium">500+</span> profissionais já usam o Pulse
             </p>
           </div>
         </div>

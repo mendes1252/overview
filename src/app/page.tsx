@@ -55,25 +55,25 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative gradient-hero min-h-screen flex items-center overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] gradient-radial-glow animate-breathe pointer-events-none" />
-        <div className="absolute top-20 right-10 w-2 h-2 rounded-full bg-[#4A9FFF]/30 animate-float" />
-        <div className="absolute bottom-40 left-20 w-1.5 h-1.5 rounded-full bg-[#6BB5FF]/20 animate-float delay-300" />
-        <div className="absolute top-1/3 right-1/4 w-1 h-1 rounded-full bg-white/10 animate-float delay-500" />
+      <section className="relative gradient-hero min-h-[90vh] sm:min-h-screen flex items-center overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] sm:w-[800px] sm:h-[800px] gradient-radial-glow animate-breathe pointer-events-none" />
+        <div className="absolute top-20 right-10 w-2 h-2 rounded-full bg-[#4A9FFF]/30 animate-float hidden sm:block" />
+        <div className="absolute bottom-40 left-20 w-1.5 h-1.5 rounded-full bg-[#6BB5FF]/20 animate-float delay-300 hidden sm:block" />
+        <div className="absolute top-1/3 right-1/4 w-1 h-1 rounded-full bg-white/10 animate-float delay-500 hidden sm:block" />
 
-        <div className="relative max-w-[1200px] mx-auto px-6 py-32 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 text-white/70 px-4 py-2 rounded-full text-sm font-light tracking-wider mb-10 animate-slideDown">
+        <div className="relative max-w-[1200px] mx-auto px-6 py-20 sm:py-32 text-center">
+          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 text-white/70 px-4 py-2 rounded-full text-sm font-light tracking-wider mb-6 sm:mb-10 animate-slideDown">
             <Zap className="w-3.5 h-3.5 text-[#4A9FFF]" />
             Produtividade Intencional
           </div>
 
-          <h1 className="text-5xl sm:text-7xl lg:text-[110px] font-light text-white leading-[0.9] tracking-[-0.03em] mb-8 animate-slideUp">
+          <h1 className="text-4xl sm:text-7xl lg:text-[110px] font-light text-white leading-[0.9] tracking-[-0.03em] mb-6 sm:mb-8 animate-slideUp">
             Não faça<br />
             <span className="text-gradient font-medium">mais.</span><br />
             Faça <span className="text-gradient font-medium">melhor.</span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-white/50 max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fadeIn delay-200">
+          <p className="text-base sm:text-xl text-white/50 max-w-2xl mx-auto mb-8 sm:mb-12 font-light leading-relaxed animate-fadeIn delay-200">
             Gestão de tarefas, hábitos e metas com IA que entende seus padrões
             e transforma dados em ação.
           </p>
@@ -91,12 +91,12 @@ export default function LandingPage() {
             </Link>
           </div>
 
-          <p className="text-xs text-white/30 mt-6 font-light tracking-wide">
+          <p className="text-xs text-white/30 mt-4 sm:mt-6 font-light tracking-wide">
             Sem cartão de crédito. Cancele quando quiser.
           </p>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-6 sm:gap-12 max-w-lg mx-auto mt-24">
+          <div className="grid grid-cols-3 gap-6 sm:gap-12 max-w-lg mx-auto mt-12 sm:mt-24">
             {[
               { value: "87%", label: "mais produtividade" },
               { value: "3x", label: "mais consistência" },
@@ -110,11 +110,11 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#F5F7FA] to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-16 sm:h-24 bg-gradient-to-t from-[#F5F7FA] to-transparent" />
       </section>
 
       {/* Social Proof Bar */}
-      <section className="py-12 px-6 bg-[#F5F7FA] border-b border-black/[0.04]">
+      <section className="py-8 sm:py-12 px-6 bg-[#F5F7FA] border-b border-black/[0.04]">
         <div className="max-w-[1200px] mx-auto">
           <p className="text-center text-xs text-[#718096]/60 font-light uppercase tracking-[0.2em] mb-6">
             Usado por profissionais que valorizam seu tempo
