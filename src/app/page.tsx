@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { PhoneMockupSection } from "@/components/landing/phone-mockup-section";
 import {
   CheckCircle2,
   Target,
@@ -129,45 +130,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section id="funcionalidades" className="py-24 sm:py-32 px-6 bg-[#1A1A2E] relative">
-        <div className="absolute inset-0 bg-dot-pattern pointer-events-none opacity-20" />
-        <div className="relative max-w-[1200px] mx-auto">
-          <div className="text-center mb-20">
-            <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
-              Funcionalidades
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-white leading-tight tracking-[-0.02em] mb-5">
-              Tudo que você precisa.<br />
-              <span className="text-gradient font-medium">Nada que não precisa.</span>
-            </h2>
-            <p className="text-base sm:text-lg text-white/50 max-w-xl mx-auto font-light leading-relaxed">
-              Ferramentas essenciais combinadas com inteligência artificial
-              para maximizar seu potencial.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { icon: CheckCircle2, num: "01", title: "Gestão de Tarefas", desc: "Organize com prioridades, categorias e prazos. Recorrência automática para rotinas." },
-              { icon: TrendingUp, num: "02", title: "Rastreamento de Hábitos", desc: "Streaks, visualização semanal e lembretes. Consistência gera resultados." },
-              { icon: Target, num: "03", title: "Metas Inteligentes", desc: "Semanais, mensais e trimestrais com progresso em tempo real." },
-              { icon: Brain, num: "04", title: "Coach de IA", desc: "Coaching personalizado que entende seus padrões e sugere melhorias reais." },
-              { icon: BarChart3, num: "05", title: "Relatórios Semanais", desc: "Insights, padrões e recomendações gerados automaticamente por IA." },
-              { icon: Zap, num: "06", title: "Dashboard Completo", desc: "Visão da semana, métricas consolidadas e próximos passos num só lugar." },
-            ].map((feature) => (
-              <div key={feature.title} className="group p-8 rounded-2xl border border-white/10 bg-white shadow-lg shadow-[#4A9FFF]/[0.04] card-hover relative">
-                <span className="feature-number">{feature.num}</span>
-                <div className="w-11 h-11 rounded-xl bg-[#4A9FFF]/10 flex items-center justify-center mt-3 mb-5 group-hover:bg-[#4A9FFF]/15 transition-colors">
-                  <feature.icon className="w-5 h-5 text-[#4A9FFF]" />
-                </div>
-                <h3 className="text-lg font-medium text-[#1A1A2E] mb-2">{feature.title}</h3>
-                <p className="text-sm text-[#718096] font-light leading-relaxed">{feature.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Features - iPhone Mockup Experience */}
+      <PhoneMockupSection />
 
       {/* How It Works */}
       <section id="como-funciona" className="py-24 sm:py-32 px-6 bg-[#1A1A2E] border-t border-white/5">
