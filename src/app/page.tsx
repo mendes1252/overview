@@ -110,18 +110,18 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-16 sm:h-24 bg-gradient-to-t from-[#F5F7FA] to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-16 sm:h-24 bg-gradient-to-t from-[#1A1A2E] to-transparent" />
       </section>
 
       {/* Social Proof Bar */}
-      <section className="py-8 sm:py-12 px-6 bg-[#F5F7FA] border-b border-black/[0.04]">
+      <section className="py-8 sm:py-12 px-6 bg-[#1A1A2E] border-b border-white/5">
         <div className="max-w-[1200px] mx-auto">
-          <p className="text-center text-xs text-[#718096]/60 font-light uppercase tracking-[0.2em] mb-6">
+          <p className="text-center text-xs text-white/30 font-light uppercase tracking-[0.2em] mb-6">
             Usado por profissionais que valorizam seu tempo
           </p>
           <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-16">
             {["Designers", "Desenvolvedores", "Empreendedores", "Gestores", "Freelancers"].map((role) => (
-              <span key={role} className="text-sm text-[#718096]/40 font-light">
+              <span key={role} className="text-sm text-white/20 font-light">
                 {role}
               </span>
             ))}
@@ -130,18 +130,18 @@ export default function LandingPage() {
       </section>
 
       {/* Features Grid */}
-      <section id="funcionalidades" className="py-24 sm:py-32 px-6 bg-[#F5F7FA] relative">
-        <div className="absolute inset-0 bg-dot-pattern pointer-events-none" />
+      <section id="funcionalidades" className="py-24 sm:py-32 px-6 bg-[#1A1A2E] relative">
+        <div className="absolute inset-0 bg-dot-pattern pointer-events-none opacity-20" />
         <div className="relative max-w-[1200px] mx-auto">
           <div className="text-center mb-20">
             <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
               Funcionalidades
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-[#1A1A2E] leading-tight tracking-[-0.02em] mb-5">
+            <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-white leading-tight tracking-[-0.02em] mb-5">
               Tudo que você precisa.<br />
               <span className="text-gradient font-medium">Nada que não precisa.</span>
             </h2>
-            <p className="text-base sm:text-lg text-[#718096] max-w-xl mx-auto font-light leading-relaxed">
+            <p className="text-base sm:text-lg text-white/50 max-w-xl mx-auto font-light leading-relaxed">
               Ferramentas essenciais combinadas com inteligência artificial
               para maximizar seu potencial.
             </p>
@@ -156,7 +156,7 @@ export default function LandingPage() {
               { icon: BarChart3, num: "05", title: "Relatórios Semanais", desc: "Insights, padrões e recomendações gerados automaticamente por IA." },
               { icon: Zap, num: "06", title: "Dashboard Completo", desc: "Visão da semana, métricas consolidadas e próximos passos num só lugar." },
             ].map((feature) => (
-              <div key={feature.title} className="group p-8 rounded-2xl border border-black/[0.04] bg-white card-hover relative">
+              <div key={feature.title} className="group p-8 rounded-2xl border border-white/10 bg-white shadow-lg shadow-[#4A9FFF]/[0.04] card-hover relative">
                 <span className="feature-number">{feature.num}</span>
                 <div className="w-11 h-11 rounded-xl bg-[#4A9FFF]/10 flex items-center justify-center mt-3 mb-5 group-hover:bg-[#4A9FFF]/15 transition-colors">
                   <feature.icon className="w-5 h-5 text-[#4A9FFF]" />
@@ -170,16 +170,16 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section id="como-funciona" className="py-24 sm:py-32 px-6 bg-white">
+      <section id="como-funciona" className="py-24 sm:py-32 px-6 bg-[#1A1A2E] border-t border-white/5">
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-20">
             <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
               Como Funciona
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-[#1A1A2E] leading-tight tracking-[-0.02em] mb-5">
+            <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-white leading-tight tracking-[-0.02em] mb-5">
               Simples de <span className="text-gradient font-medium">começar.</span>
             </h2>
-            <p className="text-base sm:text-lg text-[#718096] max-w-xl mx-auto font-light">
+            <p className="text-base sm:text-lg text-white/50 max-w-xl mx-auto font-light">
               Em menos de 2 minutos você está pronto para transformar sua produtividade.
             </p>
           </div>
@@ -191,12 +191,12 @@ export default function LandingPage() {
               { step: "03", title: "Comece a produzir", desc: "Adicione tarefas, hábitos e metas. A IA cuida do resto.", icon: Zap },
             ].map((item, i) => (
               <div key={item.step} className={`text-center ${i < 2 ? 'step-line' : ''}`}>
-                <div className="w-16 h-16 rounded-2xl bg-[#4A9FFF]/8 flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-6">
                   <item.icon className="w-7 h-7 text-[#4A9FFF]" />
                 </div>
                 <span className="text-xs text-[#4A9FFF] font-mono font-medium tracking-wider">PASSO {item.step}</span>
-                <h3 className="text-xl font-medium text-[#1A1A2E] mt-2 mb-3">{item.title}</h3>
-                <p className="text-sm text-[#718096] font-light leading-relaxed max-w-[280px] mx-auto">{item.desc}</p>
+                <h3 className="text-xl font-medium text-white mt-2 mb-3">{item.title}</h3>
+                <p className="text-sm text-white/50 font-light leading-relaxed max-w-[280px] mx-auto">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -260,7 +260,7 @@ export default function LandingPage() {
                 <div className="grid grid-cols-3 gap-4 mb-6">
                   {[
                     { value: "94%", label: "Tarefas" },
-                    { value: "86%", label: "Habitos" },
+                    { value: "86%", label: "Hábitos" },
                     { value: "3/4", label: "Metas" },
                   ].map((s) => (
                     <div key={s.label} className="bg-white/5 rounded-xl p-3 text-center">
@@ -287,14 +287,14 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-24 sm:py-32 px-6 bg-white relative">
-        <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
+      <section className="py-24 sm:py-32 px-6 bg-[#1A1A2E] relative">
+        <div className="absolute inset-0 bg-grid-pattern pointer-events-none opacity-10" />
         <div className="relative max-w-[1200px] mx-auto">
           <div className="text-center mb-16">
             <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
               Depoimentos
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-[#1A1A2E] leading-tight tracking-[-0.02em]">
+            <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-white leading-tight tracking-[-0.02em]">
               Quem usa, <span className="text-gradient font-medium">recomenda.</span>
             </h2>
           </div>
@@ -305,7 +305,7 @@ export default function LandingPage() {
               { quote: "Os relatórios semanais com IA são incríveis. Consigo ver padrões que eu nunca percebia sozinho.", name: "Lucas Mendes", role: "Desenvolvedor Full Stack" },
               { quote: "Testei dezenas de apps de produtividade. O Pulse é o único que consegui manter por mais de 3 meses.", name: "Ana Costa", role: "Empreendedora" },
             ].map((t) => (
-              <div key={t.name} className="testimonial-card p-8 rounded-2xl border border-black/[0.04] bg-white">
+              <div key={t.name} className="testimonial-card p-8 rounded-2xl border border-white/10 bg-white shadow-lg shadow-[#4A9FFF]/[0.04]">
                 <div className="flex gap-0.5 mb-5">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star key={i} className="w-4 h-4 text-[#4A9FFF] fill-[#4A9FFF]" />
@@ -332,29 +332,29 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing Section */}
-      <section id="precos" className="py-24 sm:py-32 px-6 bg-[#F5F7FA] relative">
-        <div className="absolute inset-0 bg-dot-pattern pointer-events-none" />
+      <section id="precos" className="py-24 sm:py-32 px-6 bg-[#1A1A2E] relative border-t border-white/5">
+        <div className="absolute inset-0 bg-dot-pattern pointer-events-none opacity-20" />
         <div className="relative max-w-[1200px] mx-auto">
           <div className="text-center mb-20">
             <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
               Preços
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-[#1A1A2E] leading-tight tracking-[-0.02em] mb-5">
+            <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-white leading-tight tracking-[-0.02em] mb-5">
               Simples. <span className="text-gradient font-medium">Transparente.</span>
             </h2>
-            <p className="text-base sm:text-lg text-[#718096] font-light">
+            <p className="text-base sm:text-lg text-white/50 font-light">
               Comece grátis e evolua quando estiver pronto.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Free */}
-            <div className="p-8 sm:p-10 rounded-2xl border border-black/[0.04] bg-white">
+            <div className="p-8 sm:p-10 rounded-2xl border border-white/10 bg-white shadow-lg shadow-[#4A9FFF]/[0.04]">
               <h3 className="text-xl font-medium text-[#1A1A2E] mb-1">Gratuito</h3>
               <p className="text-sm text-[#718096] font-light mb-8">Para começar sua jornada</p>
               <div className="mb-8">
                 <span className="text-5xl font-light text-[#1A1A2E] tracking-tight">R$0</span>
-                <span className="text-[#718096] font-light text-sm ml-1">/mes</span>
+                <span className="text-[#718096] font-light text-sm ml-1">/mês</span>
               </div>
               <ul className="space-y-3.5 mb-10">
                 {["Até 10 tarefas ativas", "Até 3 hábitos", "1 meta por período", "Relatórios mensais", "Dashboard completo"].map((f) => (
@@ -365,14 +365,14 @@ export default function LandingPage() {
                 ))}
               </ul>
               <Link href="/cadastro">
-                <Button variant="outline" className="w-full rounded-full border border-black/[0.08] text-[#1A1A2E] hover:bg-[#F5F7FA] py-6 text-sm font-medium" size="lg">
+                <Button variant="outline" className="w-full rounded-full border border-[#1A1A2E]/10 text-[#1A1A2E] hover:bg-[#F5F7FA] py-6 text-sm font-medium" size="lg">
                   Começar Grátis
                 </Button>
               </Link>
             </div>
 
             {/* Pro */}
-            <div className="p-8 sm:p-10 rounded-2xl border-2 border-[#4A9FFF] bg-white relative pricing-popular">
+            <div className="p-8 sm:p-10 rounded-2xl border-2 border-[#4A9FFF] bg-white relative pricing-popular shadow-lg shadow-[#4A9FFF]/10">
               <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 gradient-primary text-white text-[11px] font-semibold px-5 py-1.5 rounded-full tracking-wider uppercase">
                 Mais Popular
               </div>
@@ -402,15 +402,15 @@ export default function LandingPage() {
           </div>
 
           <div className="flex flex-wrap justify-center items-center gap-8 mt-12">
-            <div className="flex items-center gap-2 text-xs text-[#718096]/60 font-light">
+            <div className="flex items-center gap-2 text-xs text-white/40 font-light">
               <Shield className="w-4 h-4" />
               Pagamento seguro
             </div>
-            <div className="flex items-center gap-2 text-xs text-[#718096]/60 font-light">
+            <div className="flex items-center gap-2 text-xs text-white/40 font-light">
               <Clock className="w-4 h-4" />
               Garantia de 7 dias
             </div>
-            <div className="flex items-center gap-2 text-xs text-[#718096]/60 font-light">
+            <div className="flex items-center gap-2 text-xs text-white/40 font-light">
               <Users className="w-4 h-4" />
               Suporte humanizado
             </div>
@@ -419,13 +419,13 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-24 sm:py-32 px-6 bg-white">
+      <section className="py-24 sm:py-32 px-6 bg-[#1A1A2E] border-t border-white/5">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-16">
             <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
               Dúvidas
             </span>
-            <h2 className="text-3xl sm:text-4xl font-light text-[#1A1A2E] tracking-[-0.02em]">
+            <h2 className="text-3xl sm:text-4xl font-light text-white tracking-[-0.02em]">
               Perguntas <span className="text-gradient font-medium">frequentes</span>
             </h2>
           </div>
@@ -438,9 +438,9 @@ export default function LandingPage() {
               { q: "Meus dados estão seguros?", a: "Sim. Usamos criptografia em trânsito e em repouso. Seus dados nunca são compartilhados com terceiros." },
               { q: "Funciona no celular?", a: "Sim. O Pulse é um PWA (Progressive Web App) e pode ser instalado no seu celular como um app nativo, com acesso offline." },
             ].map((faq) => (
-              <div key={faq.q} className="p-6 rounded-2xl border border-black/[0.04] bg-[#F5F7FA]/50">
-                <h4 className="font-medium text-[#1A1A2E] text-[15px] mb-2">{faq.q}</h4>
-                <p className="text-sm text-[#718096] font-light leading-relaxed">{faq.a}</p>
+              <div key={faq.q} className="p-6 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm">
+                <h4 className="font-medium text-white text-[15px] mb-2">{faq.q}</h4>
+                <p className="text-sm text-white/50 font-light leading-relaxed">{faq.a}</p>
               </div>
             ))}
           </div>
