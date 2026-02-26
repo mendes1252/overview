@@ -132,9 +132,9 @@ export function GoalsClient({ initialGoals, categories }: GoalsClientProps) {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "achieved":
-        return <Badge variant="success">Alcancada</Badge>;
+        return <Badge variant="success">Alcançada</Badge>;
       case "not_achieved":
-        return <Badge variant="danger">Nao alcancada</Badge>;
+        return <Badge variant="danger">Não alcançada</Badge>;
       default:
         return <Badge variant="secondary">Em andamento</Badge>;
     }
@@ -158,15 +158,15 @@ export function GoalsClient({ initialGoals, categories }: GoalsClientProps) {
 
       {/* Tabs */}
       <Tabs value={period} onValueChange={(v) => setPeriod(v as typeof period)}>
-        <TabsList className="mb-6">
-          <TabsTrigger value="weekly">Semanais</TabsTrigger>
-          <TabsTrigger value="monthly">Mensais</TabsTrigger>
-          <TabsTrigger value="quarterly">Trimestrais</TabsTrigger>
+        <TabsList className="mb-6 bg-white/5 border border-white/10">
+          <TabsTrigger value="weekly" className="data-[state=active]:bg-[#4A9FFF] data-[state=active]:text-white text-white/50">Semanais</TabsTrigger>
+          <TabsTrigger value="monthly" className="data-[state=active]:bg-[#4A9FFF] data-[state=active]:text-white text-white/50">Mensais</TabsTrigger>
+          <TabsTrigger value="quarterly" className="data-[state=active]:bg-[#4A9FFF] data-[state=active]:text-white text-white/50">Trimestrais</TabsTrigger>
         </TabsList>
 
         <TabsContent value={period}>
           {filteredGoals.length === 0 ? (
-            <div className="text-center py-12 bg-white rounded-2xl border border-black/[0.04]">
+            <div className="text-center py-12 bg-white rounded-2xl border border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04]">
               <div className="w-12 h-12 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-4">
                 <Target className="w-6 h-6 text-[#4A9FFF]" />
               </div>
@@ -188,7 +188,7 @@ export function GoalsClient({ initialGoals, categories }: GoalsClientProps) {
                   key={goal.id}
                   className={cn(
                     "transition-colors rounded-2xl",
-                    goal.status === "achieved" ? "bg-green-50 border-green-200" : "border-black/[0.04]"
+                    goal.status === "achieved" ? "bg-green-50 border-green-200" : "border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] bg-white"
                   )}
                 >
                   <CardContent className="p-4">
@@ -254,7 +254,7 @@ export function GoalsClient({ initialGoals, categories }: GoalsClientProps) {
                               <AlertDialogHeader>
                                 <AlertDialogTitle>Excluir meta?</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Esta acao nao pode ser desfeita.
+                                  Esta ação não pode ser desfeita.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>

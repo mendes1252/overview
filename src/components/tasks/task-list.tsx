@@ -49,14 +49,14 @@ export function TaskList({ tasks, categories, onToggle, onEdit, onDelete }: Task
 
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-12 bg-white rounded-lg border">
-        <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-          <Calendar className="w-6 h-6 text-gray-400" />
+      <div className="text-center py-12 bg-white rounded-2xl border border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04]">
+        <div className="w-12 h-12 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-4">
+          <Calendar className="w-6 h-6 text-[#4A9FFF]" />
         </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-1">
+        <h3 className="text-lg font-medium text-[#1A1A2E] mb-1">
           Nenhuma tarefa encontrada
         </h3>
-        <p className="text-gray-500">
+        <p className="text-[#718096]">
           Crie uma nova tarefa ou ajuste os filtros.
         </p>
       </div>
@@ -64,13 +64,13 @@ export function TaskList({ tasks, categories, onToggle, onEdit, onDelete }: Task
   }
 
   return (
-    <div className="bg-white rounded-lg border divide-y">
+    <div className="bg-white rounded-2xl border border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] divide-y divide-black/[0.04]">
       {tasks.map((task) => (
         <div
           key={task.id}
           className={cn(
             "flex items-start gap-4 p-4 transition-colors",
-            task.status === "done" ? "bg-gray-50" : "hover:bg-gray-50"
+            task.status === "done" ? "bg-[#F5F7FA]/50" : "hover:bg-[#F5F7FA]/30"
           )}
         >
           <Checkbox
@@ -86,8 +86,8 @@ export function TaskList({ tasks, categories, onToggle, onEdit, onDelete }: Task
                   {priorityIcon(task.priority)}
                   <span
                     className={cn(
-                      "font-medium",
-                      task.status === "done" && "line-through text-gray-400"
+                      "font-medium text-[#1A1A2E]",
+                      task.status === "done" && "line-through text-[#718096]"
                     )}
                   >
                     {task.title}
@@ -95,7 +95,7 @@ export function TaskList({ tasks, categories, onToggle, onEdit, onDelete }: Task
                 </div>
 
                 {task.description && (
-                  <p className="text-sm text-gray-500 mb-2 line-clamp-2">
+                  <p className="text-sm text-[#718096] mb-2 line-clamp-2">
                     {task.description}
                   </p>
                 )}
@@ -120,7 +120,7 @@ export function TaskList({ tasks, categories, onToggle, onEdit, onDelete }: Task
                         "text-xs flex items-center gap-1",
                         new Date(task.dueDate) < new Date() && task.status !== "done"
                           ? "text-red-500"
-                          : "text-gray-400"
+                          : "text-[#718096]"
                       )}
                     >
                       <Calendar className="w-3 h-3" />
@@ -129,14 +129,14 @@ export function TaskList({ tasks, categories, onToggle, onEdit, onDelete }: Task
                   )}
 
                   {task.estimatedTime && (
-                    <span className="text-xs text-gray-400 flex items-center gap-1">
+                    <span className="text-xs text-[#718096] flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       {task.estimatedTime}min
                     </span>
                   )}
 
                   {task.subtasks.length > 0 && (
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-[#718096]">
                       {task.subtasks.filter((s) => s.completed).length}/{task.subtasks.length}{" "}
                       subtarefas
                     </span>
@@ -173,7 +173,7 @@ export function TaskList({ tasks, categories, onToggle, onEdit, onDelete }: Task
                       <AlertDialogHeader>
                         <AlertDialogTitle>Excluir tarefa?</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Esta acao nao pode ser desfeita. A tarefa sera
+                          Esta ação não pode ser desfeita. A tarefa será
                           permanentemente removida.
                         </AlertDialogDescription>
                       </AlertDialogHeader>

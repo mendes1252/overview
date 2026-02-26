@@ -138,27 +138,27 @@ export function HabitsClient({
           <Button
             variant={showArchived ? "default" : "outline"}
             onClick={() => setShowArchived(!showArchived)}
-            className="gap-2 rounded-xl"
+            className={`gap-2 rounded-xl ${showArchived ? "bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white" : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white"}`}
           >
             <Archive className="w-4 h-4" />
             {showArchived ? "Ver Ativos" : `Arquivados (${archivedHabits.length})`}
           </Button>
           <Button onClick={() => setIsDialogOpen(true)} className="gap-2 bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl">
-            <Plus className="w-4 h-4" /> Novo Habito
+            <Plus className="w-4 h-4" /> Novo Hábito
           </Button>
         </div>
       </div>
 
       {/* Content */}
       <Tabs defaultValue="tracking" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="tracking" className="gap-2">
+        <TabsList className="bg-white/5 border border-white/10">
+          <TabsTrigger value="tracking" className="gap-2 data-[state=active]:bg-[#4A9FFF] data-[state=active]:text-white text-white/50">
             <TrendingUp className="w-4 h-4" />
             Rastreamento
           </TabsTrigger>
-          <TabsTrigger value="history" className="gap-2">
+          <TabsTrigger value="history" className="gap-2 data-[state=active]:bg-[#4A9FFF] data-[state=active]:text-white text-white/50">
             <Calendar className="w-4 h-4" />
-            Historico
+            Histórico
           </TabsTrigger>
         </TabsList>
 

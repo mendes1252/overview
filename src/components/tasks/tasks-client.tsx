@@ -164,12 +164,12 @@ export function TasksClient({ initialTasks, categories }: TasksClientProps) {
       <div className="flex flex-col lg:flex-row gap-4 mb-6">
         {/* Search */}
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#718096]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
           <Input
             placeholder="Buscar tarefas..."
             value={filters.search}
             onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-            className="pl-9"
+            className="pl-9 bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#4A9FFF]/50 rounded-xl"
           />
         </div>
 
@@ -179,10 +179,10 @@ export function TasksClient({ initialTasks, categories }: TasksClientProps) {
             value={filters.dateRange}
             onValueChange={(value) => setFilters({ ...filters, dateRange: value })}
           >
-            <SelectTrigger className="w-[130px]">
-              <SelectValue placeholder="Periodo" />
+            <SelectTrigger className="w-[130px] bg-white/5 border-white/10 text-white rounded-xl">
+              <SelectValue placeholder="Período" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-[#1A1A2E] border-white/10 text-white">
               <SelectItem value="all">Todas</SelectItem>
               <SelectItem value="today">Hoje</SelectItem>
               <SelectItem value="week">Esta Semana</SelectItem>
@@ -194,14 +194,14 @@ export function TasksClient({ initialTasks, categories }: TasksClientProps) {
             value={filters.status}
             onValueChange={(value) => setFilters({ ...filters, status: value })}
           >
-            <SelectTrigger className="w-[130px]">
+            <SelectTrigger className="w-[130px] bg-white/5 border-white/10 text-white rounded-xl">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-[#1A1A2E] border-white/10 text-white">
               <SelectItem value="all">Todos</SelectItem>
               <SelectItem value="todo">A Fazer</SelectItem>
               <SelectItem value="in_progress">Em Progresso</SelectItem>
-              <SelectItem value="done">Concluidas</SelectItem>
+              <SelectItem value="done">Concluídas</SelectItem>
             </SelectContent>
           </Select>
 
@@ -209,13 +209,13 @@ export function TasksClient({ initialTasks, categories }: TasksClientProps) {
             value={filters.priority}
             onValueChange={(value) => setFilters({ ...filters, priority: value })}
           >
-            <SelectTrigger className="w-[130px]">
+            <SelectTrigger className="w-[130px] bg-white/5 border-white/10 text-white rounded-xl">
               <SelectValue placeholder="Prioridade" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-[#1A1A2E] border-white/10 text-white">
               <SelectItem value="all">Todas</SelectItem>
               <SelectItem value="high">Alta</SelectItem>
-              <SelectItem value="medium">Media</SelectItem>
+              <SelectItem value="medium">Média</SelectItem>
               <SelectItem value="low">Baixa</SelectItem>
             </SelectContent>
           </Select>
@@ -224,10 +224,10 @@ export function TasksClient({ initialTasks, categories }: TasksClientProps) {
             value={filters.category}
             onValueChange={(value) => setFilters({ ...filters, category: value })}
           >
-            <SelectTrigger className="w-[150px]">
+            <SelectTrigger className="w-[150px] bg-white/5 border-white/10 text-white rounded-xl">
               <SelectValue placeholder="Categoria" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-[#1A1A2E] border-white/10 text-white">
               <SelectItem value="all">Todas</SelectItem>
               {categories.map((cat) => (
                 <SelectItem key={cat.id} value={cat.id}>
@@ -239,12 +239,12 @@ export function TasksClient({ initialTasks, categories }: TasksClientProps) {
 
           {/* View Toggle */}
           <Tabs value={view} onValueChange={(v) => setView(v as "list" | "kanban")}>
-            <TabsList>
-              <TabsTrigger value="list" className="gap-1">
+            <TabsList className="bg-white/5 border border-white/10">
+              <TabsTrigger value="list" className="gap-1 data-[state=active]:bg-[#4A9FFF] data-[state=active]:text-white text-white/50">
                 <List className="w-4 h-4" />
                 <span className="hidden sm:inline">Lista</span>
               </TabsTrigger>
-              <TabsTrigger value="kanban" className="gap-1">
+              <TabsTrigger value="kanban" className="gap-1 data-[state=active]:bg-[#4A9FFF] data-[state=active]:text-white text-white/50">
                 <Columns className="w-4 h-4" />
                 <span className="hidden sm:inline">Kanban</span>
               </TabsTrigger>

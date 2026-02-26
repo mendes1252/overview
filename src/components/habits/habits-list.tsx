@@ -82,17 +82,17 @@ export function HabitsList({
 
   if (habits.length === 0) {
     return (
-      <div className="text-center py-12 bg-white rounded-lg border">
-        <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-          <TrendingUp className="w-6 h-6 text-green-500" />
+      <div className="text-center py-12 bg-white rounded-2xl border border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04]">
+        <div className="w-12 h-12 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-4">
+          <TrendingUp className="w-6 h-6 text-[#4A9FFF]" />
         </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-1">
-          {showArchived ? "Nenhum habito arquivado" : "Nenhum habito cadastrado"}
+        <h3 className="text-lg font-medium text-[#1A1A2E] mb-1">
+          {showArchived ? "Nenhum hábito arquivado" : "Nenhum hábito cadastrado"}
         </h3>
-        <p className="text-gray-500">
+        <p className="text-[#718096]">
           {showArchived
-            ? "Habitos arquivados aparecerao aqui."
-            : "Comece adicionando um habito que deseja construir."}
+            ? "Hábitos arquivados aparecerão aqui."
+            : "Comece adicionando um hábito que deseja construir."}
         </p>
       </div>
     );
@@ -101,7 +101,7 @@ export function HabitsList({
   return (
     <div className="space-y-4">
       {habits.map((habit) => (
-        <Card key={habit.id} className={cn(showArchived && "opacity-75")}>
+        <Card key={habit.id} className={cn("rounded-2xl border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] bg-white", showArchived && "opacity-75")}>
           <CardContent className="p-4">
             <div className="flex flex-col lg:flex-row lg:items-center gap-4">
               {/* Habit Info */}
@@ -111,7 +111,7 @@ export function HabitsList({
                     className="w-4 h-4 rounded-full flex-shrink-0"
                     style={{ backgroundColor: habit.color }}
                   />
-                  <h3 className="font-semibold text-gray-900 truncate">
+                  <h3 className="font-medium text-[#1A1A2E] truncate">
                     {habit.name}
                   </h3>
                   {habit.currentStreak > 0 && (
@@ -122,7 +122,7 @@ export function HabitsList({
                   )}
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+                <div className="flex flex-wrap items-center gap-3 text-sm text-[#718096]">
                   {habit.category && (
                     <Badge
                       variant="outline"
@@ -153,7 +153,7 @@ export function HabitsList({
 
                     return (
                       <div key={index} className="text-center">
-                        <span className="text-xs text-gray-400 block mb-1">
+                        <span className="text-xs text-[#718096] block mb-1">
                           {dayNames[index]}
                         </span>
                         <button
@@ -165,11 +165,11 @@ export function HabitsList({
                               ? isCompleted
                                 ? "text-white"
                                 : isToday
-                                ? "border-2 border-primary bg-primary/10"
+                                ? "border-2 border-[#4A9FFF] bg-[#4A9FFF]/10"
                                 : isPast
                                 ? "bg-red-50 text-red-400 border border-red-200"
-                                : "bg-gray-100 hover:bg-gray-200"
-                              : "bg-gray-50 text-gray-300 cursor-not-allowed"
+                                : "bg-[#F5F7FA] hover:bg-[#4A9FFF]/10"
+                              : "bg-[#F5F7FA] text-[#718096]/30 cursor-not-allowed"
                           )}
                           style={{
                             backgroundColor: isTarget && isCompleted ? habit.color : undefined,
@@ -220,10 +220,10 @@ export function HabitsList({
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Excluir habito?</AlertDialogTitle>
+                        <AlertDialogTitle>Excluir hábito?</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Esta acao nao pode ser desfeita. Todo o historico do habito
-                          sera perdido.
+                          Esta ação não pode ser desfeita. Todo o histórico do hábito
+                          será perdido.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>

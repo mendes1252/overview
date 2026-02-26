@@ -47,7 +47,7 @@ export function HabitsHeatmap({ habits }: HabitsHeatmapProps) {
   };
 
   const getColor = (rate: number | null) => {
-    if (rate === null) return "bg-gray-100";
+    if (rate === null) return "bg-[#F5F7FA]";
     if (rate === 0) return "bg-red-100";
     if (rate < 0.5) return "bg-yellow-200";
     if (rate < 1) return "bg-green-300";
@@ -61,27 +61,27 @@ export function HabitsHeatmap({ habits }: HabitsHeatmapProps) {
 
   if (habits.length === 0) {
     return (
-      <Card>
-        <CardContent className="py-8 text-center text-gray-500">
-          Adicione habitos para ver seu historico aqui.
+      <Card className="rounded-2xl border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] bg-white">
+        <CardContent className="py-8 text-center text-[#718096]">
+          Adicione hábitos para ver seu histórico aqui.
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card>
+    <Card className="rounded-2xl border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] bg-white">
       <CardHeader>
-        <CardTitle className="text-lg">Historico de Consistencia</CardTitle>
+        <CardTitle className="text-lg text-[#1A1A2E]">Histórico de Consistência</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
           {/* Day labels */}
           <div className="flex gap-1 mb-2 ml-8">
-            <span className="text-xs text-gray-400 w-3">D</span>
-            <span className="text-xs text-gray-400 w-3 ml-4">T</span>
-            <span className="text-xs text-gray-400 w-3 ml-4">Q</span>
-            <span className="text-xs text-gray-400 w-3 ml-3">S</span>
+            <span className="text-xs text-[#718096] w-3">D</span>
+            <span className="text-xs text-[#718096] w-3 ml-4">T</span>
+            <span className="text-xs text-[#718096] w-3 ml-4">Q</span>
+            <span className="text-xs text-[#718096] w-3 ml-3">S</span>
           </div>
 
           <div className="flex gap-1">
@@ -90,7 +90,7 @@ export function HabitsHeatmap({ habits }: HabitsHeatmapProps) {
               <div key={weekIndex} className="flex flex-col gap-1">
                 {/* Month label */}
                 {weekIndex === 0 || week[0].getDate() <= 7 ? (
-                  <span className="text-xs text-gray-400 h-4 mb-1">
+                  <span className="text-xs text-[#718096] h-4 mb-1">
                     {weekIndex === 0 || week[0].getDate() <= 7
                       ? monthLabels[week[0].getMonth()]
                       : ""}
@@ -113,8 +113,8 @@ export function HabitsHeatmap({ habits }: HabitsHeatmapProps) {
                       }`}
                       className={cn(
                         "w-3 h-3 rounded-sm",
-                        isFuture ? "bg-gray-50" : getColor(rate),
-                        isToday && "ring-2 ring-primary ring-offset-1"
+                        isFuture ? "bg-[#F5F7FA]/50" : getColor(rate),
+                        isToday && "ring-2 ring-[#4A9FFF] ring-offset-1"
                       )}
                     />
                   );
@@ -124,10 +124,10 @@ export function HabitsHeatmap({ habits }: HabitsHeatmapProps) {
           </div>
 
           {/* Legend */}
-          <div className="flex items-center gap-4 mt-4 text-xs text-gray-500">
+          <div className="flex items-center gap-4 mt-4 text-xs text-[#718096]">
             <span>Menos</span>
             <div className="flex gap-1">
-              <div className="w-3 h-3 rounded-sm bg-gray-100" />
+              <div className="w-3 h-3 rounded-sm bg-[#F5F7FA]" />
               <div className="w-3 h-3 rounded-sm bg-red-100" />
               <div className="w-3 h-3 rounded-sm bg-yellow-200" />
               <div className="w-3 h-3 rounded-sm bg-green-300" />
@@ -139,23 +139,23 @@ export function HabitsHeatmap({ habits }: HabitsHeatmapProps) {
 
         {/* Stats per habit */}
         <div className="mt-6 space-y-3">
-          <h4 className="font-medium text-gray-900">Por Habito</h4>
+          <h4 className="font-medium text-[#1A1A2E]">Por Hábito</h4>
           {habits.map((habit) => {
             const totalLogs = habit.logs.filter((l) => l.completed).length;
             return (
               <div
                 key={habit.id}
-                className="flex items-center justify-between py-2 border-b last:border-0"
+                className="flex items-center justify-between py-2 border-b border-black/[0.04] last:border-0"
               >
                 <div className="flex items-center gap-2">
                   <div
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: habit.color }}
                   />
-                  <span className="text-sm">{habit.name}</span>
+                  <span className="text-sm text-[#1A1A2E]">{habit.name}</span>
                 </div>
-                <div className="text-sm text-gray-500">
-                  {totalLogs} dias no ultimo mes
+                <div className="text-sm text-[#718096]">
+                  {totalLogs} dias no último mês
                 </div>
               </div>
             );

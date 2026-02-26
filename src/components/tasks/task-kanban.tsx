@@ -22,9 +22,9 @@ interface TaskKanbanProps {
 }
 
 const columns = [
-  { id: "todo", title: "A Fazer", color: "bg-gray-100" },
-  { id: "in_progress", title: "Em Progresso", color: "bg-blue-100" },
-  { id: "done", title: "Concluido", color: "bg-green-100" },
+  { id: "todo", title: "A Fazer", color: "bg-[#718096]/10" },
+  { id: "in_progress", title: "Em Progresso", color: "bg-[#4A9FFF]/10" },
+  { id: "done", title: "Concluído", color: "bg-green-500/10" },
 ];
 
 export function TaskKanban({
@@ -74,15 +74,15 @@ export function TaskKanban({
         return (
           <div
             key={column.id}
-            className="rounded-lg border bg-gray-50/50 overflow-hidden"
+            className="rounded-2xl border border-white/10 bg-white shadow-lg shadow-[#4A9FFF]/[0.04] overflow-hidden"
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, column.id)}
           >
             {/* Column Header */}
             <div className={cn("px-4 py-3", column.color)}>
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-gray-900">{column.title}</h3>
-                <span className="text-sm text-gray-500 bg-white/50 px-2 py-0.5 rounded">
+                <h3 className="font-medium text-[#1A1A2E]">{column.title}</h3>
+                <span className="text-sm text-[#718096] bg-white/50 px-2 py-0.5 rounded-lg">
                   {columnTasks.length}
                 </span>
               </div>
@@ -95,12 +95,12 @@ export function TaskKanban({
                   key={task.id}
                   draggable
                   onDragStart={(e) => handleDragStart(e, task.id)}
-                  className="bg-white rounded-lg border p-3 shadow-sm cursor-move hover:shadow-md transition-shadow"
+                  className="bg-[#F5F7FA]/50 rounded-xl border border-black/[0.04] p-3 cursor-move hover:shadow-sm transition-shadow"
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <div className="flex items-center gap-1.5">
                       {priorityIcon(task.priority)}
-                      <span className="font-medium text-sm truncate">
+                      <span className="font-medium text-sm text-[#1A1A2E] truncate">
                         {task.title}
                       </span>
                     </div>
@@ -147,7 +147,7 @@ export function TaskKanban({
                           "text-xs flex items-center gap-1",
                           new Date(task.dueDate) < new Date() && task.status !== "done"
                             ? "text-red-500"
-                            : "text-gray-400"
+                            : "text-[#718096]"
                         )}
                       >
                         <Calendar className="w-3 h-3" />
@@ -159,7 +159,7 @@ export function TaskKanban({
               ))}
 
               {columnTasks.length === 0 && (
-                <div className="text-center py-8 text-sm text-gray-400">
+                <div className="text-center py-8 text-sm text-[#718096]">
                   Arraste tarefas aqui
                 </div>
               )}
