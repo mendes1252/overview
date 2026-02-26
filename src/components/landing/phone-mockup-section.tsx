@@ -17,43 +17,43 @@ const features = [
     icon: CheckCircle2,
     num: "01",
     title: "Gestão de Tarefas",
-    desc: "Organize com prioridades, categorias e prazos. Recorrência automática para rotinas.",
-    detail: "Checkboxes, badges de prioridade e categorias coloridas para clareza visual.",
+    desc: "Organize suas tarefas com prioridades inteligentes, categorias personalizadas e prazos automáticos. Configure recorrência para rotinas diárias e semanais — nunca mais esqueça uma entrega importante.",
+    detail: "Lista e Kanban, filtros por status/prioridade/categoria, subtarefas e integração com o relatório semanal de IA.",
   },
   {
     icon: TrendingUp,
     num: "02",
     title: "Rastreamento de Hábitos",
-    desc: "Streaks, visualização semanal e lembretes. Consistência gera resultados.",
-    detail: "Cards de hábitos com grid de 7 dias e contador de sequência motivacional.",
+    desc: "Construa consistência com streaks visuais, grid semanal interativo e lembretes personalizados. Acompanhe seu progresso dia a dia e veja padrões de comportamento ao longo do tempo.",
+    detail: "Heatmap de consistência mensal, arquivamento de hábitos, histórico completo e notificações configuráveis por horário.",
   },
   {
     icon: Target,
     num: "03",
     title: "Metas Inteligentes",
-    desc: "Semanais, mensais e trimestrais com progresso em tempo real.",
-    detail: "Barras de progresso, badges de status e acompanhamento por período.",
+    desc: "Defina metas semanais, mensais e trimestrais com acompanhamento em tempo real. Metas binárias ou quantificáveis com barras de progresso e status automático.",
+    detail: "Progresso calculado automaticamente, categorização por área da vida e integração direta com tarefas e hábitos relacionados.",
   },
   {
     icon: Brain,
     num: "04",
     title: "Coach de IA",
-    desc: "Coaching personalizado que entende seus padrões e sugere melhorias reais.",
-    detail: "Chat inteligente com insights baseados nos seus dados reais de uso.",
+    desc: "Receba coaching personalizado de uma IA que analisa seus dados reais. Entenda seus padrões de produtividade e receba sugestões específicas para melhorar semana a semana.",
+    detail: "4 tons de coaching (motivador, calmo, direto, amigável), respostas baseadas em dados reais e adaptação ao seu estilo de trabalho.",
   },
   {
     icon: BarChart3,
     num: "05",
     title: "Relatórios Semanais",
-    desc: "Insights, padrões e recomendações gerados automaticamente por IA.",
-    detail: "Estatísticas consolidadas com insights e recomendações personalizadas.",
+    desc: "Toda semana, a IA gera um relatório completo com análise de desempenho, padrões identificados, conquistas celebradas e recomendações acionáveis para a próxima semana.",
+    detail: "Métricas de conclusão, comparativo com semanas anteriores, identificação de horários de pico e sugestões personalizadas de melhoria.",
   },
   {
     icon: Zap,
     num: "06",
     title: "Dashboard Completo",
-    desc: "Visão da semana, métricas consolidadas e próximos passos num só lugar.",
-    detail: "Overview unificado com tarefas, hábitos e metas da semana atual.",
+    desc: "Visão unificada da sua semana com métricas consolidadas, tarefas do dia, hábitos pendentes e progresso das metas. Tudo num só lugar para começar o dia com clareza.",
+    detail: "Overview semanal, próximo relatório de IA, resumo de conquistas e acesso rápido para criar tarefas, hábitos e metas.",
   },
 ];
 
@@ -224,28 +224,32 @@ export function PhoneMockupSection() {
 
         {/* Mobile layout */}
         <div className="lg:hidden">
-          {/* Sticky phone at top */}
-          <div className="sticky top-20 z-30 flex justify-center pb-8 pt-4">
-            <div className="relative">
-              <div className="absolute -inset-8 gradient-radial-glow opacity-30 pointer-events-none" />
-              <PhoneFrame className="scale-[0.85] sm:scale-100 origin-top">
-                {PreviousScreen && (
-                  <div className="absolute inset-0 phone-screen-exit z-0">
-                    <PreviousScreen />
+          {/* Sticky phone at top — solid bg blocks cards from bleeding through */}
+          <div className="sticky top-16 z-30 pt-4 pb-4 bg-[#1A1A2E] relative">
+            <div className="flex justify-center">
+              <div className="relative">
+                <div className="absolute -inset-8 gradient-radial-glow opacity-30 pointer-events-none" />
+                <PhoneFrame className="scale-[0.85] sm:scale-100 origin-top">
+                  {PreviousScreen && (
+                    <div className="absolute inset-0 phone-screen-exit z-0">
+                      <PreviousScreen />
+                    </div>
+                  )}
+                  <div
+                    className="absolute inset-0 phone-screen-enter z-10"
+                    key={`mobile-${activeIndex}`}
+                  >
+                    <ActiveScreen />
                   </div>
-                )}
-                <div
-                  className="absolute inset-0 phone-screen-enter z-10"
-                  key={`mobile-${activeIndex}`}
-                >
-                  <ActiveScreen />
-                </div>
-              </PhoneFrame>
+                </PhoneFrame>
+              </div>
             </div>
+            {/* Gradient fade at bottom to smooth transition */}
+            <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-b from-[#1A1A2E] to-transparent translate-y-full pointer-events-none" />
           </div>
 
           {/* Scrollable feature cards below */}
-          <div className="space-y-4 mt-4">
+          <div className="space-y-4 mt-8">
             {features.map((feature, i) => (
               <div
                 key={feature.num}
@@ -256,7 +260,7 @@ export function PhoneMockupSection() {
                 className={`feature-item p-6 rounded-2xl border transition-all duration-300 ${
                   activeIndex === i
                     ? "feature-item-active border-[#4A9FFF]/30 bg-white/[0.06]"
-                    : "feature-item-inactive border-white/[0.06] bg-white/[0.02]"
+                    : "opacity-50 border-white/[0.06] bg-white/[0.02]"
                 }`}
               >
                 <div className="flex items-start gap-4">
@@ -291,6 +295,11 @@ export function PhoneMockupSection() {
                     >
                       {feature.desc}
                     </p>
+                    {activeIndex === i && (
+                      <p className="text-xs text-[#4A9FFF]/60 font-light mt-2 leading-relaxed animate-fadeIn">
+                        {feature.detail}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
