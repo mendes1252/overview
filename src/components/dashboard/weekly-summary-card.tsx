@@ -21,7 +21,7 @@ export function WeeklySummaryCard({
     : 0;
 
   return (
-    <Card className="rounded-2xl border-black/[0.04]">
+    <Card className="rounded-2xl border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] bg-white">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-medium text-[#1A1A2E] flex items-center gap-2">
           <BarChart3 className="w-5 h-5 text-[#4A9FFF]" />
@@ -54,13 +54,13 @@ export function WeeklySummaryCard({
               <div className="w-8 h-8 rounded-xl bg-[#4A9FFF]/10 flex items-center justify-center">
                 <TrendingUp className="w-4 h-4 text-[#4A9FFF]" />
               </div>
-              <span className="text-sm text-[#718096] font-light">Habitos</span>
+              <span className="text-sm text-[#718096] font-light">Hábitos</span>
             </div>
             <div className="text-right">
               <span className="text-lg font-medium text-[#1A1A2E]">
                 {Math.round(habitsConsistency)}%
               </span>
-              <span className="text-xs text-[#718096] font-light block">consistencia</span>
+              <span className="text-xs text-[#718096] font-light block">consistência</span>
             </div>
           </div>
 
@@ -76,7 +76,7 @@ export function WeeklySummaryCard({
               <span className="text-lg font-medium text-[#1A1A2E]">
                 {goalsAchieved}/{totalGoals}
               </span>
-              <span className="text-xs text-[#718096] font-light block">alcancadas</span>
+              <span className="text-xs text-[#718096] font-light block">alcançadas</span>
             </div>
           </div>
         </div>

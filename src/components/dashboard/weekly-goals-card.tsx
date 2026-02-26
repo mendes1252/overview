@@ -31,7 +31,7 @@ export function WeeklyGoalsCard({ goals }: WeeklyGoalsCardProps) {
   };
 
   return (
-    <Card className="rounded-2xl border-black/[0.04]">
+    <Card className="rounded-2xl border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] bg-white">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium text-[#1A1A2E] flex items-center gap-2">

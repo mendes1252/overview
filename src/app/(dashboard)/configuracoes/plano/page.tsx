@@ -167,7 +167,7 @@ export default function PlanoPage() {
               <p className="font-medium text-[#4A9FFF]">
                 Plano {PLANS[currentPlan].name} ativo
               </p>
-              <p className="text-sm text-[#718096]">Válido até {periodEnd}</p>
+              <p className="text-sm text-white/50">Válido até {periodEnd}</p>
             </div>
             <Button
               variant="outline"
@@ -192,8 +192,8 @@ export default function PlanoPage() {
           {/* Free Plan */}
           <div className={`relative bg-white rounded-2xl border-2 p-6 transition-all ${
             currentPlan === "free"
-              ? "border-[#4A9FFF] shadow-lg shadow-[#4A9FFF]/5"
-              : "border-black/[0.04]"
+              ? "border-[#4A9FFF] shadow-lg shadow-[#4A9FFF]/[0.06]"
+              : "border-white/10"
           }`}>
             {currentPlan === "free" && (
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#4A9FFF] text-white text-xs font-medium px-3 py-1 rounded-full">
@@ -237,8 +237,8 @@ export default function PlanoPage() {
           {/* Pro Plan - Highlighted */}
           <div className={`relative rounded-2xl p-6 transition-all ${
             currentPlan === "pro"
-              ? "bg-[#1A1A2E] border-2 border-[#4A9FFF] shadow-2xl shadow-[#4A9FFF]/20"
-              : "bg-[#1A1A2E] border-2 border-[#4A9FFF]/30 shadow-2xl shadow-[#4A9FFF]/10"
+              ? "bg-white/[0.06] backdrop-blur-sm border-2 border-[#4A9FFF] shadow-2xl shadow-[#4A9FFF]/20"
+              : "bg-white/[0.04] backdrop-blur-sm border-2 border-[#4A9FFF]/30 shadow-2xl shadow-[#4A9FFF]/10"
           }`}>
             {currentPlan === "pro" ? (
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#4A9FFF] text-white text-xs font-medium px-3 py-1 rounded-full">
@@ -296,7 +296,7 @@ export default function PlanoPage() {
         </div>
 
         {/* Trust badges */}
-        <div className="flex items-center justify-center gap-6 mt-8 text-sm text-[#718096] font-light">
+        <div className="flex items-center justify-center gap-6 mt-8 text-sm text-white/40 font-light">
           <div className="flex items-center gap-2">
             <Shield className="w-4 h-4 text-[#4A9FFF]" />
             <span>Pagamento seguro</span>
@@ -312,7 +312,7 @@ export default function PlanoPage() {
         </div>
 
         {/* FAQ */}
-        <div className="mt-12 bg-white rounded-2xl border border-black/[0.04] shadow-sm p-6">
+        <div className="mt-12 bg-white rounded-2xl border border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] p-6">
           <h2 className="text-lg font-medium text-[#1A1A2E] mb-6">Perguntas frequentes</h2>
           <div className="space-y-5">
             <div>
@@ -321,19 +321,19 @@ export default function PlanoPage() {
                 Você paga uma única vez e tem acesso completo a todos os recursos Pro por 1 ano. Sem cobranças recorrentes.
               </p>
             </div>
-            <div className="border-t border-black/[0.04] pt-5">
+            <div className="border-t border-black/[0.06] pt-5">
               <h3 className="font-medium text-[#1A1A2E]">Quais formas de pagamento são aceitas?</h3>
               <p className="text-sm text-[#718096] font-light mt-1">
                 Aceitamos Pix, cartão de crédito e boleto bancário.
               </p>
             </div>
-            <div className="border-t border-black/[0.04] pt-5">
+            <div className="border-t border-black/[0.06] pt-5">
               <h3 className="font-medium text-[#1A1A2E]">O que acontece após 1 ano?</h3>
               <p className="text-sm text-[#718096] font-light mt-1">
                 Você poderá renovar seu acesso. Seus dados nunca são perdidos — apenas os recursos premium ficam indisponíveis até a renovação.
               </p>
             </div>
-            <div className="border-t border-black/[0.04] pt-5">
+            <div className="border-t border-black/[0.06] pt-5">
               <h3 className="font-medium text-[#1A1A2E]">O que acontece se eu ultrapassar o limite do plano gratuito?</h3>
               <p className="text-sm text-[#718096] font-light mt-1">
                 Você não perderá seus dados existentes, mas não poderá criar novos itens além do limite até fazer upgrade.

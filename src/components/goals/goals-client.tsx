@@ -145,8 +145,8 @@ export function GoalsClient({ initialGoals, categories }: GoalsClientProps) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-medium text-[#1A1A2E]">Metas</h1>
-          <p className="text-[#718096] font-light">
+          <h1 className="text-2xl font-medium text-white">Metas</h1>
+          <p className="text-white/50 font-light">
             {filteredGoals.length} meta{filteredGoals.length !== 1 ? "s" : ""}{" "}
             {period === "weekly" ? "semanais" : period === "monthly" ? "mensais" : "trimestrais"}
           </p>

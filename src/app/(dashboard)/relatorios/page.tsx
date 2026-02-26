@@ -109,8 +109,8 @@ export default function RelatoriosPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-medium text-[#1A1A2E]">Relatórios</h1>
-          <p className="text-[#718096] font-light">Análise semanal com inteligência artificial</p>
+          <h1 className="text-2xl font-medium text-white">Relatórios</h1>
+          <p className="text-white/50 font-light">Análise semanal com inteligência artificial</p>
         </div>
         <Button
           onClick={handleGenerate}
@@ -133,7 +133,7 @@ export default function RelatoriosPage() {
 
       {reports.length === 0 && !selectedReport ? (
         /* Empty state */
-        <div className="bg-white rounded-3xl border border-black/[0.04] p-12 text-center">
+        <div className="bg-white rounded-3xl border border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] p-12 text-center">
           <div className="w-16 h-16 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-6">
             <BarChart3 className="w-8 h-8 text-[#4A9FFF]" />
           </div>
@@ -155,15 +155,15 @@ export default function RelatoriosPage() {
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Report list */}
           <div className="space-y-3">
-            <h3 className="text-sm font-medium text-[#718096] uppercase tracking-wider px-1">Histórico</h3>
+            <h3 className="text-sm font-medium text-white/40 uppercase tracking-wider px-1">Histórico</h3>
             {reports.map((report) => (
               <button
                 key={report.id}
                 onClick={() => setSelectedReport(report)}
                 className={`w-full text-left p-4 rounded-2xl border transition-all duration-200 ${
                   selectedReport?.id === report.id
-                    ? "border-[#4A9FFF] bg-[#4A9FFF]/5"
-                    : "border-black/[0.04] bg-white hover:border-[#4A9FFF]/30"
+                    ? "border-[#4A9FFF] bg-white shadow-lg shadow-[#4A9FFF]/[0.06]"
+                    : "border-white/10 bg-white/[0.95] hover:border-[#4A9FFF]/30"
                 }`}
               >
                 <div className="flex items-center gap-3 mb-2">
@@ -185,7 +185,7 @@ export default function RelatoriosPage() {
             <div className="lg:col-span-2 space-y-6">
               {/* Stats cards */}
               <div className="grid grid-cols-3 gap-4">
-                <div className="bg-white rounded-2xl border border-black/[0.04] p-5">
+                <div className="bg-white rounded-2xl border border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] p-5">
                   <div className="flex items-center gap-2 mb-3">
                     <CheckCircle2 className="w-4 h-4 text-[#4A9FFF]" />
                     <span className="text-xs text-[#718096] font-light">Tarefas</span>
@@ -199,7 +199,7 @@ export default function RelatoriosPage() {
                     {selectedReport.tasksCompleted} de {selectedReport.tasksTotal}
                   </div>
                 </div>
-                <div className="bg-white rounded-2xl border border-black/[0.04] p-5">
+                <div className="bg-white rounded-2xl border border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] p-5">
                   <div className="flex items-center gap-2 mb-3">
                     <TrendingUp className="w-4 h-4 text-[#4A9FFF]" />
                     <span className="text-xs text-[#718096] font-light">Hábitos</span>
@@ -209,7 +209,7 @@ export default function RelatoriosPage() {
                   </div>
                   <div className="text-xs text-[#718096] font-light mt-1">consistência</div>
                 </div>
-                <div className="bg-white rounded-2xl border border-black/[0.04] p-5">
+                <div className="bg-white rounded-2xl border border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] p-5">
                   <div className="flex items-center gap-2 mb-3">
                     <Target className="w-4 h-4 text-[#4A9FFF]" />
                     <span className="text-xs text-[#718096] font-light">Metas</span>
@@ -222,7 +222,7 @@ export default function RelatoriosPage() {
               </div>
 
               {/* Summary */}
-              <div className="bg-white rounded-2xl border border-black/[0.04] p-6">
+              <div className="bg-white rounded-2xl border border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Brain className="w-5 h-5 text-[#4A9FFF]" />
                   <h3 className="font-medium text-[#1A1A2E]">Resumo da Semana</h3>
@@ -231,7 +231,7 @@ export default function RelatoriosPage() {
               </div>
 
               {/* Highlights */}
-              <div className="bg-white rounded-2xl border border-black/[0.04] p-6">
+              <div className="bg-white rounded-2xl border border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Sparkles className="w-5 h-5 text-[#4A9FFF]" />
                   <h3 className="font-medium text-[#1A1A2E]">Destaques</h3>
@@ -247,7 +247,7 @@ export default function RelatoriosPage() {
               </div>
 
               {/* Insights */}
-              <div className="bg-white rounded-2xl border border-black/[0.04] p-6">
+              <div className="bg-white rounded-2xl border border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Zap className="w-5 h-5 text-[#4A9FFF]" />
                   <h3 className="font-medium text-[#1A1A2E]">Insights</h3>

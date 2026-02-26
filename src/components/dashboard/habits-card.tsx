@@ -38,12 +38,12 @@ export function HabitsCard({ habits, weekStart }: HabitsCardProps) {
   };
 
   return (
-    <Card className="rounded-2xl border-black/[0.04]">
+    <Card className="rounded-2xl border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] bg-white">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium text-[#1A1A2E] flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-[#4A9FFF]" />
-            Habitos Rastreados
+            Hábitos Rastreados
           </CardTitle>
           <Link href="/habitos?new=true">
             <Button size="sm" className="gap-1 bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl">
@@ -59,11 +59,11 @@ export function HabitsCard({ habits, weekStart }: HabitsCardProps) {
               <TrendingUp className="w-6 h-6 text-[#4A9FFF]" />
             </div>
             <p className="text-[#718096] font-light mb-3">
-              Voce ainda nao tem habitos cadastrados
+              Você ainda não tem hábitos cadastrados
             </p>
             <Link href="/habitos?new=true">
               <Button variant="outline" size="sm" className="rounded-xl">
-                Criar primeiro habito
+                Criar primeiro hábito
               </Button>
             </Link>
           </div>
@@ -134,7 +134,7 @@ export function HabitsCard({ habits, weekStart }: HabitsCardProps) {
             href="/habitos"
             className="block text-center text-sm text-[#4A9FFF] hover:underline mt-4"
           >
-            Ver todos os habitos
+            Ver todos os hábitos
           </Link>
         )}
       </CardContent>

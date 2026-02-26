@@ -128,9 +128,9 @@ export function HabitsClient({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-medium text-[#1A1A2E]">Habitos</h1>
-          <p className="text-[#718096] font-light">
-            {activeHabits.length} habito{activeHabits.length !== 1 ? "s" : ""} ativo
+          <h1 className="text-2xl font-medium text-white">Hábitos</h1>
+          <p className="text-white/50 font-light">
+            {activeHabits.length} hábito{activeHabits.length !== 1 ? "s" : ""} ativo
             {activeHabits.length !== 1 ? "s" : ""}
           </p>
         </div>

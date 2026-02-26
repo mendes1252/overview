@@ -111,13 +111,13 @@ export default function ConfiguracoesPage() {
   return (
     <div className="max-w-2xl mx-auto pb-20 lg:pb-0">
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 rounded-xl bg-[#4A9FFF]/10 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-xl bg-[#4A9FFF]/15 flex items-center justify-center">
           <Settings className="w-5 h-5 text-[#4A9FFF]" />
         </div>
-        <h1 className="text-2xl font-medium text-[#1A1A2E]">Configurações</h1>
+        <h1 className="text-2xl font-medium text-white">Configurações</h1>
       </div>
 
-      <div className="bg-white rounded-2xl border border-black/[0.04] shadow-sm p-6 space-y-6">
+      <div className="bg-white rounded-2xl border border-white/10 shadow-lg shadow-[#4A9FFF]/[0.04] p-6 space-y-6">
         <h2 className="text-lg font-medium text-[#1A1A2E]">Preferências</h2>
 
         <div>
