@@ -107,7 +107,7 @@ export function PhoneMockupSection() {
     return () => observerRef.current?.disconnect();
   }, [handleIntersection]);
 
-  // Mobile observer — separate with different rootMargin for mobile viewport
+  // Mobile observer — rootMargin focuses on lower viewport (below sticky phone)
   useEffect(() => {
     mobileObserverRef.current = new IntersectionObserver(
       (entries) => {
@@ -135,7 +135,7 @@ export function PhoneMockupSection() {
       {
         root: null,
         threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-        rootMargin: "-20% 0px -50% 0px",
+        rootMargin: "-50% 0px -20% 0px",
       }
     );
 
@@ -257,76 +257,99 @@ export function PhoneMockupSection() {
           </div>
         </div>
 
-        {/* =================== MOBILE LAYOUT (<lg) =================== */}
-        {/* Each feature is a full block: phone + description together, no sticky overlap */}
-        <div className="lg:hidden space-y-16">
-          {features.map((feature, i) => {
-            const Screen = phoneScreens[i];
-            return (
+        {/* =================== MOBILE LAYOUT (<lg) — carousel style =================== */}
+        <div className="lg:hidden">
+          {/* Sticky phone — single phone that transitions between screens */}
+          <div className="sticky top-14 z-30 bg-[#1A1A2E] pt-2 pb-1">
+            <div className="flex justify-center">
+              <div className="h-[315px] sm:h-[398px]">
+                <PhoneFrame className="scale-[0.55] sm:scale-[0.65] origin-top">
+                  {PreviousScreen && (
+                    <div className="absolute inset-0 phone-screen-exit z-0">
+                      <PreviousScreen />
+                    </div>
+                  )}
+                  <div
+                    className="absolute inset-0 phone-screen-enter z-10"
+                    key={`mobile-${activeIndex}`}
+                  >
+                    <ActiveScreen />
+                  </div>
+                </PhoneFrame>
+              </div>
+            </div>
+            {/* Progress dots */}
+            <div className="flex justify-center gap-2 mt-1">
+              {features.map((_, i) => (
+                <div
+                  key={i}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    activeIndex === i
+                      ? "w-6 bg-[#4A9FFF]"
+                      : "w-1.5 bg-white/20"
+                  }`}
+                />
+              ))}
+            </div>
+            {/* Bottom gradient fade */}
+            <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-b from-[#1A1A2E] to-transparent translate-y-full pointer-events-none" />
+          </div>
+
+          {/* Feature descriptions — scroll sentinels drive phone transitions */}
+          <div className="space-y-3 mt-6 px-2">
+            {features.map((feature, i) => (
               <div
                 key={feature.num}
                 ref={(el) => {
                   mobileFeatureRefs.current[i] = el;
                 }}
                 data-feature-index={i}
-                className={`transition-opacity duration-500 ${
-                  activeIndex === i ? "opacity-100" : "opacity-40"
+                className={`min-h-[160px] p-5 rounded-2xl border transition-all duration-500 ${
+                  activeIndex === i
+                    ? "bg-white/[0.06] border-[#4A9FFF]/20"
+                    : "bg-white/[0.02] border-white/[0.05] opacity-50"
                 }`}
               >
-                {/* Phone for this feature */}
-                <div className="flex justify-center mb-6">
-                  <PhoneFrame className="scale-[0.8] sm:scale-90 origin-top">
-                    <div className="absolute inset-0" key={`mobile-screen-${i}`}>
-                      <Screen />
-                    </div>
-                  </PhoneFrame>
-                </div>
-
-                {/* Feature description */}
-                <div className="text-center max-w-md mx-auto px-2">
-                  <div className="flex items-center justify-center gap-3 mb-3">
-                    <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
-                        activeIndex === i ? "bg-[#4A9FFF]/15" : "bg-white/5"
+                <div className="flex items-center gap-3 mb-3">
+                  <div
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                      activeIndex === i ? "bg-[#4A9FFF]/15" : "bg-white/5"
+                    }`}
+                  >
+                    <feature.icon
+                      className={`w-5 h-5 transition-colors ${
+                        activeIndex === i ? "text-[#4A9FFF]" : "text-white/30"
+                      }`}
+                    />
+                  </div>
+                  <div>
+                    <span className="font-mono text-[10px] text-[#4A9FFF]/50 block">
+                      {feature.num}
+                    </span>
+                    <h3
+                      className={`text-base font-medium transition-colors ${
+                        activeIndex === i ? "text-white" : "text-white/40"
                       }`}
                     >
-                      <feature.icon
-                        className={`w-5 h-5 ${
-                          activeIndex === i ? "text-[#4A9FFF]" : "text-white/30"
-                        }`}
-                      />
-                    </div>
-                    <div className="text-left">
-                      <span className="font-mono text-[10px] text-[#4A9FFF]/50 block">
-                        {feature.num}
-                      </span>
-                      <h3
-                        className={`text-lg font-medium ${
-                          activeIndex === i ? "text-white" : "text-white/40"
-                        }`}
-                      >
-                        {feature.title}
-                      </h3>
-                    </div>
+                      {feature.title}
+                    </h3>
                   </div>
-                  <p
-                    className={`text-sm font-light leading-relaxed ${
-                      activeIndex === i ? "text-white/60" : "text-white/25"
-                    }`}
-                  >
-                    {feature.desc}
-                  </p>
-                  <p
-                    className={`text-xs font-light mt-2 leading-relaxed ${
-                      activeIndex === i ? "text-[#4A9FFF]/60" : "text-[#4A9FFF]/20"
-                    }`}
-                  >
+                </div>
+                <p
+                  className={`text-sm font-light leading-relaxed transition-colors ${
+                    activeIndex === i ? "text-white/60" : "text-white/25"
+                  }`}
+                >
+                  {feature.desc}
+                </p>
+                {activeIndex === i && (
+                  <p className="text-xs text-[#4A9FFF]/60 font-light mt-2 leading-relaxed animate-fadeIn">
                     {feature.detail}
                   </p>
-                </div>
+                )}
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
     </section>

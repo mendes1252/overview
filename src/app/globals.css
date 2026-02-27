@@ -396,21 +396,21 @@
 /* ===== Phone Mockup Section ===== */
 
 @keyframes screenIn {
-  0% { opacity: 0; filter: blur(12px); transform: scale(0.96); }
-  100% { opacity: 1; filter: blur(0px); transform: scale(1); }
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 @keyframes screenOut {
-  0% { opacity: 1; filter: blur(0px); transform: scale(1); }
-  100% { opacity: 0; filter: blur(12px); transform: scale(0.96); }
+  0% { opacity: 1; }
+  100% { opacity: 0; filter: blur(6px); }
 }
 
 .phone-screen-enter {
-  animation: screenIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: screenIn 0.25s ease-out forwards;
 }
 
 .phone-screen-exit {
-  animation: screenOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: screenOut 0.3s ease-in forwards;
 }
 
 .feature-item {
@@ -549,11 +549,15 @@
   .chat-bubble-enter,
   .stat-pop-enter,
   .check-tick-enter,
-  .day-fill-enter {
+  .day-fill-enter,
+  .animate-progress-fill {
     animation: none;
     opacity: 1;
     transform: none;
     filter: none;
+  }
+  .animate-progress-fill {
+    width: var(--progress-width);
   }
   .phone-screen-exit {
     animation: none;
