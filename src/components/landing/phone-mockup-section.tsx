@@ -57,6 +57,41 @@ const features = [
   },
 ];
 
+// Fan card slot positions — desktop (full-size phone)
+const desktopSlots: Record<
+  number,
+  { rotate: number; x: number; y: number; scale: number; opacity: number }
+> = {
+  [-2]: { rotate: -16, x: -200, y: 20, scale: 0.55, opacity: 0.25 },
+  [-1]: { rotate: -7, x: -110, y: 8, scale: 0.65, opacity: 0.45 },
+  1: { rotate: 6, x: 100, y: 5, scale: 0.68, opacity: 0.5 },
+  2: { rotate: 14, x: 175, y: 15, scale: 0.58, opacity: 0.35 },
+  3: { rotate: 20, x: 235, y: 30, scale: 0.48, opacity: 0.2 },
+};
+
+// Fan card slot positions — mobile (scaled-down phone)
+const mobileSlots: Record<
+  number,
+  { rotate: number; x: number; y: number; scale: number; opacity: number }
+> = {
+  [-2]: { rotate: -14, x: -85, y: 15, scale: 0.4, opacity: 0.2 },
+  [-1]: { rotate: -6, x: -45, y: 5, scale: 0.5, opacity: 0.35 },
+  1: { rotate: 5, x: 42, y: 3, scale: 0.52, opacity: 0.4 },
+  2: { rotate: 12, x: 80, y: 12, scale: 0.42, opacity: 0.25 },
+  3: { rotate: 17, x: 110, y: 20, scale: 0.35, opacity: 0.15 },
+};
+
+function getFanSlot(
+  itemIndex: number,
+  activeIndex: number,
+  total: number
+): number | null {
+  const diff = ((itemIndex - activeIndex) % total + total) % total;
+  if (diff === 0) return null; // active — shown in phone
+  if (diff <= Math.ceil((total - 1) / 2)) return diff; // right side
+  return diff - total; // left side (negative)
+}
+
 export function PhoneMockupSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState<number | null>(null);
@@ -158,10 +193,56 @@ export function PhoneMockupSection() {
   const PreviousScreen =
     previousIndex !== null ? phoneScreens[previousIndex] : null;
 
+  const renderFanCards = (
+    slots: Record<
+      number,
+      { rotate: number; x: number; y: number; scale: number; opacity: number }
+    >,
+    cardClass: string,
+    iconClass: string,
+    textClass: string
+  ) => {
+    return features.map((feature, i) => {
+      const slot = getFanSlot(i, activeIndex, features.length);
+      if (slot === null) return null;
+      const pos = slots[slot];
+      if (!pos) return null;
+      const Icon = feature.icon;
+      return (
+        <div
+          key={`fan-${feature.num}`}
+          className="fan-card"
+          style={{
+            transform: `translate(-50%, -50%) translateX(${pos.x}px) translateY(${pos.y}px) rotate(${pos.rotate}deg) scale(${pos.scale})`,
+            opacity: pos.opacity,
+          }}
+        >
+          <div
+            className={`${cardClass} rounded-[20px] bg-white/[0.06] border border-white/10 backdrop-blur-sm flex flex-col items-center justify-center gap-2`}
+          >
+            <div
+              className={`${iconClass} rounded-xl bg-[#4A9FFF]/15 flex items-center justify-center`}
+            >
+              <Icon className="w-5 h-5 text-[#4A9FFF]" />
+            </div>
+            <span
+              className={`${textClass} text-white/80 font-medium text-center px-2 leading-tight`}
+            >
+              {feature.title}
+            </span>
+            <span className="font-mono text-[9px] text-[#4A9FFF]/40">
+              {feature.num}
+            </span>
+          </div>
+        </div>
+      );
+    });
+  };
+
   return (
     <section
       id="funcionalidades"
-      className="py-24 sm:py-32 px-6 bg-[#1A1A2E] relative"
+      className="py-24 sm:py-32 px-6 bg-[#1A1A2E] relative overflow-x-clip"
     >
       <div className="absolute inset-0 bg-dot-pattern pointer-events-none opacity-20" />
       <div className="relative max-w-[1200px] mx-auto">
@@ -239,31 +320,19 @@ export function PhoneMockupSection() {
             ))}
           </div>
 
-          {/* Right: sticky phone */}
-          <div className="sticky top-32 flex justify-center pb-16">
-            <PhoneFrame>
-              {PreviousScreen && (
-                <div className="absolute inset-0 phone-screen-exit z-0">
-                  <PreviousScreen />
-                </div>
+          {/* Right: sticky phone + fan cards */}
+          <div className="sticky top-32 flex justify-center pb-16 overflow-visible">
+            <div className="relative">
+              {/* Fan cards behind phone */}
+              {renderFanCards(
+                desktopSlots,
+                "w-[140px] h-[200px]",
+                "w-12 h-12",
+                "text-xs"
               )}
-              <div
-                className="absolute inset-0 phone-screen-enter z-10"
-                key={activeIndex}
-              >
-                <ActiveScreen />
-              </div>
-            </PhoneFrame>
-          </div>
-        </div>
-
-        {/* =================== MOBILE LAYOUT (<lg) — carousel style =================== */}
-        <div className="lg:hidden">
-          {/* Sticky phone — single phone that transitions between screens */}
-          <div className="sticky top-14 z-30 bg-[#1A1A2E] pt-2 pb-1">
-            <div className="flex justify-center">
-              <div className="h-[315px] sm:h-[398px]">
-                <PhoneFrame className="scale-[0.55] sm:scale-[0.65] origin-top">
+              {/* Phone in front */}
+              <div className="relative z-10">
+                <PhoneFrame>
                   {PreviousScreen && (
                     <div className="absolute inset-0 phone-screen-exit z-0">
                       <PreviousScreen />
@@ -271,11 +340,45 @@ export function PhoneMockupSection() {
                   )}
                   <div
                     className="absolute inset-0 phone-screen-enter z-10"
-                    key={`mobile-${activeIndex}`}
+                    key={activeIndex}
                   >
                     <ActiveScreen />
                   </div>
                 </PhoneFrame>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* =================== MOBILE LAYOUT (<lg) — carousel style =================== */}
+        <div className="lg:hidden">
+          {/* Sticky phone — single phone that transitions between screens */}
+          <div className="sticky top-14 z-30 bg-[#1A1A2E] pt-2 pb-1 overflow-visible">
+            <div className="flex justify-center overflow-visible">
+              <div className="h-[315px] sm:h-[398px] relative">
+                {/* Fan cards behind phone */}
+                {renderFanCards(
+                  mobileSlots,
+                  "w-[100px] h-[140px]",
+                  "w-10 h-10",
+                  "text-[10px]"
+                )}
+                {/* Phone in front */}
+                <div className="relative z-10">
+                  <PhoneFrame className="scale-[0.55] sm:scale-[0.65] origin-top">
+                    {PreviousScreen && (
+                      <div className="absolute inset-0 phone-screen-exit z-0">
+                        <PreviousScreen />
+                      </div>
+                    )}
+                    <div
+                      className="absolute inset-0 phone-screen-enter z-10"
+                      key={`mobile-${activeIndex}`}
+                    >
+                      <ActiveScreen />
+                    </div>
+                  </PhoneFrame>
+                </div>
               </div>
             </div>
             {/* Progress dots */}
