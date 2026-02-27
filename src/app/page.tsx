@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PhoneMockupSection } from "@/components/landing/phone-mockup-section";
+import { ScrollReveal } from "@/components/landing/scroll-reveal";
 import {
   CheckCircle2,
   Target,
@@ -136,17 +137,19 @@ export default function LandingPage() {
       {/* How It Works */}
       <section id="como-funciona" className="py-24 sm:py-32 px-6 bg-[#1A1A2E] border-t border-white/5">
         <div className="max-w-[1200px] mx-auto">
-          <div className="text-center mb-20">
-            <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
-              Como Funciona
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-white leading-tight tracking-[-0.02em] mb-5">
-              Simples de <span className="text-gradient font-medium">começar.</span>
-            </h2>
-            <p className="text-base sm:text-lg text-white/50 max-w-xl mx-auto font-light">
-              Em menos de 2 minutos você está pronto para transformar sua produtividade.
-            </p>
-          </div>
+          <ScrollReveal>
+            <div className="text-center mb-16 sm:mb-20">
+              <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
+                Como Funciona
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-white leading-tight tracking-[-0.02em] mb-5">
+                Simples de <span className="text-gradient font-medium">começar.</span>
+              </h2>
+              <p className="text-base sm:text-lg text-white/50 max-w-xl mx-auto font-light">
+                Em menos de 2 minutos você está pronto para transformar sua produtividade.
+              </p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-3 gap-8 sm:gap-12 max-w-4xl mx-auto">
             {[
@@ -154,14 +157,16 @@ export default function LandingPage() {
               { step: "02", title: "Configure preferências", desc: "Escolha seu tom de coach, dia de início da semana e horários.", icon: Sparkles },
               { step: "03", title: "Comece a produzir", desc: "Adicione tarefas, hábitos e metas. A IA cuida do resto.", icon: Zap },
             ].map((item, i) => (
-              <div key={item.step} className={`text-center ${i < 2 ? 'step-line' : ''}`}>
-                <div className="w-16 h-16 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-6">
-                  <item.icon className="w-7 h-7 text-[#4A9FFF]" />
+              <ScrollReveal key={item.step} delay={i * 200}>
+                <div className={`text-center ${i < 2 ? 'step-line' : ''}`}>
+                  <div className="w-16 h-16 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-6">
+                    <item.icon className="w-7 h-7 text-[#4A9FFF]" />
+                  </div>
+                  <span className="text-xs text-[#4A9FFF] font-mono font-medium tracking-wider">PASSO {item.step}</span>
+                  <h3 className="text-xl font-medium text-white mt-2 mb-3">{item.title}</h3>
+                  <p className="text-sm text-white/50 font-light leading-relaxed max-w-[280px] mx-auto">{item.desc}</p>
                 </div>
-                <span className="text-xs text-[#4A9FFF] font-mono font-medium tracking-wider">PASSO {item.step}</span>
-                <h3 className="text-xl font-medium text-white mt-2 mb-3">{item.title}</h3>
-                <p className="text-sm text-white/50 font-light leading-relaxed max-w-[280px] mx-auto">{item.desc}</p>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -173,44 +178,47 @@ export default function LandingPage() {
         <div className="absolute bottom-0 left-0 w-[300px] h-[300px] gradient-radial-glow animate-breathe pointer-events-none" style={{ animationDelay: '4s' }} />
 
         <div className="relative max-w-[1200px] mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 text-[#4A9FFF] px-4 py-2 rounded-full text-sm font-light tracking-wider mb-8">
-                <Brain className="w-3.5 h-3.5" />
-                Inteligência Artificial
-              </div>
+          <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 items-center">
+            <ScrollReveal>
+              <div>
+                <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 text-[#4A9FFF] px-4 py-2 rounded-full text-sm font-light tracking-wider mb-8">
+                  <Brain className="w-3.5 h-3.5" />
+                  Inteligência Artificial
+                </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-[48px] font-light text-white leading-tight tracking-[-0.02em] mb-6">
-                Seus dados viram<br /><span className="text-gradient font-medium">insights reais.</span>
-              </h2>
+                <h2 className="text-3xl sm:text-4xl lg:text-[48px] font-light text-white leading-tight tracking-[-0.02em] mb-6">
+                  Seus dados viram<br /><span className="text-gradient font-medium">insights reais.</span>
+                </h2>
 
-              <p className="text-base sm:text-lg text-white/50 mb-10 font-light leading-relaxed max-w-lg">
-                Nossa IA analisa seus padrões semanais e gera relatórios com insights
-                acionáveis, celebra conquistas e sugere melhorias específicas.
-              </p>
+                <p className="text-base sm:text-lg text-white/50 mb-10 font-light leading-relaxed max-w-lg">
+                  Nossa IA analisa seus padrões semanais e gera relatórios com insights
+                  acionáveis, celebra conquistas e sugere melhorias específicas.
+                </p>
 
-              <div className="space-y-5">
-                {[
-                  { label: "Análise de padrões", desc: "Identifica seus ciclos de produtividade e pontos de atenção" },
-                  { label: "Sugestões proativas", desc: "Recomendações baseadas em seus dados reais, não genéricas" },
-                  { label: "Coach personalizado", desc: "Escolha entre 4 tons: motivador, calmo, direto ou amigável" },
-                ].map((item) => (
-                  <div key={item.label} className="flex gap-4">
-                    <div className="w-8 h-8 rounded-lg bg-[#4A9FFF]/15 flex items-center justify-center shrink-0 mt-0.5">
-                      <ChevronRight className="w-4 h-4 text-[#4A9FFF]" />
+                <div className="space-y-5">
+                  {[
+                    { label: "Análise de padrões", desc: "Identifica seus ciclos de produtividade e pontos de atenção" },
+                    { label: "Sugestões proativas", desc: "Recomendações baseadas em seus dados reais, não genéricas" },
+                    { label: "Coach personalizado", desc: "Escolha entre 4 tons: motivador, calmo, direto ou amigável" },
+                  ].map((item) => (
+                    <div key={item.label} className="flex gap-4">
+                      <div className="w-8 h-8 rounded-lg bg-[#4A9FFF]/15 flex items-center justify-center shrink-0 mt-0.5">
+                        <ChevronRight className="w-4 h-4 text-[#4A9FFF]" />
+                      </div>
+                      <div>
+                        <h4 className="text-white font-medium text-sm mb-1">{item.label}</h4>
+                        <p className="text-white/40 text-sm font-light leading-relaxed">{item.desc}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="text-white font-medium text-sm mb-1">{item.label}</h4>
-                      <p className="text-white/40 text-sm font-light leading-relaxed">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Mockup Card */}
-            <div className="relative">
-              <div className="card-dark rounded-2xl p-8 animate-shimmer">
+            <ScrollReveal delay={200}>
+              <div className="relative">
+                <div className="card-dark rounded-2xl p-6 sm:p-8 animate-shimmer">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
                     <BarChart3 className="w-5 h-5 text-white" />
@@ -244,8 +252,9 @@ export default function LandingPage() {
                   </p>
                 </div>
               </div>
-              <div className="absolute -top-4 -right-4 w-24 h-24 gradient-radial-glow pointer-events-none" />
-            </div>
+                <div className="absolute -top-4 -right-4 w-24 h-24 gradient-radial-glow pointer-events-none" />
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -254,42 +263,46 @@ export default function LandingPage() {
       <section className="py-24 sm:py-32 px-6 bg-[#1A1A2E] relative">
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none opacity-10" />
         <div className="relative max-w-[1200px] mx-auto">
-          <div className="text-center mb-16">
-            <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
-              Depoimentos
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-white leading-tight tracking-[-0.02em]">
-              Quem usa, <span className="text-gradient font-medium">recomenda.</span>
-            </h2>
-          </div>
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
+                Depoimentos
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-white leading-tight tracking-[-0.02em]">
+                Quem usa, <span className="text-gradient font-medium">recomenda.</span>
+              </h2>
+            </div>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
               { quote: "O Pulse mudou minha relação com produtividade. Não é sobre fazer mais, é sobre fazer o que importa.", name: "Maria Silva", role: "Product Designer" },
               { quote: "Os relatórios semanais com IA são incríveis. Consigo ver padrões que eu nunca percebia sozinho.", name: "Lucas Mendes", role: "Desenvolvedor Full Stack" },
               { quote: "Testei dezenas de apps de produtividade. O Pulse é o único que consegui manter por mais de 3 meses.", name: "Ana Costa", role: "Empreendedora" },
-            ].map((t) => (
-              <div key={t.name} className="testimonial-card p-8 rounded-2xl border border-white/10 bg-white shadow-lg shadow-[#4A9FFF]/[0.04]">
-                <div className="flex gap-0.5 mb-5">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-[#4A9FFF] fill-[#4A9FFF]" />
-                  ))}
-                </div>
-                <blockquote className="text-[#1A1A2E] font-light leading-relaxed mb-6 text-[15px]">
-                  &ldquo;{t.quote}&rdquo;
-                </blockquote>
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full gradient-primary flex items-center justify-center">
-                    <span className="text-white text-xs font-medium">
-                      {t.name.split(' ').map(n => n[0]).join('')}
-                    </span>
+            ].map((t, i) => (
+              <ScrollReveal key={t.name} delay={i * 150}>
+                <div className="testimonial-card p-6 sm:p-8 rounded-2xl border border-white/10 bg-white/[0.05] backdrop-blur-sm h-full">
+                  <div className="flex gap-0.5 mb-5">
+                    {Array.from({ length: 5 }).map((_, j) => (
+                      <Star key={j} className="w-4 h-4 text-[#4A9FFF] fill-[#4A9FFF]" />
+                    ))}
                   </div>
-                  <div>
-                    <div className="text-sm font-medium text-[#1A1A2E]">{t.name}</div>
-                    <div className="text-xs text-[#718096] font-light">{t.role}</div>
+                  <blockquote className="text-white/70 font-light leading-relaxed mb-6 text-[15px]">
+                    &ldquo;{t.quote}&rdquo;
+                  </blockquote>
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full gradient-primary flex items-center justify-center">
+                      <span className="text-white text-xs font-medium">
+                        {t.name.split(' ').map(n => n[0]).join('')}
+                      </span>
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium text-white">{t.name}</div>
+                      <div className="text-xs text-white/40 font-light">{t.role}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -299,100 +312,110 @@ export default function LandingPage() {
       <section id="precos" className="py-24 sm:py-32 px-6 bg-[#1A1A2E] relative border-t border-white/5">
         <div className="absolute inset-0 bg-dot-pattern pointer-events-none opacity-20" />
         <div className="relative max-w-[1200px] mx-auto">
-          <div className="text-center mb-20">
-            <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
-              Preços
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-white leading-tight tracking-[-0.02em] mb-5">
-              Simples. <span className="text-gradient font-medium">Transparente.</span>
-            </h2>
-            <p className="text-base sm:text-lg text-white/50 font-light">
-              Comece grátis e evolua quando estiver pronto.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Free */}
-            <div className="p-8 sm:p-10 rounded-2xl border border-white/10 bg-white shadow-lg shadow-[#4A9FFF]/[0.04]">
-              <h3 className="text-xl font-medium text-[#1A1A2E] mb-1">Gratuito</h3>
-              <p className="text-sm text-[#718096] font-light mb-8">Para começar sua jornada</p>
-              <div className="mb-8">
-                <span className="text-5xl font-light text-[#1A1A2E] tracking-tight">R$0</span>
-                <span className="text-[#718096] font-light text-sm ml-1">/mês</span>
-              </div>
-              <ul className="space-y-3.5 mb-10">
-                {["Até 10 tarefas ativas", "Até 3 hábitos", "1 meta por período", "Relatórios mensais", "Dashboard completo"].map((f) => (
-                  <li key={f} className="flex items-center gap-3 text-sm text-[#718096] font-light">
-                    <CheckCircle2 className="w-4 h-4 text-[#4A9FFF] shrink-0" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Link href="/cadastro">
-                <Button variant="outline" className="w-full rounded-full border border-[#1A1A2E]/10 text-[#1A1A2E] hover:bg-[#F5F7FA] py-6 text-sm font-medium" size="lg">
-                  Começar Grátis
-                </Button>
-              </Link>
+          <ScrollReveal>
+            <div className="text-center mb-16 sm:mb-20">
+              <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
+                Preços
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-white leading-tight tracking-[-0.02em] mb-5">
+                Simples. <span className="text-gradient font-medium">Transparente.</span>
+              </h2>
+              <p className="text-base sm:text-lg text-white/50 font-light">
+                Comece grátis e evolua quando estiver pronto.
+              </p>
             </div>
+          </ScrollReveal>
+
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
+            {/* Free */}
+            <ScrollReveal>
+              <div className="p-6 sm:p-10 rounded-2xl border border-white/10 bg-white/[0.05] backdrop-blur-sm h-full">
+                <h3 className="text-xl font-medium text-white mb-1">Gratuito</h3>
+                <p className="text-sm text-white/50 font-light mb-8">Para começar sua jornada</p>
+                <div className="mb-8">
+                  <span className="text-5xl font-light text-white tracking-tight">R$0</span>
+                  <span className="text-white/50 font-light text-sm ml-1">/mês</span>
+                </div>
+                <ul className="space-y-3.5 mb-10">
+                  {["Até 10 tarefas ativas", "Até 3 hábitos", "1 meta por período", "Relatórios mensais", "Dashboard completo"].map((f) => (
+                    <li key={f} className="flex items-center gap-3 text-sm text-white/60 font-light">
+                      <CheckCircle2 className="w-4 h-4 text-[#4A9FFF] shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/cadastro">
+                  <Button variant="outline" className="w-full rounded-full border border-white/20 text-white hover:bg-white/10 py-6 text-sm font-medium" size="lg">
+                    Começar Grátis
+                  </Button>
+                </Link>
+              </div>
+            </ScrollReveal>
 
             {/* Pro */}
-            <div className="p-8 sm:p-10 rounded-2xl border-2 border-[#4A9FFF] bg-white relative pricing-popular shadow-lg shadow-[#4A9FFF]/10">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 gradient-primary text-white text-[11px] font-semibold px-5 py-1.5 rounded-full tracking-wider uppercase">
-                Mais Popular
-              </div>
-              <h3 className="text-xl font-medium text-[#1A1A2E] mb-1">Pro</h3>
-              <p className="text-sm text-[#718096] font-light mb-8">Para quem leva produtividade a sério</p>
-              <div className="mb-8">
-                <span className="text-5xl font-light text-[#1A1A2E] tracking-tight">R$297</span>
-                <div className="flex flex-col items-start mt-1">
-                  <span className="text-[#718096] font-light text-sm">compra única</span>
-                  <span className="text-xs text-[#4A9FFF] font-medium">Validade de 1 ano</span>
+            <ScrollReveal delay={150}>
+              <div className="p-6 sm:p-10 rounded-2xl border-2 border-[#4A9FFF] bg-white/[0.05] backdrop-blur-sm relative pricing-popular shadow-lg shadow-[#4A9FFF]/10 h-full">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 gradient-primary text-white text-[11px] font-semibold px-5 py-1.5 rounded-full tracking-wider uppercase">
+                  Mais Popular
                 </div>
+                <h3 className="text-xl font-medium text-white mb-1">Pro</h3>
+                <p className="text-sm text-white/50 font-light mb-8">Para quem leva produtividade a sério</p>
+                <div className="mb-8">
+                  <span className="text-5xl font-light text-white tracking-tight">R$297</span>
+                  <div className="flex flex-col items-start mt-1">
+                    <span className="text-white/50 font-light text-sm">compra única</span>
+                    <span className="text-xs text-[#4A9FFF] font-medium">Validade de 1 ano</span>
+                  </div>
+                </div>
+                <ul className="space-y-3.5 mb-10">
+                  {["Tarefas ilimitadas", "Hábitos ilimitados", "Metas ilimitadas", "Relatórios semanais com IA", "Coach de IA personalizado", "Suporte prioritário"].map((f) => (
+                    <li key={f} className="flex items-center gap-3 text-sm text-white/60 font-light">
+                      <CheckCircle2 className="w-4 h-4 text-[#4A9FFF] shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/checkout?plan=pro">
+                  <Button className="w-full bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-full btn-pulse py-6 text-sm font-semibold" size="lg">
+                    Garantir acesso Pro
+                  </Button>
+                </Link>
               </div>
-              <ul className="space-y-3.5 mb-10">
-                {["Tarefas ilimitadas", "Hábitos ilimitados", "Metas ilimitadas", "Relatórios semanais com IA", "Coach de IA personalizado", "Suporte prioritário"].map((f) => (
-                  <li key={f} className="flex items-center gap-3 text-sm text-[#718096] font-light">
-                    <CheckCircle2 className="w-4 h-4 text-[#4A9FFF] shrink-0" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Link href="/checkout?plan=pro">
-                <Button className="w-full bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-full btn-pulse py-6 text-sm font-semibold" size="lg">
-                  Garantir acesso Pro
-                </Button>
-              </Link>
-            </div>
+            </ScrollReveal>
           </div>
 
-          <div className="flex flex-wrap justify-center items-center gap-8 mt-12">
-            <div className="flex items-center gap-2 text-xs text-white/40 font-light">
-              <Shield className="w-4 h-4" />
-              Pagamento seguro
+          <ScrollReveal delay={300}>
+            <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 mt-12">
+              <div className="flex items-center gap-2 text-xs text-white/40 font-light">
+                <Shield className="w-4 h-4" />
+                Pagamento seguro
+              </div>
+              <div className="flex items-center gap-2 text-xs text-white/40 font-light">
+                <Clock className="w-4 h-4" />
+                Garantia de 7 dias
+              </div>
+              <div className="flex items-center gap-2 text-xs text-white/40 font-light">
+                <Users className="w-4 h-4" />
+                Suporte humanizado
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-xs text-white/40 font-light">
-              <Clock className="w-4 h-4" />
-              Garantia de 7 dias
-            </div>
-            <div className="flex items-center gap-2 text-xs text-white/40 font-light">
-              <Users className="w-4 h-4" />
-              Suporte humanizado
-            </div>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* FAQ */}
       <section className="py-24 sm:py-32 px-6 bg-[#1A1A2E] border-t border-white/5">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
-              Dúvidas
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-light text-white tracking-[-0.02em]">
-              Perguntas <span className="text-gradient font-medium">frequentes</span>
-            </h2>
-          </div>
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
+                Dúvidas
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-light text-white tracking-[-0.02em]">
+                Perguntas <span className="text-gradient font-medium">frequentes</span>
+              </h2>
+            </div>
+          </ScrollReveal>
 
           <div className="space-y-4">
             {[
@@ -401,11 +424,13 @@ export default function LandingPage() {
               { q: "Como funciona a compra do plano Pro?", a: "Você paga uma única vez R$297 e tem acesso completo por 1 ano. Sem cobranças recorrentes, sem surpresas." },
               { q: "Meus dados estão seguros?", a: "Sim. Usamos criptografia em trânsito e em repouso. Seus dados nunca são compartilhados com terceiros." },
               { q: "Funciona no celular?", a: "Sim. O Pulse é um PWA (Progressive Web App) e pode ser instalado no seu celular como um app nativo, com acesso offline." },
-            ].map((faq) => (
-              <div key={faq.q} className="p-6 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm">
-                <h4 className="font-medium text-white text-[15px] mb-2">{faq.q}</h4>
-                <p className="text-sm text-white/50 font-light leading-relaxed">{faq.a}</p>
-              </div>
+            ].map((faq, i) => (
+              <ScrollReveal key={faq.q} delay={i * 100}>
+                <div className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm">
+                  <h4 className="font-medium text-white text-[15px] mb-2">{faq.q}</h4>
+                  <p className="text-sm text-white/50 font-light leading-relaxed">{faq.a}</p>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -417,22 +442,24 @@ export default function LandingPage() {
         <div className="absolute top-10 left-10 w-2 h-2 rounded-full bg-[#4A9FFF]/20 animate-float" />
         <div className="absolute bottom-20 right-20 w-1.5 h-1.5 rounded-full bg-[#6BB5FF]/15 animate-float delay-300" />
 
-        <div className="relative max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-white leading-tight tracking-[-0.02em] mb-6">
-            Pronto para o seu<br /><span className="text-gradient font-medium">próximo nível?</span>
-          </h2>
-          <p className="text-base sm:text-lg text-white/50 mb-10 font-light max-w-lg mx-auto">
-            Junte-se a quem já transformou produtividade em intenção.
-          </p>
-          <Link href="/cadastro">
-            <Button size="lg" className="bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-full btn-pulse gap-2 text-base px-8 py-6 font-semibold">
-              Começar Agora — É Grátis <ArrowRight className="w-5 h-5" />
-            </Button>
-          </Link>
-          <p className="text-xs text-white/25 mt-6 font-light">
-            Configuração em menos de 2 minutos
-          </p>
-        </div>
+        <ScrollReveal>
+          <div className="relative max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl sm:text-4xl lg:text-[52px] font-light text-white leading-tight tracking-[-0.02em] mb-6">
+              Pronto para o seu<br /><span className="text-gradient font-medium">próximo nível?</span>
+            </h2>
+            <p className="text-base sm:text-lg text-white/50 mb-10 font-light max-w-lg mx-auto">
+              Junte-se a quem já transformou produtividade em intenção.
+            </p>
+            <Link href="/cadastro">
+              <Button size="lg" className="bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-full btn-pulse gap-2 text-base px-8 py-6 font-semibold">
+                Começar Agora — É Grátis <ArrowRight className="w-5 h-5" />
+              </Button>
+            </Link>
+            <p className="text-xs text-white/25 mt-6 font-light">
+              Configuração em menos de 2 minutos
+            </p>
+          </div>
+        </ScrollReveal>
       </section>
 
       {/* Footer */}
