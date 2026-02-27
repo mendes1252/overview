@@ -345,7 +345,7 @@ export default function LandingPage() {
                   ))}
                 </ul>
                 <Link href="/cadastro">
-                  <Button variant="outline" className="w-full rounded-full border border-white/20 text-white hover:bg-white/10 py-6 text-sm font-medium" size="lg">
+                  <Button variant="outline" className="w-full rounded-full border-2 border-white/30 text-white hover:bg-white/10 py-6 text-sm font-medium bg-white/[0.05]" size="lg">
                     Começar Grátis
                   </Button>
                 </Link>
