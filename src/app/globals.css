@@ -486,10 +486,73 @@
   width: 0%;
 }
 
+/* Staggered item entrance for phone screens */
+@keyframes itemSlideIn {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.phone-item-enter {
+  opacity: 0;
+  animation: itemSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Chat bubble typing animation */
+@keyframes chatBubbleIn {
+  0% { opacity: 0; transform: translateY(8px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.chat-bubble-enter {
+  opacity: 0;
+  animation: chatBubbleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Counter animation for stat values */
+@keyframes statPop {
+  0% { opacity: 0; transform: scale(0.5); }
+  70% { transform: scale(1.1); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.stat-pop-enter {
+  opacity: 0;
+  animation: statPop 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Checkbox tick animation */
+@keyframes checkTick {
+  0% { opacity: 0; transform: scale(0); }
+  60% { transform: scale(1.3); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.check-tick-enter {
+  opacity: 0;
+  animation: checkTick 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Day cell fill animation */
+@keyframes dayFill {
+  0% { opacity: 0; transform: scale(0.3); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.day-fill-enter {
+  opacity: 0;
+  animation: dayFill 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .phone-screen-enter {
+  .phone-screen-enter,
+  .phone-item-enter,
+  .chat-bubble-enter,
+  .stat-pop-enter,
+  .check-tick-enter,
+  .day-fill-enter {
     animation: none;
     opacity: 1;
+    transform: none;
     filter: none;
   }
   .phone-screen-exit {

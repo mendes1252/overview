@@ -61,8 +61,11 @@ export function PhoneMockupSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState<number | null>(null);
   const featureRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const mobileFeatureRefs = useRef<(HTMLDivElement | null)[]>([]);
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const mobileObserverRef = useRef<IntersectionObserver | null>(null);
 
+  // Desktop scroll handler
   const handleIntersection = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       let maxRatio = 0;
@@ -89,6 +92,7 @@ export function PhoneMockupSection() {
     []
   );
 
+  // Desktop observer
   useEffect(() => {
     observerRef.current = new IntersectionObserver(handleIntersection, {
       root: null,
@@ -103,6 +107,45 @@ export function PhoneMockupSection() {
     return () => observerRef.current?.disconnect();
   }, [handleIntersection]);
 
+  // Mobile observer — separate with different rootMargin for mobile viewport
+  useEffect(() => {
+    mobileObserverRef.current = new IntersectionObserver(
+      (entries) => {
+        let maxRatio = 0;
+        let maxIndex = -1;
+
+        entries.forEach((entry) => {
+          const index = Number(entry.target.getAttribute("data-feature-index"));
+          if (entry.intersectionRatio > maxRatio) {
+            maxRatio = entry.intersectionRatio;
+            maxIndex = index;
+          }
+        });
+
+        if (maxRatio > 0.2 && maxIndex >= 0) {
+          setActiveIndex((prev) => {
+            if (prev !== maxIndex) {
+              setPreviousIndex(prev);
+              return maxIndex;
+            }
+            return prev;
+          });
+        }
+      },
+      {
+        root: null,
+        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+        rootMargin: "-20% 0px -50% 0px",
+      }
+    );
+
+    mobileFeatureRefs.current.forEach((ref) => {
+      if (ref) mobileObserverRef.current?.observe(ref);
+    });
+
+    return () => mobileObserverRef.current?.disconnect();
+  }, []);
+
   // Clear previous screen after exit animation
   useEffect(() => {
     if (previousIndex !== null) {
@@ -110,13 +153,6 @@ export function PhoneMockupSection() {
       return () => clearTimeout(timeout);
     }
   }, [previousIndex]);
-
-  const handleFeatureClick = (index: number) => {
-    if (index !== activeIndex) {
-      setPreviousIndex(activeIndex);
-      setActiveIndex(index);
-    }
-  };
 
   const ActiveScreen = phoneScreens[activeIndex];
   const PreviousScreen =
@@ -130,7 +166,7 @@ export function PhoneMockupSection() {
       <div className="absolute inset-0 bg-dot-pattern pointer-events-none opacity-20" />
       <div className="relative max-w-[1200px] mx-auto">
         {/* Section header */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-16 lg:mb-20">
           <span className="inline-block text-xs text-[#4A9FFF] font-medium uppercase tracking-[0.2em] mb-4">
             Funcionalidades
           </span>
@@ -147,9 +183,9 @@ export function PhoneMockupSection() {
           </p>
         </div>
 
-        {/* Desktop layout */}
+        {/* =================== DESKTOP LAYOUT (lg+) =================== */}
         <div className="hidden lg:grid lg:grid-cols-2 lg:gap-16 lg:items-start">
-          {/* Left: scrollable feature descriptions */}
+          {/* Left: scrollable feature descriptions — scroll-only, no click */}
           <div className="space-y-0">
             {features.map((feature, i) => (
               <div
@@ -158,12 +194,11 @@ export function PhoneMockupSection() {
                   featureRefs.current[i] = el;
                 }}
                 data-feature-index={i}
-                className={`feature-item min-h-[240px] flex items-center py-8 pl-2 pr-8 border-l-2 cursor-pointer ${
+                className={`feature-item min-h-[240px] flex items-center py-8 pl-2 pr-8 border-l-2 ${
                   activeIndex === i
                     ? "feature-item-active border-l-[#4A9FFF]"
-                    : "feature-item-inactive border-l-white/10 hover:opacity-60"
+                    : "feature-item-inactive border-l-white/10"
                 }`}
-                onClick={() => handleFeatureClick(i)}
               >
                 <div className="pl-6">
                   <span className="font-mono text-[11px] tracking-wider text-[#4A9FFF]/50">
@@ -222,89 +257,76 @@ export function PhoneMockupSection() {
           </div>
         </div>
 
-        {/* Mobile layout */}
-        <div className="lg:hidden">
-          {/* Sticky phone at top — solid bg blocks cards from bleeding through */}
-          <div className="sticky top-16 z-30 pt-4 pb-4 bg-[#1A1A2E] relative">
-            <div className="flex justify-center">
-              <div className="relative">
-                <div className="absolute -inset-8 gradient-radial-glow opacity-30 pointer-events-none" />
-                <PhoneFrame className="scale-[0.85] sm:scale-100 origin-top">
-                  {PreviousScreen && (
-                    <div className="absolute inset-0 phone-screen-exit z-0">
-                      <PreviousScreen />
-                    </div>
-                  )}
-                  <div
-                    className="absolute inset-0 phone-screen-enter z-10"
-                    key={`mobile-${activeIndex}`}
-                  >
-                    <ActiveScreen />
-                  </div>
-                </PhoneFrame>
-              </div>
-            </div>
-            {/* Gradient fade at bottom to smooth transition */}
-            <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-b from-[#1A1A2E] to-transparent translate-y-full pointer-events-none" />
-          </div>
-
-          {/* Scrollable feature cards below */}
-          <div className="space-y-4 mt-8">
-            {features.map((feature, i) => (
+        {/* =================== MOBILE LAYOUT (<lg) =================== */}
+        {/* Each feature is a full block: phone + description together, no sticky overlap */}
+        <div className="lg:hidden space-y-16">
+          {features.map((feature, i) => {
+            const Screen = phoneScreens[i];
+            return (
               <div
                 key={feature.num}
                 ref={(el) => {
-                  featureRefs.current[i] = el;
+                  mobileFeatureRefs.current[i] = el;
                 }}
                 data-feature-index={i}
-                className={`feature-item p-6 rounded-2xl border transition-all duration-300 ${
-                  activeIndex === i
-                    ? "feature-item-active border-[#4A9FFF]/30 bg-white/[0.06]"
-                    : "opacity-50 border-white/[0.06] bg-white/[0.02]"
+                className={`transition-opacity duration-500 ${
+                  activeIndex === i ? "opacity-100" : "opacity-40"
                 }`}
               >
-                <div className="flex items-start gap-4">
-                  <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                      activeIndex === i ? "bg-[#4A9FFF]/15" : "bg-white/5"
-                    }`}
-                  >
-                    <feature.icon
-                      className={`w-5 h-5 ${
-                        activeIndex === i ? "text-[#4A9FFF]" : "text-white/30"
+                {/* Phone for this feature */}
+                <div className="flex justify-center mb-6">
+                  <PhoneFrame className="scale-[0.8] sm:scale-90 origin-top">
+                    <div className="absolute inset-0" key={`mobile-screen-${i}`}>
+                      <Screen />
+                    </div>
+                  </PhoneFrame>
+                </div>
+
+                {/* Feature description */}
+                <div className="text-center max-w-md mx-auto px-2">
+                  <div className="flex items-center justify-center gap-3 mb-3">
+                    <div
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
+                        activeIndex === i ? "bg-[#4A9FFF]/15" : "bg-white/5"
                       }`}
-                    />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="font-mono text-[10px] text-[#4A9FFF]/50">
+                    >
+                      <feature.icon
+                        className={`w-5 h-5 ${
+                          activeIndex === i ? "text-[#4A9FFF]" : "text-white/30"
+                        }`}
+                      />
+                    </div>
+                    <div className="text-left">
+                      <span className="font-mono text-[10px] text-[#4A9FFF]/50 block">
                         {feature.num}
                       </span>
                       <h3
-                        className={`text-base font-medium ${
+                        className={`text-lg font-medium ${
                           activeIndex === i ? "text-white" : "text-white/40"
                         }`}
                       >
                         {feature.title}
                       </h3>
                     </div>
-                    <p
-                      className={`text-sm font-light leading-relaxed ${
-                        activeIndex === i ? "text-white/60" : "text-white/25"
-                      }`}
-                    >
-                      {feature.desc}
-                    </p>
-                    {activeIndex === i && (
-                      <p className="text-xs text-[#4A9FFF]/60 font-light mt-2 leading-relaxed animate-fadeIn">
-                        {feature.detail}
-                      </p>
-                    )}
                   </div>
+                  <p
+                    className={`text-sm font-light leading-relaxed ${
+                      activeIndex === i ? "text-white/60" : "text-white/25"
+                    }`}
+                  >
+                    {feature.desc}
+                  </p>
+                  <p
+                    className={`text-xs font-light mt-2 leading-relaxed ${
+                      activeIndex === i ? "text-[#4A9FFF]/60" : "text-[#4A9FFF]/20"
+                    }`}
+                  >
+                    {feature.detail}
+                  </p>
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>
