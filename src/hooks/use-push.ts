@@ -50,13 +50,14 @@ export function usePush() {
       }
 
       const reg = await navigator.serviceWorker.ready;
-      const vapidKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
 
-      if (!vapidKey) {
-        console.error("VAPID public key not configured");
+      // Fetch VAPID key from server (process.env is only available at build time)
+      const vapidRes = await fetch("/api/push/vapid-key");
+      if (!vapidRes.ok) {
         setLoading(false);
-        return { ok: false, reason: "Chave VAPID não configurada." };
+        return { ok: false, reason: "Chave VAPID não configurada no servidor." };
       }
+      const { publicKey: vapidKey } = await vapidRes.json();
 
       // Check if there's already a subscription
       let subscription = await reg.pushManager.getSubscription();
