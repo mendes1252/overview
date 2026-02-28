@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ interface HabitsCardProps {
 }
 
 export function HabitsCard({ habits, weekStart }: HabitsCardProps) {
+  const router = useRouter();
   const weekDays = generateWeekDays(weekStart);
   const dayNames = ["D", "S", "T", "Q", "Q", "S", "S"];
 
@@ -23,7 +25,7 @@ export function HabitsCard({ habits, weekStart }: HabitsCardProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ date: date.toISOString() }),
       });
-      window.location.reload();
+      router.refresh();
     } catch (error) {
       console.error("Error toggling habit:", error);
     }

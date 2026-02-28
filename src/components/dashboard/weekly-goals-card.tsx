@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,7 @@ interface WeeklyGoalsCardProps {
 }
 
 export function WeeklyGoalsCard({ goals }: WeeklyGoalsCardProps) {
+  const router = useRouter();
   const handleToggleGoal = async (goalId: string, achieved: boolean) => {
     try {
       await fetch(`/api/goals/${goalId}`, {
@@ -24,7 +26,7 @@ export function WeeklyGoalsCard({ goals }: WeeklyGoalsCardProps) {
           completedAt: achieved ? new Date().toISOString() : null,
         }),
       });
-      window.location.reload();
+      router.refresh();
     } catch (error) {
       console.error("Error updating goal:", error);
     }

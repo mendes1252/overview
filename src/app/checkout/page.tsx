@@ -59,14 +59,14 @@ function CheckoutContent() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F5F7FA]">
-        <div className="animate-pulse text-[#718096]">Carregando...</div>
+      <div className="min-h-screen flex items-center justify-center bg-[#1A1A2E]">
+        <div className="animate-pulse text-white/50">Carregando...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F7FA]">
+    <div className="min-h-screen bg-[#1A1A2E]">
       {/* Header */}
       <header className="bg-[#1A1A2E] border-b border-white/5">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -105,22 +105,22 @@ function CheckoutContent() {
               <div className="w-10 h-10 rounded-xl bg-[#4A9FFF]/10 flex items-center justify-center">
                 <Crown className="w-5 h-5 text-[#4A9FFF]" />
               </div>
-              <h1 className="text-2xl font-medium text-[#1A1A2E]">
+              <h1 className="text-2xl font-medium text-white">
                 Plano {planConfig.name}
               </h1>
             </div>
-            <p className="text-[#718096] font-light mb-8 ml-[52px]">
+            <p className="text-white/50 font-light mb-8 ml-[52px]">
               Acesso completo por 1 ano — compra única
             </p>
 
-            <div className="bg-white rounded-2xl border border-black/[0.04] shadow-sm p-6 space-y-4">
-              <h3 className="font-medium text-[#1A1A2E]">
+            <div className="bg-white/[0.05] backdrop-blur-sm rounded-2xl border border-white/10 p-6 space-y-4">
+              <h3 className="font-medium text-white">
                 O que está incluso:
               </h3>
               {planConfig.features.map((feature) => (
                 <div key={feature} className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-[#4A9FFF] flex-shrink-0" />
-                  <span className="text-[#718096]">{feature}</span>
+                  <span className="text-white/60">{feature}</span>
                 </div>
               ))}
             </div>
@@ -129,10 +129,10 @@ function CheckoutContent() {
             <div className="mt-6 bg-[#4A9FFF]/5 border border-[#4A9FFF]/15 rounded-2xl p-4 flex items-start gap-3">
               <Shield className="w-5 h-5 text-[#4A9FFF] shrink-0 mt-0.5" />
               <div>
-                <p className="text-[#1A1A2E] text-sm font-medium">
+                <p className="text-white text-sm font-medium">
                   Garantia de 7 dias
                 </p>
-                <p className="text-[#718096] text-xs font-light mt-1">
+                <p className="text-white/50 text-xs font-light mt-1">
                   Se não gostar, devolvemos 100% do seu dinheiro. Sem perguntas.
                 </p>
               </div>
@@ -140,8 +140,8 @@ function CheckoutContent() {
           </div>
 
           {/* Right: Checkout form */}
-          <div className="bg-white rounded-2xl border border-black/[0.04] shadow-sm p-6">
-            <h2 className="text-xl font-medium text-[#1A1A2E] mb-6">
+          <div className="bg-white/[0.05] backdrop-blur-sm rounded-2xl border border-white/10 p-6">
+            <h2 className="text-xl font-medium text-white mb-6">
               Pagamento
             </h2>
             <CheckoutForm

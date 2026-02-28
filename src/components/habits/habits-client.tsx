@@ -103,7 +103,7 @@ export function HabitsClient({
       if (!response.ok) throw new Error("Failed to toggle habit log");
 
       // Refresh the page to get updated streak data
-      window.location.reload();
+      router.refresh();
     } catch (error) {
       console.error("Error toggling habit log:", error);
     }

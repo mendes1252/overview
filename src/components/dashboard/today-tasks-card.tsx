@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,7 @@ interface TodayTasksCardProps {
 }
 
 export function TodayTasksCard({ tasks }: TodayTasksCardProps) {
+  const router = useRouter();
   const [filter, setFilter] = useState<"all" | "pending" | "done">("all");
 
   const filteredTasks = tasks.filter((task) => {
@@ -33,7 +35,7 @@ export function TodayTasksCard({ tasks }: TodayTasksCardProps) {
           completedAt: completed ? new Date().toISOString() : null,
         }),
       });
-      window.location.reload();
+      router.refresh();
     } catch (error) {
       console.error("Error updating task:", error);
     }
