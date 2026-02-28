@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 const PLAN_CONFIG = {
   pro: {
     name: "Pro",
-    price: 297,
+    price: 1,
     features: [
       "Tarefas ilimitadas",
       "Hábitos ilimitados",
