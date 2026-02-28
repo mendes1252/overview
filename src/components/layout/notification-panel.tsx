@@ -292,7 +292,7 @@ export function NotificationPanel() {
           <div className="px-4 py-3 border-t border-white/5 space-y-2">
             {/* Push subscription toggle */}
             {permission !== "unsupported" && (
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between py-1">
                 <div className="flex items-center gap-2">
                   <BellRing className="w-3.5 h-3.5 text-white/40" />
                   <span className="text-xs text-white/50">
@@ -303,17 +303,32 @@ export function NotificationPanel() {
                   <span className="text-[10px] text-red-400">Bloqueadas no navegador</span>
                 ) : (
                   <button
-                    onClick={() => (isSubscribed ? unsubscribe() : subscribe())}
+                    onClick={async () => {
+                      if (isSubscribed) {
+                        await unsubscribe();
+                        toast({ title: "Push notifications desativadas" });
+                      } else {
+                        const result = await subscribe();
+                        if (result.ok) {
+                          toast({ title: "Push notifications ativadas!" });
+                        } else {
+                          toast({ title: "Falha ao ativar push", description: result.reason, variant: "destructive" });
+                        }
+                      }
+                    }}
                     disabled={pushLoading}
-                    className={`relative w-10 h-5 rounded-full transition-colors ${
-                      isSubscribed ? "bg-[#4A9FFF]" : "bg-white/10"
-                    }`}
+                    className="relative w-11 h-6 rounded-full transition-colors cursor-pointer disabled:opacity-50 flex-shrink-0"
+                    style={{ backgroundColor: isSubscribed ? "#4A9FFF" : "rgba(255,255,255,0.1)" }}
                   >
-                    <span
-                      className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
-                        isSubscribed ? "translate-x-5" : "translate-x-0"
-                      }`}
-                    />
+                    {pushLoading ? (
+                      <Loader2 className="w-4 h-4 text-white absolute top-1 left-1 animate-spin" />
+                    ) : (
+                      <span
+                        className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform ${
+                          isSubscribed ? "translate-x-5" : "translate-x-0"
+                        }`}
+                      />
+                    )}
                   </button>
                 )}
               </div>

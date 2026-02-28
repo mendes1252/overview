@@ -36,8 +36,8 @@ export function usePush() {
     });
   }, []);
 
-  const subscribe = useCallback(async () => {
-    if (permission === "unsupported") return false;
+  const subscribe = useCallback(async (): Promise<{ ok: boolean; reason?: string }> => {
+    if (permission === "unsupported") return { ok: false, reason: "Seu navegador não suporta notificações push." };
     setLoading(true);
 
     try {
@@ -46,7 +46,7 @@ export function usePush() {
 
       if (result !== "granted") {
         setLoading(false);
-        return false;
+        return { ok: false, reason: "Permissão de notificação negada." };
       }
 
       const reg = await navigator.serviceWorker.ready;
@@ -55,13 +55,18 @@ export function usePush() {
       if (!vapidKey) {
         console.error("VAPID public key not configured");
         setLoading(false);
-        return false;
+        return { ok: false, reason: "Chave VAPID não configurada." };
       }
 
-      const subscription = await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(vapidKey) as BufferSource,
-      });
+      // Check if there's already a subscription
+      let subscription = await reg.pushManager.getSubscription();
+
+      if (!subscription) {
+        subscription = await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(vapidKey) as BufferSource,
+        });
+      }
 
       const subJson = subscription.toJSON();
 
@@ -81,15 +86,16 @@ export function usePush() {
       if (res.ok) {
         setIsSubscribed(true);
         setLoading(false);
-        return true;
+        return { ok: true };
       }
 
+      const errData = await res.json().catch(() => ({}));
       setLoading(false);
-      return false;
+      return { ok: false, reason: errData.error || "Erro ao salvar subscription no servidor." };
     } catch (error) {
       console.error("Push subscription error:", error);
       setLoading(false);
-      return false;
+      return { ok: false, reason: `Erro: ${error instanceof Error ? error.message : "Falha desconhecida"}` };
     }
   }, [permission]);
 
