@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Bell, LogOut, Settings, User, Crown, Zap, Search } from "lucide-react";
+import { LogOut, Settings, User, Crown, Zap, Search } from "lucide-react";
+import { NotificationPanel } from "./notification-panel";
 
 interface HeaderProps {
   user: {
@@ -83,10 +84,7 @@ export function Header({ user }: HeaderProps) {
           </Link>
 
           {/* Notifications */}
-          <Button variant="ghost" size="icon" className="relative rounded-full hover:bg-white/5 h-9 w-9">
-            <Bell className="w-4.5 h-4.5 text-white/50" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#4A9FFF] rounded-full ring-2 ring-[#1A1A2E]" />
-          </Button>
+          <NotificationPanel />
 
           {/* User Menu */}
           <DropdownMenu>

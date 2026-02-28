@@ -103,3 +103,56 @@ self.addEventListener("fetch", (event) => {
       .catch(() => caches.match(request))
   );
 });
+
+// Push notification received
+self.addEventListener("push", (event) => {
+  let data = { title: "Pulse", body: "Você tem uma nova notificação" };
+
+  try {
+    if (event.data) {
+      data = event.data.json();
+    }
+  } catch (e) {
+    // fallback to default
+  }
+
+  const options = {
+    body: data.body,
+    icon: "/pwa/icon/192",
+    badge: "/pwa/icon/192",
+    vibrate: [100, 50, 100],
+    data: {
+      url: data.url || "/dashboard",
+      notificationId: data.notificationId,
+    },
+    actions: data.actions || [],
+    tag: data.tag || "pulse-notification",
+    renotify: true,
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, options)
+  );
+});
+
+// Notification click — open the app at the right page
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+
+  const url = event.notification.data?.url || "/dashboard";
+
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
+      // If there is already an open window, focus it and navigate
+      for (const client of clients) {
+        if (client.url.includes(self.location.origin)) {
+          client.focus();
+          client.navigate(url);
+          return;
+        }
+      }
+      // Otherwise open a new window
+      return self.clients.openWindow(url);
+    })
+  );
+});

@@ -81,8 +81,10 @@ model User {
   habitLogs  HabitLog[]
   goals      Goal[]
   categories Category[]
-  reports    Report[]
-  payments   Payment[]
+  reports            Report[]
+  payments           Payment[]
+  notifications      Notification[]
+  pushSubscriptions  PushSubscription[]
 }
 
 // Payment Model
@@ -321,4 +323,41 @@ model Report {
   @@unique([userId, weekStart])
   @@index([userId])
   @@index([weekStart])
+}
+
+// Notification Model
+model Notification {
+  id     String @id @default(cuid())
+  type   String // task_reminder, habit_reminder, goal_deadline, report_ready, streak, achievement, system
+  title  String
+  body   String
+  read   Boolean @default(false)
+  data   String? @db.Text // JSON string for extra payload (e.g., link, entityId)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([read])
+  @@index([createdAt])
+}
+
+// Push Subscription Model
+model PushSubscription {
+  id       String @id @default(cuid())
+  endpoint String @db.Text
+  p256dh   String @db.Text
+  auth     String @db.Text
+  userAgent String? @db.Text
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, endpoint])
+  @@index([userId])
 }
