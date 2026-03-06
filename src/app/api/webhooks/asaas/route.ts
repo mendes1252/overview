@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyWebhookToken } from "@/lib/asaas";
-import { sendEmail, generatePaymentConfirmedEmail } from "@/lib/email";
+import { sendEmail, generatePaymentConfirmedEmail, generateChallengeWelcomeEmail } from "@/lib/email";
 
 interface AsaasWebhookPayload {
   event: string;
@@ -61,6 +61,33 @@ export async function POST(req: Request) {
               planCurrentPeriodEnd: periodEnd,
             },
           });
+        }
+
+        // Activate challenge enrollment if this is a challenge payment
+        const challengeEnrollment = await prisma.challengeEnrollment.findFirst({
+          where: { asaasPaymentId: payment.id },
+        });
+
+        if (challengeEnrollment && challengeEnrollment.status === "pending") {
+          await prisma.challengeEnrollment.update({
+            where: { id: challengeEnrollment.id },
+            data: {
+              status: "active",
+              paymentStatus: "CONFIRMED",
+              currentDay: 1,
+              startedAt: new Date(),
+            },
+          });
+
+          // Send challenge welcome email
+          if (user?.email) {
+            const appUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").trim().replace(/\/+$/, "");
+            sendEmail({
+              to: user.email,
+              subject: "Seu Desafio de 7 Dias comeca agora! - pulse",
+              html: generateChallengeWelcomeEmail(user.name || "Desafiante", `${appUrl}/desafio/area-de-membros`),
+            }).catch((err) => console.error("Failed to send challenge welcome email:", err));
+          }
         }
 
         // Send payment confirmation email

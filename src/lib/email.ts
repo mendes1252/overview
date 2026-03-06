@@ -268,6 +268,57 @@ export function generateWeeklyReportEmail(
   `);
 }
 
+// Challenge welcome email
+export function generateChallengeWelcomeEmail(userName: string, memberAreaUrl: string): string {
+  return emailWrapper(`
+    <h2 style="font-weight: 400; font-size: 22px; color: #1A1A2E; margin-top: 0;">Seu Desafio de 7 Dias comeca agora!</h2>
+    <p style="color: #718096; font-weight: 300;">Ola, ${userName}! Seu pagamento foi confirmado e o Desafio de Produtividade em 7 Dias ja esta disponivel.</p>
+
+    <div style="background: #F5F7FA; border-radius: 16px; padding: 24px; margin: 24px 0;">
+      <h3 style="font-weight: 500; font-size: 14px; color: #1A1A2E; margin-top: 0; text-transform: uppercase; letter-spacing: 1px;">Como funciona</h3>
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="padding: 8px 0; color: #4A9FFF; font-weight: 500; width: 24px;">1</td>
+          <td style="padding: 8px 0; color: #718096; font-weight: 300;">Assista a video-aula do dia</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #4A9FFF; font-weight: 500;">2</td>
+          <td style="padding: 8px 0; color: #718096; font-weight: 300;">Leia o conteudo complementar</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #4A9FFF; font-weight: 500;">3</td>
+          <td style="padding: 8px 0; color: #718096; font-weight: 300;">Execute o desafio pratico do dia</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 0; color: #4A9FFF; font-weight: 500;">4</td>
+          <td style="padding: 8px 0; color: #718096; font-weight: 300;">Marque como concluido para desbloquear o proximo</td>
+        </tr>
+      </table>
+    </div>
+
+    <p style="color: #718096; font-weight: 300;">O Dia 1 ja esta disponivel. Comece agora!</p>
+
+    ${pulseButton(memberAreaUrl, "Comecar o Dia 1")}
+  `);
+}
+
+// Challenge completion email
+export function generateChallengeCompletionEmail(userName: string, bonusUrl: string): string {
+  return emailWrapper(`
+    <h2 style="font-weight: 400; font-size: 22px; color: #1A1A2E; margin-top: 0;">Parabens! Desafio Completo!</h2>
+    <p style="color: #718096; font-weight: 300;">Incrivel, ${userName}! Voce completou todos os 7 dias do Desafio de Produtividade. Isso mostra comprometimento real.</p>
+
+    <div style="background: linear-gradient(135deg, #0F1419 0%, #1A1A2E 100%); color: white; padding: 24px; border-radius: 16px; margin: 24px 0; text-align: center;">
+      <div style="font-size: 48px; font-weight: 300;">7/7</div>
+      <div style="font-size: 14px; opacity: 0.6; font-weight: 300;">Dias Completos</div>
+    </div>
+
+    <p style="color: #718096; font-weight: 300;">Seu bonus exclusivo esta disponivel. Acesse agora para ver o que preparamos para voce!</p>
+
+    ${pulseButton(bonusUrl, "Ver Meu Bonus")}
+  `);
+}
+
 // Password reset email
 export function generatePasswordResetEmail(resetUrl: string): string {
   return emailWrapper(`

@@ -85,6 +85,7 @@ model User {
   payments           Payment[]
   notifications      Notification[]
   pushSubscriptions  PushSubscription[]
+  challengeEnrollments ChallengeEnrollment[]
 }
 
 // Payment Model
@@ -360,4 +361,95 @@ model PushSubscription {
 
   @@unique([userId, endpoint])
   @@index([userId])
+}
+
+// ========================================
+// Challenge (7-Day Productivity Challenge)
+// ========================================
+
+model Challenge {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  title       String
+  description String  @db.Text
+  price       Float
+  active      Boolean @default(true)
+  imageUrl    String?
+
+  days        ChallengeDay[]
+  enrollments ChallengeEnrollment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([active])
+}
+
+model ChallengeDay {
+  id          String @id @default(cuid())
+  dayNumber   Int
+  title       String
+  description String @db.Text
+
+  videoUrl        String?
+  pdfUrl          String?
+  content         String?  @db.Text
+  taskTitle       String
+  taskDescription String   @db.Text
+
+  challengeId String
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  completions ChallengeDayCompletion[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([challengeId, dayNumber])
+  @@index([challengeId])
+}
+
+model ChallengeEnrollment {
+  id        String @id @default(cuid())
+  status    String @default("pending") // pending, active, completed
+
+  paymentStatus  String  @default("PENDING")
+  asaasPaymentId String? @unique
+
+  currentDay    Int       @default(0)
+  completedDays Int       @default(0)
+  completedAt   DateTime?
+  bonusClaimed  Boolean   @default(false)
+
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challengeId String
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  dayCompletions ChallengeDayCompletion[]
+
+  startedAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@unique([userId, challengeId])
+  @@index([userId])
+  @@index([challengeId])
+  @@index([status])
+}
+
+model ChallengeDayCompletion {
+  id          String   @id @default(cuid())
+  dayNumber   Int
+  completedAt DateTime @default(now())
+  notes       String?  @db.Text
+
+  enrollmentId   String
+  enrollment     ChallengeEnrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  challengeDayId String
+  challengeDay   ChallengeDay @relation(fields: [challengeDayId], references: [id], onDelete: Cascade)
+
+  @@unique([enrollmentId, dayNumber])
+  @@index([enrollmentId])
 }
