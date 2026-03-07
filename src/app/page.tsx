@@ -17,6 +17,7 @@ import {
   Star,
   Users,
   Mail,
+  Trophy,
 } from "lucide-react";
 
 export default function LandingPage() {
@@ -38,6 +39,10 @@ export default function LandingPage() {
               </Link>
               <Link href="#precos" className="text-sm text-white/50 hover:text-white transition-colors font-light">
                 Preços
+              </Link>
+              <Link href="/desafio" className="text-sm text-[#4A9FFF] hover:text-[#6BB5FF] transition-colors font-medium flex items-center gap-1">
+                <Trophy className="w-3.5 h-3.5" />
+                Desafio 7 Dias
               </Link>
             </div>
             <div className="flex items-center gap-3">
@@ -436,6 +441,53 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Challenge Banner */}
+      <section className="py-16 sm:py-20 px-6 bg-[#1A1A2E] border-t border-white/5">
+        <ScrollReveal>
+          <div className="max-w-4xl mx-auto">
+            <div className="relative rounded-3xl border border-[#4A9FFF]/20 bg-gradient-to-br from-[#4A9FFF]/10 to-transparent p-8 sm:p-12 overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 gradient-radial-glow pointer-events-none opacity-50" />
+              <div className="relative flex flex-col lg:flex-row items-center gap-8">
+                <div className="flex-1">
+                  <div className="inline-flex items-center gap-2 bg-[#4A9FFF]/10 text-[#4A9FFF] text-xs font-medium px-3 py-1 rounded-full mb-4">
+                    <Trophy className="w-3.5 h-3.5" />
+                    NOVO
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-light text-white mb-3 tracking-tight">
+                    Desafio de Produtividade<br />
+                    <span className="text-gradient font-medium">em 7 Dias</span>
+                  </h3>
+                  <p className="text-white/50 font-light mb-6 max-w-lg">
+                    Video-aulas, materiais de apoio e desafios praticos diarios para transformar
+                    sua rotina. Complete os 7 dias e ganhe um bonus exclusivo.
+                  </p>
+                  <Link href="/desafio">
+                    <Button className="bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-full btn-pulse gap-2 px-6">
+                      Conhecer o Desafio — R$97
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </Link>
+                </div>
+                <div className="flex gap-3">
+                  {[1, 2, 3, 4, 5, 6, 7].map((d) => (
+                    <div
+                      key={d}
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center text-xs font-medium ${
+                        d <= 3
+                          ? "bg-[#4A9FFF]/20 text-[#4A9FFF]"
+                          : "bg-white/5 text-white/30"
+                      }`}
+                    >
+                      {d}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </ScrollReveal>
+      </section>
+
       {/* CTA Section */}
       <section className="py-24 sm:py-32 px-6 gradient-hero relative overflow-hidden">
         <div className="absolute inset-0 gradient-radial-glow animate-breathe pointer-events-none" />
@@ -480,6 +532,7 @@ export default function LandingPage() {
                   { label: "Funcionalidades", href: "#funcionalidades" },
                   { label: "Preços", href: "#precos" },
                   { label: "Como Funciona", href: "#como-funciona" },
+                  { label: "Desafio 7 Dias", href: "/desafio" },
                 ].map((link) => (
                   <li key={link.label}>
                     <Link href={link.href} className="text-sm text-white/30 hover:text-white/60 font-light transition-colors">{link.label}</Link>
