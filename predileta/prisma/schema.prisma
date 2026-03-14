@@ -1,0 +1,297 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  admin
+  manager
+  operator
+}
+
+enum CustomerType {
+  b2b
+  b2c
+}
+
+enum ServiceUnit {
+  piece
+  kg
+  m2
+}
+
+enum OrderStatus {
+  received
+  washing
+  drying
+  ironing
+  ready
+  delivered
+  cancelled
+}
+
+enum ProductionStatus {
+  on_time
+  delayed
+  critical
+}
+
+enum PaymentStatus {
+  pending
+  partial
+  paid
+  overdue
+  refunded
+}
+
+enum PaymentMethod {
+  pix
+  boleto
+  credit_card
+  debit_card
+  cash
+}
+
+enum MpPaymentStatus {
+  pending
+  approved
+  authorized
+  in_process
+  in_mediation
+  rejected
+  cancelled
+  refunded
+  charged_back
+}
+
+enum CommunicationChannel {
+  whatsapp
+  email
+  sms
+}
+
+enum CampaignStatus {
+  draft
+  scheduled
+  sending
+  sent
+  cancelled
+}
+
+enum FinancialEntryType {
+  income
+  expense
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  role         UserRole @default(operator)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  orders            Order[]
+  communicationLogs CommunicationLog[]
+
+  @@index([email])
+  @@index([role])
+  @@map("users")
+}
+
+model Customer {
+  id              String       @id @default(cuid())
+  type            CustomerType @default(b2c)
+  name            String
+  document        String?
+  email           String?
+  phone           String?
+  address         Json?
+  notes           String?      @db.Text
+  tags            String[]     @default([])
+  mpCustomerId    String?      @unique @map("mp_customer_id")
+  loyaltyPoints   Int          @default(0) @map("loyalty_points")
+  specialDates    Json?        @map("special_dates")
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+
+  orders            Order[]
+  customPriceTables CustomPriceTable[]
+  communicationLogs CommunicationLog[]
+
+  @@index([name])
+  @@index([document])
+  @@index([type])
+  @@index([phone])
+  @@map("customers")
+}
+
+model Service {
+  id              String      @id @default(cuid())
+  name            String
+  category        String
+  priceB2c        Decimal     @db.Decimal(10, 2) @map("price_b2c")
+  priceB2bDefault Decimal     @db.Decimal(10, 2) @map("price_b2b_default")
+  unit            ServiceUnit @default(piece)
+  estimatedHours  Int?        @map("estimated_hours")
+  active          Boolean     @default(true)
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+
+  orderItems        OrderItem[]
+  customPriceTables CustomPriceTable[]
+
+  @@index([active])
+  @@index([category])
+  @@map("services")
+}
+
+model CustomPriceTable {
+  id          String    @id @default(cuid())
+  customerId  String    @map("customer_id")
+  serviceId   String    @map("service_id")
+  customPrice Decimal   @db.Decimal(10, 2) @map("custom_price")
+  validUntil  DateTime? @map("valid_until")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  service  Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@unique([customerId, serviceId])
+  @@index([customerId])
+  @@index([serviceId])
+  @@map("custom_price_tables")
+}
+
+model Order {
+  id               String          @id @default(cuid())
+  orderNumber      Int             @unique @default(autoincrement()) @map("order_number")
+  customerId       String          @map("customer_id")
+  createdById      String          @map("created_by_id")
+  status           OrderStatus     @default(received)
+  productionStatus ProductionStatus @default(on_time) @map("production_status")
+  estimatedDelivery DateTime?      @map("estimated_delivery")
+  actualDelivery   DateTime?       @map("actual_delivery")
+  subtotal         Decimal         @db.Decimal(10, 2)
+  discount         Decimal         @db.Decimal(10, 2) @default(0)
+  total            Decimal         @db.Decimal(10, 2)
+  paymentStatus    PaymentStatus   @default(pending) @map("payment_status")
+  notes            String?         @db.Text
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
+
+  customer  Customer    @relation(fields: [customerId], references: [id])
+  createdBy User        @relation(fields: [createdById], references: [id])
+  items     OrderItem[]
+  payments  Payment[]
+
+  @@index([customerId])
+  @@index([createdById])
+  @@index([status])
+  @@index([paymentStatus])
+  @@index([estimatedDelivery])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String  @map("order_id")
+  serviceId String  @map("service_id")
+  quantity  Decimal @db.Decimal(10, 3)
+  unitPrice Decimal @db.Decimal(10, 2) @map("unit_price")
+  total     Decimal @db.Decimal(10, 2)
+  notes     String?
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id])
+
+  @@index([orderId])
+  @@index([serviceId])
+  @@map("order_items")
+}
+
+model Payment {
+  id          String          @id @default(cuid())
+  orderId     String          @map("order_id")
+  mpPaymentId String?         @unique @map("mp_payment_id")
+  method      PaymentMethod
+  amount      Decimal         @db.Decimal(10, 2)
+  status      MpPaymentStatus @default(pending)
+  paidAt      DateTime?       @map("paid_at")
+  dueDate     DateTime?       @map("due_date")
+  metadata    Json?
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([status])
+  @@index([mpPaymentId])
+  @@map("payments")
+}
+
+model CommunicationLog {
+  id          String               @id @default(cuid())
+  customerId  String               @map("customer_id")
+  createdById String?              @map("created_by_id")
+  channel     CommunicationChannel
+  type        String
+  templateId  String?              @map("template_id")
+  content     String               @db.Text
+  status      String               @default("sent")
+  sentAt      DateTime             @default(now()) @map("sent_at")
+  metadata    Json?
+
+  customer  Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  createdBy User?    @relation(fields: [createdById], references: [id])
+
+  @@index([customerId])
+  @@index([channel])
+  @@index([sentAt])
+  @@map("communication_logs")
+}
+
+model Campaign {
+  id              String         @id @default(cuid())
+  name            String
+  channel         CommunicationChannel
+  segmentFilter   Json?          @map("segment_filter")
+  templateContent String         @db.Text @map("template_content")
+  status          CampaignStatus @default(draft)
+  scheduledAt     DateTime?      @map("scheduled_at")
+  sentCount       Int            @default(0) @map("sent_count")
+  openRate        Float?         @map("open_rate")
+  createdAt       DateTime       @default(now()) @map("created_at")
+  updatedAt       DateTime       @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([scheduledAt])
+  @@map("campaigns")
+}
+
+model FinancialEntry {
+  id             String             @id @default(cuid())
+  type           FinancialEntryType
+  category       String
+  description    String
+  amount         Decimal            @db.Decimal(10, 2)
+  date           DateTime           @db.Date
+  recurrent      Boolean            @default(false)
+  recurrenceRule Json?              @map("recurrence_rule")
+  createdAt      DateTime           @default(now()) @map("created_at")
+  updatedAt      DateTime           @updatedAt @map("updated_at")
+
+  @@index([type])
+  @@index([date])
+  @@index([category])
+  @@map("financial_entries")
+}
