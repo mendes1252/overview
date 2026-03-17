@@ -1,37 +1,41 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
-import { Providers } from "@/components/providers";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
-import { PWARegister } from "@/components/pwa-register";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
-  title: "pulse — Produtividade Intencional",
-  description: "Transforme sua produtividade com IA empatica. Nao faca mais, faca melhor. Gerencie tarefas, habitos e metas com inteligencia artificial.",
-  keywords: ["produtividade", "gestao de tarefas", "habitos", "metas", "IA", "inteligencia artificial", "pulse"],
-  authors: [{ name: "pulse" }],
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "black-translucent",
-    title: "pulse",
-  },
-  formatDetection: {
-    telephone: false,
-  },
+  title: "Vistoria Aí — Laudos Patológicos com IA",
+  description:
+    "Plataforma que engenheiros civis e arquitetos usam para elaborar laudos de patologia das construções com IA. Fundamentação ABNT automática, análise de imagens e redação assistida.",
+  keywords: [
+    "laudo patológico",
+    "patologia das construções",
+    "NBR",
+    "engenheiro civil",
+    "laudo técnico",
+    "ABNT",
+    "fissuras",
+    "recuperação estrutural",
+    "CAU",
+    "CREA",
+  ],
+  authors: [{ name: "Vistoria Aí" }],
   openGraph: {
-    title: "pulse — Produtividade Intencional",
-    description: "Transforme sua produtividade com IA empatica. Nao faca mais, faca melhor.",
+    title: "Vistoria Aí — Laudos Patológicos com IA",
+    description:
+      "Do diagnóstico ao laudo técnico com fundamentação ABNT. Agilidade e rigor para engenheiros civis e arquitetos.",
+    url: "https://vistoriaai.com.br",
+    siteName: "Vistoria Aí",
+    locale: "pt_BR",
     type: "website",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1A1A2E",
+  themeColor: "#001bab",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 export default function RootLayout({
@@ -40,18 +44,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="pt-BR">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+          rel="stylesheet"
+        />
       </head>
-      <body className="font-sans antialiased">
+      <body>
         <Providers>
           {children}
-          <Toaster />
-          <SpeedInsights />
           <Analytics />
-          <PWARegister />
+          <SpeedInsights />
         </Providers>
       </body>
     </html>
