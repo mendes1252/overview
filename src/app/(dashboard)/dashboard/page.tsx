@@ -1,182 +1,134 @@
-import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import { getWeekRange, formatDate } from "@/lib/utils";
-import { WeeklyOverviewCard } from "@/components/dashboard/weekly-overview-card";
-import { TodayTasksCard } from "@/components/dashboard/today-tasks-card";
-import { HabitsCard } from "@/components/dashboard/habits-card";
-import { WeeklyGoalsCard } from "@/components/dashboard/weekly-goals-card";
-import { WeeklySummaryCard } from "@/components/dashboard/weekly-summary-card";
-import { NextReportCard } from "@/components/dashboard/next-report-card";
+import { createClient } from "@/lib/supabase/server";
+import { TrendingUp, ArrowUpRight, DollarSign, Percent } from "lucide-react";
 
-async function getDashboardData(userId: string) {
-  const now = new Date();
-  const todayStart = new Date(now);
-  todayStart.setHours(0, 0, 0, 0);
-  const todayEnd = new Date(now);
-  todayEnd.setHours(23, 59, 59, 999);
-
-  // Get user settings for week start
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { weekStartsOn: true, name: true },
-  });
-
-  const weekStartsOn = user?.weekStartsOn || 1;
-  const { start: weekStart, end: weekEnd } = getWeekRange(now, weekStartsOn);
-
-  // Parallel queries for dashboard data
-  const [
-    todayTasks,
-    weekTasks,
-    habits,
-    weeklyGoals,
-    latestReport,
-  ] = await Promise.all([
-    // Today's tasks
-    prisma.task.findMany({
-      where: {
-        userId,
-        OR: [
-          { dueDate: { gte: todayStart, lte: todayEnd } },
-          { dueDate: null, createdAt: { gte: todayStart } },
-        ],
-      },
-      include: { category: true, subtasks: true },
-      orderBy: [{ status: "asc" }, { priority: "desc" }, { createdAt: "desc" }],
-      take: 10,
-    }),
-    // Week tasks for stats
-    prisma.task.findMany({
-      where: {
-        userId,
-        OR: [
-          { dueDate: { gte: weekStart, lte: weekEnd } },
-          { completedAt: { gte: weekStart, lte: weekEnd } },
-        ],
-      },
-      select: { status: true },
-    }),
-    // Active habits with logs for this week
-    prisma.habit.findMany({
-      where: { userId, isArchived: false },
-      include: {
-        category: true,
-        logs: {
-          where: {
-            date: { gte: weekStart, lte: weekEnd },
-          },
-        },
-      },
-      orderBy: { createdAt: "asc" },
-    }),
-    // Weekly goals
-    prisma.goal.findMany({
-      where: {
-        userId,
-        period: "weekly",
-        startDate: { lte: weekEnd },
-        endDate: { gte: weekStart },
-      },
-      include: { category: true },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-    }),
-    // Latest report
-    prisma.report.findFirst({
-      where: { userId },
-      orderBy: { weekStart: "desc" },
-    }),
-  ]);
-
-  // Calculate week stats
-  const completedTasks = weekTasks.filter((t: { status: string }) => t.status === "done").length;
-  const totalTasks = weekTasks.length;
-
-  // Calculate habits consistency
-  const totalHabitDays = habits.reduce((acc: number, habit) => {
-    const targetDays = habit.targetDays.length;
-    return acc + targetDays;
-  }, 0);
-  const completedHabitDays = habits.reduce((acc: number, habit) => {
-    return acc + habit.logs.filter((log: { completed: boolean }) => log.completed).length;
-  }, 0);
-  const habitsConsistency =
-    totalHabitDays > 0 ? (completedHabitDays / totalHabitDays) * 100 : 0;
-
-  // Goals achieved
-  const goalsAchieved = weeklyGoals.filter((g: { status: string }) => g.status === "achieved").length;
-
-  return {
-    user: { name: user?.name },
-    todayTasks,
-    habits,
-    weeklyGoals,
-    latestReport,
-    weekStats: {
-      weekStart,
-      weekEnd,
-      completedTasks,
-      totalTasks,
-      habitsConsistency,
-      goalsAchieved,
-      totalGoals: weeklyGoals.length,
-    },
-  };
+function KPICard({
+  title,
+  value,
+  subtitle,
+  icon: Icon,
+}: {
+  title: string;
+  value: string;
+  subtitle?: string;
+  icon: React.ComponentType<{
+    size?: number;
+    strokeWidth?: number;
+    className?: string;
+  }>;
+}) {
+  return (
+    <div className="bg-white rounded-xl border border-[#D6D6CD] p-5 shadow-sm">
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-xs font-semibold text-[#6E6E63] uppercase tracking-wide">
+          {title}
+        </span>
+        <div className="w-8 h-8 rounded-lg bg-[#F0F3F9] flex items-center justify-center">
+          <Icon size={16} strokeWidth={1.5} className="text-[#1E3A5F]" />
+        </div>
+      </div>
+      <p className="text-2xl font-extrabold text-[#1E3A5F] tabular-nums">
+        {value}
+      </p>
+      {subtitle && (
+        <p className="text-xs text-[#8E8E83] mt-1">{subtitle}</p>
+      )}
+    </div>
+  );
 }
 
 export default async function DashboardPage() {
-  const session = await auth();
-  if (!session?.user?.id) return null;
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  const data = await getDashboardData(session.user.id);
+  const firstName =
+    (user?.user_metadata?.name as string | undefined)?.split(" ")[0] ??
+    "Franqueado";
 
   return (
-    <div className="max-w-7xl mx-auto pb-20 lg:pb-0">
-      {/* Welcome */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-medium text-white">
-          Olá, {data.user.name?.split(" ")[0] || "Usuário"}!
+    <div className="max-w-5xl mx-auto">
+      {/* Header */}
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-[#1E3A5F]">
+          Olá, {firstName}!
         </h1>
-        <p className="text-white/50 font-light">
-          Aqui está o resumo da sua semana. Continue firme!
+        <p className="text-sm text-[#6E6E63] mt-0.5">
+          Configure sua unidade para ver os dados financeiros.
         </p>
       </div>
 
-      {/* Main Grid */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Left Column - Main Content */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Weekly Overview */}
-          <WeeklyOverviewCard
-            weekStart={data.weekStats.weekStart}
-            weekEnd={data.weekStats.weekEnd}
-            completedTasks={data.weekStats.completedTasks}
-            totalTasks={data.weekStats.totalTasks}
-          />
-
-          {/* Today's Tasks */}
-          <TodayTasksCard tasks={data.todayTasks} />
-
-          {/* Habits */}
-          <HabitsCard habits={data.habits} weekStart={data.weekStats.weekStart} />
+      {/* Setup banner */}
+      <div className="bg-[#1E3A5F] rounded-xl p-5 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <p className="text-white font-semibold text-sm mb-0.5">
+            Configure sua unidade para começar
+          </p>
+          <p className="text-[#B8C6DE] text-xs">
+            Leva menos de 5 minutos. Seus dados aparecem aqui em tempo real.
+          </p>
         </div>
+        <a
+          href="/onboarding"
+          className="shrink-0 bg-[#A07D2E] hover:bg-[#886A27] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors"
+        >
+          Configurar agora
+        </a>
+      </div>
 
-        {/* Right Column - Sidebar */}
-        <div className="space-y-6">
-          {/* Weekly Summary */}
-          <WeeklySummaryCard
-            completedTasks={data.weekStats.completedTasks}
-            totalTasks={data.weekStats.totalTasks}
-            habitsConsistency={data.weekStats.habitsConsistency}
-            goalsAchieved={data.weekStats.goalsAchieved}
-            totalGoals={data.weekStats.totalGoals}
-          />
+      {/* KPI Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+        <KPICard
+          title="Receita"
+          value="R$ —"
+          subtitle="Mês atual"
+          icon={DollarSign}
+        />
+        <KPICard
+          title="Despesas"
+          value="R$ —"
+          subtitle="Mês atual"
+          icon={ArrowUpRight}
+        />
+        <KPICard
+          title="Lucro"
+          value="R$ —"
+          subtitle="Operacional"
+          icon={TrendingUp}
+        />
+        <KPICard
+          title="Margem"
+          value="— %"
+          subtitle="De cada R$100"
+          icon={Percent}
+        />
+      </div>
 
-          {/* Weekly Goals */}
-          <WeeklyGoalsCard goals={data.weeklyGoals} />
+      {/* Breakeven */}
+      <div className="bg-white rounded-xl border border-[#D6D6CD] p-5 shadow-sm mb-6">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-xs font-semibold text-[#6E6E63] uppercase tracking-wide">
+            Breakeven
+          </span>
+          <span className="text-xs text-[#8E8E83]">Sem dados</span>
+        </div>
+        <div className="h-2 bg-[#EFEFEB] rounded-full overflow-hidden">
+          <div className="h-full w-0 bg-[#1E3A5F] rounded-full" />
+        </div>
+        <p className="text-xs text-[#8E8E83] mt-2">
+          Lance suas receitas e despesas para ver o breakeven.
+        </p>
+      </div>
 
-          {/* Next Report */}
-          <NextReportCard report={data.latestReport} />
+      {/* Chart placeholder */}
+      <div className="bg-white rounded-xl border border-[#D6D6CD] p-5 shadow-sm">
+        <p className="text-xs font-semibold text-[#6E6E63] uppercase tracking-wide mb-4">
+          Evolução Mensal
+        </p>
+        <div className="h-48 flex items-center justify-center">
+          <p className="text-sm text-[#B8B8AD]">
+            Dados aparecerão após o primeiro lançamento.
+          </p>
         </div>
       </div>
     </div>

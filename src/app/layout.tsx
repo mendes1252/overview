@@ -2,32 +2,32 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "@/components/providers";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from "@vercel/analytics/next";
-import { PWARegister } from "@/components/pwa-register";
 
 export const metadata: Metadata = {
-  title: "pulse — Produtividade Intencional",
-  description: "Transforme sua produtividade com IA empatica. Nao faca mais, faca melhor. Gerencie tarefas, habitos e metas com inteligencia artificial.",
-  keywords: ["produtividade", "gestao de tarefas", "habitos", "metas", "IA", "inteligencia artificial", "pulse"],
-  authors: [{ name: "pulse" }],
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "black-translucent",
-    title: "pulse",
-  },
-  formatDetection: {
-    telephone: false,
-  },
+  title: "Steddi — Gestão Financeira para Franqueados",
+  description:
+    "Dashboard financeiro inteligente para franqueados brasileiros. Saiba quanto realmente sobra da sua franquia.",
+  keywords: [
+    "franquia",
+    "gestao financeira",
+    "dashboard",
+    "franqueado",
+    "breakeven",
+    "DRE",
+    "steddi",
+  ],
+  authors: [{ name: "Steddi" }],
+  formatDetection: { telephone: false },
   openGraph: {
-    title: "pulse — Produtividade Intencional",
-    description: "Transforme sua produtividade com IA empatica. Nao faca mais, faca melhor.",
+    title: "Steddi — Gestão Financeira para Franqueados",
+    description: "Saiba quanto realmente sobra da sua franquia.",
     type: "website",
+    siteName: "Steddi",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1A1A2E",
+  themeColor: "#1E3A5F",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -41,17 +41,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>
       <body className="font-sans antialiased">
         <Providers>
           {children}
           <Toaster />
-          <SpeedInsights />
-          <Analytics />
-          <PWARegister />
         </Providers>
       </body>
     </html>

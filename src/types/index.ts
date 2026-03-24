@@ -1,132 +1,32 @@
-import type { User, Task, Habit, Goal, Category, Report, HabitLog, Subtask } from "@prisma/client";
+// Steddi — shared types
+// More specific DB types live in types/supabase.ts
 
-// Extended types with relations
-export type TaskWithRelations = Task & {
-  category?: Category | null;
-  subtasks: Subtask[];
-};
+export type Segment = "food" | "varejo" | "saude" | "servicos" | "educacao";
+export type TaxRegime = "simples" | "presumido" | "mei";
+export type TransactionType = "receita" | "despesa";
+export type SubscriptionPlan = "starter" | "pro" | "multi";
+export type SubscriptionStatus =
+  | "trial"
+  | "active"
+  | "past_due"
+  | "canceled"
+  | "expired";
 
-export type HabitWithRelations = Habit & {
-  category?: Category | null;
-  logs: HabitLog[];
-};
-
-export type GoalWithRelations = Goal & {
-  category?: Category | null;
-};
-
-export type UserWithRelations = User & {
-  tasks: Task[];
-  habits: Habit[];
-  goals: Goal[];
-  categories: Category[];
-  reports: Report[];
-};
-
-// Form types
-export interface TaskFormData {
-  title: string;
-  description?: string;
-  categoryId?: string;
-  priority: "low" | "medium" | "high";
-  dueDate?: Date;
-  estimatedTime?: number;
-  isRecurring?: boolean;
-  recurrenceRule?: string;
+export interface KPIData {
+  revenue: number;
+  expenses: number;
+  profit: number;
+  margin: number;
+  revenueChange?: number;
+  expensesChange?: number;
+  profitChange?: number;
+  marginChange?: number;
 }
 
-export interface HabitFormData {
-  name: string;
-  categoryId?: string;
-  frequency: "daily" | "weekdays" | "weekends" | "custom";
-  targetDays?: number[];
-  color?: string;
-}
-
-export interface GoalFormData {
-  title: string;
-  description?: string;
-  categoryId?: string;
-  type: "binary" | "quantifiable";
-  period: "weekly" | "monthly" | "quarterly";
-  targetValue?: number;
-  unit?: string;
-  startDate: Date;
-  endDate: Date;
-}
-
-export interface CategoryFormData {
-  name: string;
-  color: string;
-}
-
-// Onboarding types
-export interface OnboardingData {
-  name: string;
-  timezone: string;
-  primaryGoal: string;
-  weekStartsOn: number;
-  reportTime: string;
-  coachTone: "motivational" | "calm" | "direct" | "friendly";
-}
-
-// Dashboard types
-export interface WeeklyStats {
-  tasksCompleted: number;
-  tasksTotal: number;
-  habitsConsistency: number;
-  goalsAchieved: number;
-  goalsTotal: number;
-}
-
-export interface DashboardData {
-  todayTasks: TaskWithRelations[];
-  weeklyStats: WeeklyStats;
-  habits: HabitWithRelations[];
-  weeklyGoals: GoalWithRelations[];
-  latestReport?: Report | null;
-  nextReportDate: Date;
-}
-
-// API Response types
-export interface ApiResponse<T = unknown> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
-
-// Filter types
-export interface TaskFilters {
-  status?: string;
-  priority?: string;
-  categoryId?: string;
-  search?: string;
-  dateRange?: "today" | "week" | "overdue" | "all";
-}
-
-export interface HabitFilters {
-  categoryId?: string;
-  isArchived?: boolean;
-}
-
-export interface GoalFilters {
-  period?: string;
-  status?: string;
-  categoryId?: string;
-}
-
-// Report types
-export interface ReportData {
-  summary: string;
-  insights: string;
-  recommendations: string;
-  highlights: string;
-}
-
-// Auth types - extended session
-export interface ExtendedUser {
-  id: string;
-  email?: string | null;
-  name?: string | null;
-  image?: string | null;
+export interface BreakevenData {
+  fixedCosts: number;
+  accumulatedRevenue: number;
+  progress: number;
+  achievedOnDay: number | null;
+  projectedDay: number | null;
 }

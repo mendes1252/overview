@@ -1,5 +1,6 @@
-import { Zap, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { SteddiLogo } from "@/components/brand/SteddiLogo";
+import { SteddiMark } from "@/components/brand/SteddiMark";
 
 export default function AuthLayout({
   children,
@@ -8,69 +9,63 @@ export default function AuthLayout({
 }) {
   return (
     <div className="min-h-screen flex">
-      {/* Left side - Branding (Dark) */}
-      <div className="hidden lg:flex lg:w-1/2 gradient-hero items-center justify-center p-12 relative overflow-hidden">
-        {/* Breathing glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] gradient-radial-glow animate-breathe pointer-events-none" />
+      {/* Left side — Navy brand panel */}
+      <div className="hidden lg:flex lg:w-1/2 bg-[#1E3A5F] items-center justify-center p-12 relative overflow-hidden">
+        {/* Subtle texture */}
+        <div className="absolute inset-0 opacity-5">
+          <div
+            className="w-full h-full"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle, #FFFFFF 1px, transparent 1px)",
+              backgroundSize: "32px 32px",
+            }}
+          />
+        </div>
 
-        {/* Decorative floating dots */}
-        <div className="absolute top-20 right-20 w-2 h-2 rounded-full bg-[#4A9FFF]/30 animate-float" />
-        <div className="absolute bottom-32 left-16 w-3 h-3 rounded-full bg-[#6BB5FF]/20 animate-float delay-300" />
-        <div className="absolute top-1/3 right-12 w-1.5 h-1.5 rounded-full bg-white/20 animate-float delay-500" />
-
-        <div className="relative max-w-md text-white">
-          <Link href="/" className="flex items-center gap-3 mb-10">
-            <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center">
-              <Zap className="w-5 h-5 text-[#4A9FFF]" />
-            </div>
-            <span className="text-3xl font-light tracking-tight">pulse</span>
+        <div className="relative max-w-sm text-white">
+          <Link href="/" className="block mb-10">
+            <SteddiLogo variant="dark" size="lg" showDescriptor />
           </Link>
-          <h1 className="text-5xl font-light mb-6 leading-tight tracking-[-0.02em]">
-            Produtividade<br />
-            <span className="text-gradient font-medium">intencional</span>
+
+          <h1 className="text-4xl font-extrabold mb-4 leading-tight">
+            Saiba quanto realmente sobra da sua franquia.
           </h1>
-          <p className="text-xl text-white/50 mb-10 font-light leading-relaxed">
-            Não faça mais, faça melhor. Gerencie tarefas, construa hábitos e
-            alcance metas com inteligência artificial.
+          <p className="text-[#B8C6DE] text-base leading-relaxed mb-10">
+            Dashboard financeiro inteligente para franqueados brasileiros.
+            Sem planilhas, sem complicação.
           </p>
-          <div className="space-y-5">
+
+          <div className="space-y-4">
             {[
-              "Organize suas tarefas diárias",
-              "Construa hábitos consistentes",
-              "Receba insights personalizados",
-            ].map((text, i) => (
-              <div key={text} className="flex items-center gap-4 group">
-                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-[#4A9FFF]/10 group-hover:border-[#4A9FFF]/30 transition-all duration-300">
-                  <CheckCircle2 className="w-4 h-4 text-[#4A9FFF]" />
-                </div>
-                <span className="text-white/70 font-light">{text}</span>
+              "Dashboard com KPIs em tempo real",
+              "Breakeven calculado automaticamente",
+              "Relatório mensal com análise IA",
+            ].map((text) => (
+              <div key={text} className="flex items-center gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#A07D2E] shrink-0" />
+                <span className="text-[#DEE4F0] text-sm">{text}</span>
               </div>
             ))}
           </div>
 
-          {/* Social proof */}
           <div className="mt-12 pt-8 border-t border-white/10">
-            <p className="text-white/30 text-sm font-light">
-              Mais de <span className="text-white/60 font-medium">500+</span> profissionais já usam o Pulse
+            <p className="text-[#5C7BA8] text-xs">
+              Para os 202.000+ franqueados do Brasil
             </p>
           </div>
         </div>
       </div>
 
-      {/* Right side - Auth Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-[#F5F7FA] relative">
-        {/* Subtle background pattern */}
-        <div className="absolute inset-0 bg-dot-pattern opacity-30 pointer-events-none" />
-
-        <div className="w-full max-w-md relative">
+      {/* Right side — Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-[#FAFAF8]">
+        <div className="w-full max-w-md">
           {/* Mobile logo */}
-          <Link href="/" className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="w-10 h-10 rounded-xl bg-[#4A9FFF]/10 flex items-center justify-center">
-              <Zap className="w-5 h-5 text-[#4A9FFF]" />
-            </div>
-            <span className="text-2xl font-light text-[#1A1A2E] tracking-tight">pulse</span>
+          <Link href="/" className="flex justify-center mb-8 lg:hidden">
+            <SteddiMark size={32} className="text-[#1E3A5F]" />
           </Link>
-          <div className="bg-white rounded-3xl p-8 border border-black/[0.04] shadow-sm">
+
+          <div className="bg-white rounded-2xl p-8 border border-[#D6D6CD] shadow-sm">
             {children}
           </div>
         </div>

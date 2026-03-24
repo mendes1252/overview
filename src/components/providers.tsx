@@ -1,6 +1,5 @@
 "use client";
 
-import { SessionProvider } from "next-auth/react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 interface ProvidersProps {
@@ -9,10 +8,8 @@ interface ProvidersProps {
 
 export function Providers({ children }: ProvidersProps) {
   return (
-    <SessionProvider>
-      <TooltipProvider delayDuration={0}>
-        {children}
-      </TooltipProvider>
-    </SessionProvider>
+    <TooltipProvider delayDuration={0}>
+      {children}
+    </TooltipProvider>
   );
 }

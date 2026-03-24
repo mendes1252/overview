@@ -5,130 +5,103 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Loader2, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, ArrowLeft, Mail, CheckCircle } from "lucide-react";
 
-const forgotSchema = z.object({
-  email: z.string().email("Email invalido"),
+const schema = z.object({
+  email: z.string().email("E-mail inválido"),
 });
 
-type ForgotFormData = z.infer<typeof forgotSchema>;
+type FormData = z.infer<typeof schema>;
 
 export default function RecuperarSenhaPage() {
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
-  const [emailSent, setEmailSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
-  } = useForm<ForgotFormData>({
-    resolver: zodResolver(forgotSchema),
-  });
+  } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  const onSubmit = async (data: ForgotFormData) => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/api/auth/forgot-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: data.email }),
-      });
+  const onSubmit = async (data: FormData) => {
+    setLoading(true);
+    const supabase = createClient();
 
-      if (!response.ok) {
-        throw new Error("Erro ao enviar email");
-      }
+    const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
+      redirectTo: `${window.location.origin}/auth/callback?type=recovery`,
+    });
 
-      setEmailSent(true);
-    } catch {
-      toast({
-        title: "Erro",
-        description: "Nao foi possivel processar sua solicitacao. Tente novamente.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
+    setLoading(false);
+
+    if (error) {
+      toast({ title: "Erro", description: error.message });
+      return;
     }
-  };
 
-  if (emailSent) {
-    return (
-      <div className="text-center">
-        <div className="w-16 h-16 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mx-auto mb-6">
-          <CheckCircle className="w-8 h-8 text-[#4A9FFF]" />
-        </div>
-        <h2 className="text-2xl font-medium text-[#1A1A2E] mb-2">Email enviado</h2>
-        <p className="text-[#718096] font-light mb-6">
-          Se o email <strong className="font-medium text-[#1A1A2E]">{getValues("email")}</strong> estiver
-          cadastrado, voce recebera um link para redefinir sua senha. Verifique tambem a pasta de spam.
-        </p>
-        <p className="text-sm text-[#718096] font-light mb-8">
-          O link expira em 1 hora.
-        </p>
-        <Link href="/login">
-          <Button variant="outline" className="gap-2 rounded-xl">
-            <ArrowLeft className="w-4 h-4" />
-            Voltar ao login
-          </Button>
-        </Link>
-      </div>
-    );
-  }
+    setSent(true);
+  };
 
   return (
     <div>
       <Link
         href="/login"
-        className="inline-flex items-center gap-2 text-[#718096] hover:text-[#1A1A2E] text-sm mb-6 transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm text-[#6E6E63] hover:text-[#1E3A5F] mb-6 transition-colors"
       >
-        <ArrowLeft className="w-4 h-4" />
-        Voltar ao login
+        <ArrowLeft size={14} strokeWidth={1.5} />
+        Voltar
       </Link>
 
-      <div className="w-12 h-12 rounded-2xl bg-[#4A9FFF]/10 flex items-center justify-center mb-6">
-        <Mail className="w-6 h-6 text-[#4A9FFF]" />
-      </div>
-
-      <h2 className="text-2xl font-medium text-[#1A1A2E] mb-2">Recuperar senha</h2>
-      <p className="text-[#718096] font-light mb-8">
-        Informe seu email e enviaremos um link para redefinir sua senha.
+      <h2 className="text-2xl font-bold text-[#1E3A5F] mb-1">
+        Recuperar senha
+      </h2>
+      <p className="text-[#6E6E63] text-sm mb-7">
+        Informe seu e-mail e enviaremos um link para redefinir sua senha.
       </p>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div>
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="seu@email.com"
-            {...register("email")}
-            className="mt-1 rounded-xl"
-          />
-          {errors.email && (
-            <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
-          )}
+      {sent ? (
+        <div className="bg-[#F0F3F9] border border-[#B8C6DE] rounded-lg p-4 text-sm text-[#1E3A5F]">
+          <p className="font-semibold mb-1">E-mail enviado!</p>
+          <p>Verifique sua caixa de entrada e clique no link de recuperação.</p>
         </div>
+      ) : (
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
+            <Label htmlFor="email" className="text-[#3D3D36] font-medium">
+              E-mail
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="seu@email.com"
+              {...register("email")}
+              className="mt-1"
+            />
+            {errors.email && (
+              <p className="text-xs text-[#1E3A5F] mt-1 font-medium">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
 
-        <Button
-          type="submit"
-          className="w-full bg-[#4A9FFF] hover:bg-[#6BB5FF] text-white rounded-xl h-11 transition-colors"
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Enviando...
-            </>
-          ) : (
-            "Enviar link de recuperacao"
-          )}
-        </Button>
-      </form>
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-[#1E3A5F] hover:bg-[#1A3254] text-white font-semibold h-10"
+          >
+            {loading ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              "Enviar link de recuperação"
+            )}
+          </Button>
+        </form>
+      )}
     </div>
   );
 }

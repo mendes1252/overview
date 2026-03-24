@@ -1,44 +1,45 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
+import { updateSession } from "@/lib/supabase/middleware";
 
 const protectedRoutes = [
   "/dashboard",
-  "/tarefas",
-  "/habitos",
-  "/metas",
+  "/lancamentos",
+  "/pessoas",
+  "/simulador",
+  "/fluxo-caixa",
   "/relatorios",
   "/configuracoes",
   "/onboarding",
 ];
 
-const authRoutes = ["/login", "/cadastro", "/recuperar-senha", "/redefinir-senha"];
+const authRoutes = [
+  "/login",
+  "/cadastro",
+  "/recuperar-senha",
+  "/redefinir-senha",
+];
 
-export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
-  // Check for session token cookie (NextAuth v5 sets this)
-  const token =
-    req.cookies.get("authjs.session-token")?.value ||
-    req.cookies.get("__Secure-authjs.session-token")?.value;
-  const isLoggedIn = !!token;
+  const { supabaseResponse, user } = await updateSession(request);
 
-  // Protected routes - redirect to login if not authenticated
   const isProtected = protectedRoutes.some(
     (route) => pathname === route || pathname.startsWith(route + "/")
   );
-  if (isProtected && !isLoggedIn) {
-    const loginUrl = new URL("/login", req.url);
+
+  if (isProtected && !user) {
+    const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  // Auth routes - redirect to dashboard if already logged in
   const isAuthRoute = authRoutes.some((route) => pathname === route);
-  if (isAuthRoute && isLoggedIn) {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+  if (isAuthRoute && user) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  return NextResponse.next();
+  return supabaseResponse;
 }
 
 export const config = {
