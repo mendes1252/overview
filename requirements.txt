@@ -1,3 +1,5 @@
 streamlit>=1.30.0
 ollama>=0.1.7
 requests
+beautifulsoup4
+lxml
