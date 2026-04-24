@@ -1,0 +1,22 @@
+
+---
+
+### 4. Arquivo `.gitignore`
+
+```gitignore
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Project specific
+history.json
+.DS_Store

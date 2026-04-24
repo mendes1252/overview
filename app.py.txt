@@ -1,0 +1,175 @@
+import streamlit as st
+import ollama
+import json
+import os
+import datetime
+import urllib.parse
+
+# Configuração da Página
+st.set_page_config(
+    page_title="Gerador de Legendas WhatsApp",
+    page_icon="🛒",
+    layout="wide"
+)
+
+# CSS
+st.markdown("""
+<style>
+    .main-header {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #FF9900;
+        text-align: center;
+    }
+    .stButton>button {
+        width: 100%;
+        border-radius: 8px;
+        font-weight: bold;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Funções
+def check_ollama():
+    try:
+        ollama.list()
+        return True
+    except:
+        return False
+
+def get_models():
+    try:
+        models = ollama.list()
+        return [m.model for m in models.models]
+    except:
+        return ["llama3"]
+
+def save_history(data):
+    try:
+        with open("history.json", "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    except:
+        pass
+
+# Header
+st.markdown('<h1 class="main-header">🛒 Gerador de Legendas WhatsApp - Afiliado</h1>', unsafe_allow_html=True)
+st.markdown('<p style="text-align: center; color: #888;">Crie legendas irresistíveis com IA local</p>', unsafe_allow_html=True)
+
+# Sidebar
+with st.sidebar:
+    st.header("⚙️ Configurações")
+    
+    ollama_ok = check_ollama()
+    if ollama_ok:
+        st.success("✅ Ollama Conectado")
+    else:
+        st.error("❌ Ollama Offline")
+        st.info("Execute: `ollama serve` em outro terminal")
+    
+    models = get_models()
+    selected_model = st.selectbox("Modelo", models)
+    temperature = st.slider("Temperatura", 0.5, 1.2, 0.8, 0.1)
+
+st.divider()
+
+# Formulário Principal
+col1, col2 = st.columns([2, 1])
+
+with col1:
+    with st.form("form_prod"):
+        st.subheader("📝 Produto")
+        
+        c1, c2 = st.columns(2)
+        with c1:
+            nome = st.text_input("Nome do Produto")
+            preco = st.text_input("Preço (R$)")
+        with c2:
+            link = st.text_input("Link de Afiliado")
+            desconto = st.text_input("Desconto (%)")
+        
+        beneficios = st.text_area("Benefícios (um por linha)", height=100)
+        
+        enviar = st.form_submit_button("🚀 Gerar Legendas", use_container_width=True, disabled=not ollama_ok)
+
+with col2:
+    st.info("💡 **Dica:** Preencha todos os campos para melhores resultados!")
+    
+    if st.button("🎲 Exemplo Pronto", use_container_width=True):
+        st.session_state['exemplo'] = {
+            'nome': 'Fone Bluetooth TWS',
+            'preco': 'R$ 89,90',
+            'link': 'https://amzn.to/exemplo',
+            'desconto': '50%',
+            'beneficios': 'Cancelamento de ruído\nBateria 24h\nResistente à água'
+        }
+        st.rerun()
+
+# Carregar exemplo
+if 'exemplo' in st.session_state:
+    nome = st.session_state['exemplo']['nome']
+    preco = st.session_state['exemplo']['preco']
+    link = st.session_state['exemplo']['link']
+    desconto = st.session_state['exemplo']['desconto']
+    beneficios = st.session_state['exemplo']['beneficios']
+    del st.session_state['exemplo']
+    st.rerun()
+
+# Geração
+if enviar:
+    if not nome or not link:
+        st.error("Preencha Nome e Link!")
+    else:
+        with st.spinner("🤖 Gerando legendas..."):
+            try:
+                prompt = f"""
+Crie 3 legendas de venda para WhatsApp em português do Brasil.
+
+Produto: {nome}
+Preço: {preco}
+Desconto: {desconto}
+Benefícios: {beneficios}
+Link: {link}
+
+Regras:
+- Use emojis
+- Máximo 6 linhas cada
+- Termine com o link
+- Tom urgente e persuasivo
+
+Retorne APENAS um JSON assim:
+[
+  {{"style": "Urgência", "text": "legenda aqui"}},
+  {{"style": "Benefícios", "text": "legenda aqui"}},
+  {{"style": "Promoção", "text": "legenda aqui"}}
+]
+"""
+                response = ollama.chat(
+                    model=selected_model,
+                    messages=[{'role': 'user', 'content': prompt}],
+                    options={'temperature': temperature}
+                )
+                
+                content = response['message']['content']
+                content = content.replace("```json", "").replace("```", "").strip()
+                
+                legendas = json.loads(content)
+                
+                st.success("✅ Legendas geradas!")
+                
+                for i, leg in enumerate(legendas):
+                    with st.expander(f"📋 Opção {i+1}: {leg.get('style', 'Geral')}"):
+                        st.text_area("Legenda", leg['text'], height=100)
+                        wa_link = f"https://wa.me/?text={urllib.parse.quote(leg['text'])}"
+                        st.link_button("📤 WhatsApp", wa_link)
+                
+                # Salvar histórico
+                save_history({
+                    'produto': nome,
+                    'link': link,
+                    'legendas': legendas,
+                    'data': datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+                })
+                
+            except Exception as e:
+                st.error(f"Erro: {e}")
+                st.code(str(e))
