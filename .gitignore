@@ -42,3 +42,11 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+# Python (whatsapp-legend-generator)
+__pycache__/
+*.pyc
+*.pyo
+whatsapp-legend-generator/.venv/
+whatsapp-legend-generator/venv/
+whatsapp-legend-generator/data/history.json

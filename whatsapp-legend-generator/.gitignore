@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+ENV/
+
+# Dados locais (histórico gerado pelo usuário)
+data/history.json
+
+# Variáveis de ambiente
+.env
+.env.local
+
+# Streamlit
+.streamlit/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
