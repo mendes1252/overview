@@ -1,5 +1,5 @@
 import streamlit as st
-import ollama
+from groq import Groq
 import json
 import os
 import datetime
@@ -7,15 +7,14 @@ import urllib.parse
 import requests
 from bs4 import BeautifulSoup
 
-# --- CONFIGURAÇÃO DA PÁGINA ---
+# --- CONFIGURAÇÃO ---
 st.set_page_config(
     page_title="Gerador de Mensagens WhatsApp - Afiliado",
     page_icon="🛒",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
-# --- CSS ---
 st.markdown("""
 <style>
     .main-header {
@@ -46,55 +45,18 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# --- MODELOS GROQ DISPONÍVEIS ---
+GROQ_MODELS = {
+    "LLaMA 3.3 70B (Melhor qualidade)": "llama-3.3-70b-versatile",
+    "LLaMA 3.1 8B (Mais rápido)": "llama-3.1-8b-instant",
+    "LLaMA 3 70B": "llama3-70b-8192",
+    "Mixtral 8x7B": "mixtral-8x7b-32768",
+}
 
 # --- FUNÇÕES AUXILIARES ---
 
-def get_ollama_models():
-    try:
-        models = ollama.list()
-        return [m.model for m in models.models]
-    except Exception:
-        return []
-
-
-def check_ollama_connection():
-    try:
-        ollama.list()
-        return True
-    except Exception:
-        return False
-
-
-def save_to_history(data):
-    history_file = "history.json"
-    history = []
-    if os.path.exists(history_file):
-        try:
-            with open(history_file, "r", encoding="utf-8") as f:
-                history = json.load(f)
-        except Exception:
-            history = []
-    data["timestamp"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    history.insert(0, data)
-    if len(history) > 50:
-        history = history[:50]
-    with open(history_file, "w", encoding="utf-8") as f:
-        json.dump(history, f, ensure_ascii=False, indent=2)
-
-
-def load_history():
-    history_file = "history.json"
-    if os.path.exists(history_file):
-        try:
-            with open(history_file, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            return []
-    return []
-
-
-def generate_whatsapp_link(text):
-    return f"https://wa.me/?text={urllib.parse.quote(text)}"
+def get_groq_client(api_key):
+    return Groq(api_key=api_key)
 
 
 def detect_platform(link):
@@ -106,8 +68,11 @@ def detect_platform(link):
     return "Outros"
 
 
+def generate_whatsapp_link(text):
+    return f"https://wa.me/?text={urllib.parse.quote(text)}"
+
+
 def scrape_product_info(url):
-    """Acessa a URL e extrai nome, preço, desconto e benefícios do produto."""
     headers = {
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -120,16 +85,10 @@ def scrape_product_info(url):
     try:
         resp = requests.get(url, headers=headers, timeout=15, allow_redirects=True)
         resp.raise_for_status()
-        soup = BeautifulSoup(resp.text, "lxml")
+        soup = BeautifulSoup(resp.text, "html.parser")
         platform = detect_platform(resp.url)
 
-        result = {
-            "name": "",
-            "price": "",
-            "discount": "",
-            "features": [],
-            "platform": platform,
-        }
+        result = {"name": "", "price": "", "discount": "", "features": [], "platform": platform}
 
         if platform == "Amazon":
             title_elem = soup.find("span", {"id": "productTitle"})
@@ -149,9 +108,7 @@ def scrape_product_info(url):
             bullets = soup.find("div", {"id": "feature-bullets"})
             if bullets:
                 items = bullets.find_all("span", {"class": "a-list-item"})
-                result["features"] = [
-                    i.get_text().strip() for i in items if i.get_text().strip()
-                ][:5]
+                result["features"] = [i.get_text().strip() for i in items if i.get_text().strip()][:5]
 
         elif platform == "Shopee":
             og_title = soup.find("meta", property="og:title")
@@ -162,7 +119,6 @@ def scrape_product_info(url):
                 desc = og_desc.get("content", "").strip()
                 if desc:
                     result["features"] = [desc]
-
         else:
             og_title = soup.find("meta", property="og:title")
             if og_title:
@@ -184,7 +140,7 @@ def scrape_product_info(url):
     except requests.exceptions.RequestException as e:
         return None, f"Erro de conexão: {e}"
     except Exception as e:
-        return None, f"Erro inesperado: {e}"
+        return None, f"Erro: {e}"
 
 
 # --- PROMPTS ---
@@ -223,8 +179,8 @@ Você é um Copywriter Brasileiro especialista em vendas diretas no WhatsApp par
 Com base APENAS no link de afiliado fornecido, crie {num_copies} legendas persuasivas para WhatsApp.
 
 Instruções:
-- Se o link for da Amazon (amzn.to, amazon.com.br): mencione "Amazon" e use o tom premium deles
-- Se for da Shopee (shope.ee, shopee.com.br): mencione "Shopee" e reforce frete grátis/cashback
+- Se o link for da Amazon (amzn.to, amazon.com.br): mencione Amazon e use tom premium
+- Se for da Shopee (shope.ee, shopee.com.br): mencione Shopee e reforce frete grátis/cashback
 - Use gatilhos de urgência, escassez e oferta imperdível
 - Inclua emojis estratégicos
 - Termine SEMPRE com o link fornecido
@@ -242,19 +198,19 @@ Retorne APENAS um JSON válido (sem mais nada):
 """
 
 
-# --- GERAÇÃO E EXIBIÇÃO ---
+# --- GERAÇÃO ---
 
 def _parse_response(content):
-    """Extrai e parseia o JSON da resposta do Ollama."""
     content = content.strip()
     if "```" in content:
         parts = content.split("```")
         for part in parts:
+            part = part.strip()
             if part.startswith("json"):
                 content = part[4:].strip()
                 break
-            elif "[" in part:
-                content = part.strip()
+            elif part.startswith("["):
+                content = part
                 break
     start = content.find("[")
     end = content.rfind("]") + 1
@@ -263,19 +219,19 @@ def _parse_response(content):
     return json.loads(content)
 
 
-def gerar_copies(model, temperature, prompt_text):
-    response = ollama.chat(
-        model=model,
+def gerar_copies(client, model_id, temperature, prompt_text):
+    response = client.chat.completions.create(
+        model=model_id,
         messages=[
             {
                 "role": "system",
-                "content": "You are a JSON generator. Output ONLY a valid JSON array. No markdown, no explanation, no extra text.",
+                "content": "You are a JSON generator. Output ONLY a valid JSON array. No markdown, no explanation.",
             },
             {"role": "user", "content": prompt_text},
         ],
-        options={"temperature": temperature},
+        temperature=temperature,
     )
-    return _parse_response(response["message"]["content"])
+    return _parse_response(response.choices[0].message.content)
 
 
 def exibir_resultados(results):
@@ -292,6 +248,15 @@ def exibir_resultados(results):
         st.markdown("---")
 
 
+def save_session_history(data):
+    if "history" not in st.session_state:
+        st.session_state["history"] = []
+    data["timestamp"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    st.session_state["history"].insert(0, data)
+    if len(st.session_state["history"]) > 30:
+        st.session_state["history"] = st.session_state["history"][:30]
+
+
 # --- MAIN ---
 
 def main():
@@ -300,7 +265,7 @@ def main():
         unsafe_allow_html=True,
     )
     st.markdown(
-        '<p class="sub-header">Cole o link → a IA escreve a mensagem. 100% local, sem custo.</p>',
+        '<p class="sub-header">Cole o link → a IA escreve a mensagem. Grátis, rápido, sem instalação.</p>',
         unsafe_allow_html=True,
     )
 
@@ -308,47 +273,47 @@ def main():
     with st.sidebar:
         st.header("⚙️ Configurações")
 
-        is_connected = check_ollama_connection()
-        if not is_connected:
-            st.error("❌ Ollama não detectado!")
-            st.code("ollama serve", language="bash")
+        # API Key — tenta secrets do Streamlit Cloud primeiro, senão pede no sidebar
+        api_key = st.secrets.get("GROQ_API_KEY", "") if hasattr(st, "secrets") else ""
+        if not api_key:
+            api_key = st.text_input(
+                "🔑 Groq API Key",
+                type="password",
+                placeholder="gsk_...",
+                help="Chave gratuita em console.groq.com",
+            )
+
+        if not api_key:
+            st.warning("Insira sua API Key do Groq para continuar.")
+            st.markdown(
+                "**Como obter gratuitamente:**\n"
+                "1. Acesse [console.groq.com](https://console.groq.com)\n"
+                "2. Crie uma conta (gratuita)\n"
+                "3. Vá em **API Keys → Create API Key**\n"
+                "4. Cole a chave aqui"
+            )
             st.stop()
-        else:
-            st.success("✅ Ollama Conectado")
 
-        available_models = get_ollama_models()
-        if not available_models:
-            st.warning("Nenhum modelo encontrado.")
-            st.code("ollama pull llama3", language="bash")
-            st.stop()
+        client = get_groq_client(api_key)
 
-        default_idx = 0
-        for pref in ["llama3", "llama3.2", "mistral", "gemma2"]:
-            if pref in available_models:
-                default_idx = available_models.index(pref)
-                break
+        model_label = st.selectbox("Modelo de IA", list(GROQ_MODELS.keys()), index=0)
+        model_id = GROQ_MODELS[model_label]
 
-        selected_model = st.selectbox(
-            "Modelo LLM",
-            available_models,
-            index=default_idx,
-            help="Modelos 7b/8b são mais rápidos. Modelos maiores são mais criativos.",
-        )
         temperature = st.slider("Criatividade", 0.5, 1.2, 0.8, 0.1)
         num_copies = st.selectbox("Variações de Mensagem", [3, 5, 7], index=1)
 
         st.divider()
-        st.subheader("📜 Últimas Gerações")
-        history_data = load_history()
+        st.subheader("📜 Histórico da Sessão")
+        history_data = st.session_state.get("history", [])
         if history_data:
             for item in history_data[:5]:
                 label = item.get("product_name", item.get("link", "Item"))
-                short_label = (label[:28] + "...") if len(label) > 28 else label
-                if st.button(f"🔄 {short_label}", key=f"hist_{item['timestamp']}"):
+                short = (label[:26] + "...") if len(label) > 26 else label
+                if st.button(f"🔄 {short}", key=f"hist_{item['timestamp']}"):
                     st.session_state["carregado"] = item
                     st.rerun()
         else:
-            st.info("Nenhum histórico ainda.")
+            st.info("Nenhuma geração ainda.")
 
     # --- TABS ---
     tab_rapido, tab_manual, tab_historico = st.tabs(
@@ -363,7 +328,7 @@ def main():
             """
             <div class="highlight-box">
             <strong>⚡ Modo Rápido</strong><br>
-            Cole qualquer link de afiliado abaixo. O Ollama analisa e gera as mensagens completas.
+            Cole qualquer link de afiliado abaixo. A IA analisa e gera as mensagens completas — sem preencher nada.
             </div>
             """,
             unsafe_allow_html=True,
@@ -388,53 +353,38 @@ def main():
                 "⚡ Gerar Direto (só pela URL)",
                 use_container_width=True,
                 disabled=not url_rapido,
-                help="Ollama gera a copy analisando apenas a URL, sem acessar a página.",
+                help="A IA gera copy analisando apenas a URL, sem acessar a página.",
             )
 
-        # --- SCRAPING ---
+        # SCRAPING
         if btn_analisar and url_rapido:
             with st.spinner("🔍 Acessando a página e extraindo informações..."):
                 data, error = scrape_product_info(url_rapido)
             if error:
                 st.warning(f"⚠️ Não foi possível extrair dados: {error}")
-                st.info(
-                    "Use **Gerar Direto** para que o Ollama crie a copy a partir da URL, "
-                    "ou vá para **Modo Manual** para preencher manualmente."
-                )
+                st.info("Use **Gerar Direto** ou preencha manualmente na aba **Modo Manual**.")
             else:
                 st.session_state["scraped"] = data
                 st.session_state["scraped_link"] = url_rapido
                 if data.get("name"):
-                    st.success(f"✅ Produto: **{data['name'][:70]}**")
+                    st.success(f"✅ Produto identificado: **{data['name'][:70]}**")
                 else:
                     st.info("Dados parcialmente extraídos. Revise e complete abaixo.")
 
-        # --- GERAR DIRETO PELA URL ---
+        # GERAR DIRETO
         if btn_direto and url_rapido:
-            with st.spinner("⚡ Ollama gerando mensagens a partir do link..."):
+            with st.spinner("⚡ IA gerando mensagens a partir do link..."):
                 try:
-                    prompt = PROMPT_APENAS_LINK.format(
-                        num_copies=num_copies,
-                        link=url_rapido,
-                    )
-                    copies = gerar_copies(selected_model, temperature, prompt)
+                    prompt = PROMPT_APENAS_LINK.format(num_copies=num_copies, link=url_rapido)
+                    copies = gerar_copies(client, model_id, temperature, prompt)
                     st.session_state["resultados_rapido"] = copies
-                    save_to_history(
-                        {
-                            "product_name": url_rapido,
-                            "link": url_rapido,
-                            "copies": copies,
-                        }
-                    )
+                    save_session_history({"product_name": url_rapido, "link": url_rapido, "copies": copies})
                 except json.JSONDecodeError:
-                    st.error(
-                        "Erro ao interpretar o JSON da resposta. "
-                        "Tente diminuir a temperatura ou trocar o modelo."
-                    )
+                    st.error("Erro ao interpretar JSON. Tente diminuir a criatividade ou outro modelo.")
                 except Exception as e:
                     st.error(f"Erro: {e}")
 
-        # --- FORMULÁRIO COM DADOS EXTRAÍDOS ---
+        # FORMULÁRIO COM DADOS EXTRAÍDOS
         if "scraped" in st.session_state and "scraped_link" in st.session_state:
             data = st.session_state["scraped"]
             st.divider()
@@ -462,7 +412,7 @@ def main():
                 btn_gerar_r = st.form_submit_button("🚀 Gerar Mensagens", use_container_width=True)
 
             if btn_gerar_r:
-                link_para_usar = st.session_state["scraped_link"]
+                link_usar = st.session_state["scraped_link"]
                 with st.spinner("🤖 Gerando mensagens..."):
                     try:
                         features_list = [f.strip() for f in features_r.split("\n") if f.strip()]
@@ -473,26 +423,18 @@ def main():
                             discount=desconto_r or "não informado",
                             features=", ".join(features_list) or "não informados",
                             platform=plataforma_r or "não identificada",
-                            link=link_para_usar,
+                            link=link_usar,
                         )
                         if custom_r:
-                            prompt += f"\nInstrução extra do usuário: {custom_r}"
-                        copies = gerar_copies(selected_model, temperature, prompt)
+                            prompt += f"\nInstrução extra: {custom_r}"
+                        copies = gerar_copies(client, model_id, temperature, prompt)
                         st.session_state["resultados_rapido"] = copies
-                        save_to_history(
-                            {
-                                "product_name": nome_r,
-                                "link": link_para_usar,
-                                "price": preco_r,
-                                "copies": copies,
-                            }
-                        )
+                        save_session_history({"product_name": nome_r, "link": link_usar, "price": preco_r, "copies": copies})
                     except json.JSONDecodeError:
-                        st.error("Erro de JSON. Diminua a temperatura ou troque o modelo.")
+                        st.error("Erro de JSON. Diminua a criatividade ou troque o modelo.")
                     except Exception as e:
                         st.error(f"Erro: {e}")
 
-        # --- RESULTADOS MODO RÁPIDO ---
         if "resultados_rapido" in st.session_state:
             st.divider()
             exibir_resultados(st.session_state["resultados_rapido"])
@@ -508,28 +450,19 @@ def main():
         with col1:
             with st.form("form_manual"):
                 st.subheader("📝 Detalhes do Produto")
-
                 c1, c2 = st.columns(2)
                 with c1:
-                    product_name = st.text_input(
-                        "Nome do Produto", value=initial_data.get("product_name", "")
-                    )
-                    price = st.text_input(
-                        "Preço (ex: R$ 99,90)", value=initial_data.get("price", "")
-                    )
+                    product_name = st.text_input("Nome do Produto", value=initial_data.get("product_name", ""))
+                    price = st.text_input("Preço (ex: R$ 99,90)", value=initial_data.get("price", ""))
                 with c2:
-                    affiliate_link = st.text_input(
-                        "Link de Afiliado", value=initial_data.get("link", "")
-                    )
-                    discount = st.text_input(
-                        "Desconto (ex: 40% OFF)", value=initial_data.get("discount", "")
-                    )
+                    affiliate_link = st.text_input("Link de Afiliado", value=initial_data.get("link", ""))
+                    discount = st.text_input("Desconto (ex: 40% OFF)", value=initial_data.get("discount", ""))
 
                 features = st.text_area(
                     "Benefícios (um por linha)",
                     value="\n".join(initial_data.get("features", [])),
                     height=150,
-                    placeholder="- Entrega rápida\n- Garantia de 1 ano\n- Melhor preço do mercado",
+                    placeholder="- Entrega rápida\n- Garantia de 1 ano\n- Melhor preço",
                 )
 
                 platform_detect = detect_platform(affiliate_link)
@@ -546,27 +479,17 @@ def main():
                     height=80,
                 )
 
-                submitted = st.form_submit_button(
-                    "🚀 Gerar Mensagens", use_container_width=True
-                )
+                submitted = st.form_submit_button("🚀 Gerar Mensagens", use_container_width=True)
 
         with col2:
-            st.info(
-                "💡 **Dica Pro:**\n"
-                "Seja específico nos benefícios. Em vez de 'bom', diga 'bateria dura 24h'. "
-                "Isso ajuda a IA a vender melhor!"
-            )
-            if st.button("🎲 Preencher com Exemplo (Fone Bluetooth)", use_container_width=True):
+            st.info("💡 **Dica Pro:**\nSeja específico. Em vez de 'bom', diga 'bateria dura 24h'. Isso melhora muito a copy gerada!")
+            if st.button("🎲 Exemplo: Fone Bluetooth", use_container_width=True):
                 st.session_state["carregado"] = {
                     "product_name": "Fone Bluetooth TWS Pro",
                     "price": "R$ 89,90",
                     "discount": "50% OFF",
                     "link": "https://amzn.to/exemplo",
-                    "features": [
-                        "Cancelamento de ruído ativo",
-                        "Bateria 24h de duração",
-                        "Resistente à água IPX5",
-                    ],
+                    "features": ["Cancelamento de ruído ativo", "Bateria 24h", "Resistente à água IPX5"],
                 }
                 st.rerun()
 
@@ -577,9 +500,7 @@ def main():
                 with st.spinner("🤖 Gerando mensagens..."):
                     try:
                         features_list = [f.strip() for f in features.split("\n") if f.strip()]
-                        final_platform = (
-                            platform_select if platform_select != "Auto-detectar" else platform_detect
-                        )
+                        final_platform = platform_select if platform_select != "Auto-detectar" else platform_detect
                         prompt = PROMPT_COMPLETO.format(
                             num_copies=num_copies,
                             product_name=product_name,
@@ -591,28 +512,14 @@ def main():
                         )
                         if custom_instructions:
                             prompt += f"\nInstrução extra: {custom_instructions}"
-
-                        copies = gerar_copies(selected_model, temperature, prompt)
-
-                        save_to_history(
-                            {
-                                "product_name": product_name,
-                                "price": price,
-                                "link": affiliate_link,
-                                "features": features_list,
-                                "copies": copies,
-                            }
-                        )
+                        copies = gerar_copies(client, model_id, temperature, prompt)
+                        save_session_history({"product_name": product_name, "price": price, "link": affiliate_link, "features": features_list, "copies": copies})
                         if "carregado" in st.session_state:
                             del st.session_state["carregado"]
                         st.session_state["resultados_manual"] = copies
                         st.rerun()
-
                     except json.JSONDecodeError:
-                        st.error(
-                            "Erro ao interpretar o JSON da resposta. "
-                            "Diminua a temperatura ou troque o modelo."
-                        )
+                        st.error("Erro de JSON. Diminua a criatividade ou troque o modelo.")
                     except Exception as e:
                         st.error(f"Erro: {e}")
 
@@ -624,14 +531,13 @@ def main():
     # TAB 3 — HISTÓRICO
     # =========================================================
     with tab_historico:
-        history_data = load_history()
+        history_data = st.session_state.get("history", [])
 
         if not history_data:
-            st.info("Nenhuma geração no histórico ainda. Gere sua primeira mensagem!")
+            st.info("Nenhuma geração no histórico desta sessão.")
         else:
-            st.markdown(f"**{len(history_data)} geração(ões) salva(s)** — máximo 50")
+            st.markdown(f"**{len(history_data)} geração(ões) nesta sessão**")
             st.divider()
-
             for item in history_data:
                 label = item.get("product_name", item.get("link", "Sem nome"))
                 ts = item.get("timestamp", "")
@@ -640,11 +546,9 @@ def main():
                         st.markdown(f"**Link:** `{item['link']}`")
                     if item.get("price"):
                         st.markdown(f"**Preço:** {item['price']}")
-
                     for copy in item.get("copies", []):
                         st.markdown(f"*{copy.get('style', 'Geral')}*")
                         st.code(copy.get("text", ""), language=None)
-
                     if st.button("♻️ Reutilizar no Modo Manual", key=f"reuse_{ts}"):
                         st.session_state["carregado"] = item
                         st.rerun()
