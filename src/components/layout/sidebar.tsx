@@ -12,6 +12,7 @@ import {
   Settings,
   Crown,
   Zap,
+  ShoppingBag,
 } from "lucide-react";
 
 const navigation = [
@@ -20,6 +21,7 @@ const navigation = [
   { name: "Hábitos", href: "/habitos", icon: TrendingUp },
   { name: "Metas", href: "/metas", icon: Target },
   { name: "Relatórios", href: "/relatorios", icon: BarChart3 },
+  { name: "Afiliados", href: "/affiliate", icon: ShoppingBag },
   { name: "Configurações", href: "/configuracoes", icon: Settings },
 ];
 

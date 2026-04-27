@@ -85,6 +85,9 @@ model User {
   payments           Payment[]
   notifications      Notification[]
   pushSubscriptions  PushSubscription[]
+  storefront         AffiliateStorefront?
+  affiliateProducts  AffiliateProduct[]
+  affiliateLinks     AffiliateLink[]
 }
 
 // Payment Model
@@ -360,4 +363,79 @@ model PushSubscription {
 
   @@unique([userId, endpoint])
   @@index([userId])
+}
+
+// Affiliate System
+
+enum AffiliatePlatform {
+  AMAZON
+  SHOPEE
+  MERCADO_LIVRE
+  OTHER
+}
+
+model AffiliateStorefront {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  username     String   @unique
+  customDomain String?  @unique
+  title        String?
+  bio          String?
+  avatarUrl    String?
+  themeColor   String   @default("#6366f1")
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AffiliateProduct {
+  id           String            @id @default(cuid())
+  userId       String
+  name         String
+  description  String?
+  imageUrl     String?
+  affiliateUrl String
+  price        Float?
+  category     String?
+  platform     AffiliatePlatform @default(OTHER)
+  active       Boolean           @default(true)
+  order        Int               @default(0)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  links        AffiliateLink[]
+
+  @@index([userId])
+  @@index([userId, active])
+}
+
+model AffiliateLink {
+  id         String           @id @default(cuid())
+  userId     String
+  productId  String
+  slug       String           @unique
+  clickCount Int              @default(0)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product    AffiliateProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+  clicks     LinkClick[]
+
+  @@index([slug])
+  @@index([userId])
+}
+
+model LinkClick {
+  id        String        @id @default(cuid())
+  linkId    String
+  ip        String?
+  userAgent String?
+  referrer  String?
+  device    String?
+  createdAt DateTime      @default(now())
+  link      AffiliateLink @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  @@index([linkId])
+  @@index([createdAt])
 }
