@@ -1,0 +1,10 @@
+streamlit>=1.30.0
+crewai>=0.28.0
+langchain-openai>=0.1.0
+pandas>=2.0.0
+requests>=2.31.0
+APScheduler>=3.10.0
+python-telegram-bot>=20.0
+plotly>=5.0.0
+pulp>=2.7.0
+python-dotenv>=1.0.0
