@@ -1,34 +1,30 @@
-# Blog Content Strategy
+# Estratégia de Conteúdo do Blog
 
-## Target Audience
-Knowledge workers, entrepreneurs, and productivity enthusiasts in the US market (18–45, tech-savvy, $50k+ income).
+## Público-Alvo
+Profissionais do conhecimento, empreendedores e entusiastas de produtividade no Brasil (18–45 anos, familiarizados com tecnologia, renda média-alta).
 
-## Content Pillars
-1. **AI Tools** — reviews, comparisons, how-tos for AI productivity software
-2. **Habits** — science-backed habit formation guides
-3. **Task & Time Management** — system breakdowns, app comparisons
+## Pilares de Conteúdo
+1. **Ferramentas de IA** — análises, comparativos e tutoriais de software de produtividade com IA
+2. **Hábitos** — guias de formação de hábitos baseados em ciência comportamental
+3. **Gerenciamento de Tarefas e Tempo** — análises de sistemas, comparativos de apps
 
-## Published Posts
+## Posts Publicados
 
-| File | Focus Keyword | Secondary KWs | Monetization |
-|------|--------------|---------------|--------------|
-| `best-ai-productivity-apps-2026.html` | best AI productivity apps 2026 | AI task manager, AI habit tracker | Amazon (books/headsets) + Pulse CTA |
-| `how-to-build-better-habits-with-ai.html` | how to build better habits with AI | AI habit tracker, habit formation science | Amazon (Atomic Habits, Power of Habit) |
-| `ai-task-management-vs-traditional-todo-lists.html` | AI task management | AI to-do list, best task manager app | Amazon (GTD book, Leuchtturm notebook) |
+| Arquivo | Palavra-chave Principal | KWs Secundárias | Monetização |
+|---------|------------------------|-----------------|-------------|
+| `best-ai-productivity-apps-2026.html` | melhores apps de produtividade com IA 2026 | gerenciador de tarefas com IA, rastreador de hábitos com IA | Amazon (livros/headsets) + CTA Pulse |
+| `how-to-build-better-habits-with-ai.html` | como construir melhores hábitos com IA | rastreador de hábitos com IA, ciência dos hábitos | Amazon (Hábitos Atômicos, O Poder do Hábito) |
+| `ai-task-management-vs-traditional-todo-lists.html` | gerenciamento de tarefas com IA | lista de tarefas com IA, melhor app de tarefas | Amazon (GTD, caderno Leuchtturm) |
 
-## Affiliate Placeholder Reference
-Replace `[INSERT_AFFILIATE_LINK_HERE]` with actual Amazon Associates links before publishing.
+## Referência de Placeholders
+- `[INSERT_AFFILIATE_LINK_HERE]` → substituir pelos links da Amazon Associados antes de publicar
+- `[LINK: palavra-chave]` → substituir pelas URLs reais dos posts quando os slugs estiverem definidos no CMS
+- `[INSERT_NEWSLETTER_SIGNUP_LINK]` → substituir pela URL de cadastro da sua plataforma de e-mail (ConvertKit, Mailchimp etc.)
 
-## Internal Link Placeholders
-Replace `[LINK: keyword]` with actual post URLs once slugs are finalized in your CMS.
-
-## Newsletter Signup
-Replace `[INSERT_NEWSLETTER_SIGNUP_LINK]` with your email platform signup URL (ConvertKit, Mailchimp, etc.).
-
-## Content Roadmap (Next 6 Posts)
-1. Deep Work in the Age of AI: A Practical Guide for 2026
-2. The 20-Minute Weekly Review Template for High-Performers
-3. How to Audit Your Productivity System (And Stop Buying New Apps)
-4. Best AI Note-Taking Apps in 2026: Notion AI vs. Mem.ai vs. Obsidian
-5. 7 Deep Work Techniques That Actually Hold Up in 2026
-6. How to Use AI to Set Goals You'll Actually Achieve
+## Roadmap de Conteúdo (Próximos 6 Posts)
+1. Trabalho Focado na Era da IA: Um Guia Prático para 2026
+2. O Modelo de Revisão Semanal de 20 Minutos para Alta Performance
+3. Como Auditar Seu Sistema de Produtividade (e Parar de Comprar Novos Apps)
+4. Melhores Apps de Anotações com IA em 2026: Notion AI vs. Mem.ai vs. Obsidian
+5. 7 Técnicas de Trabalho Focado Que Realmente Funcionam em 2026
+6. Como Usar IA para Definir Metas Que Você Realmente vai Alcançar
