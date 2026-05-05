@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PhoneMockupSection } from "@/components/landing/phone-mockup-section";
+import { DeepFlowSection } from "@/components/landing/deep-flow-section";
 import { ScrollReveal } from "@/components/landing/scroll-reveal";
 import {
   CheckCircle2,
@@ -133,6 +134,9 @@ export default function LandingPage() {
 
       {/* Features - iPhone Mockup Experience */}
       <PhoneMockupSection />
+
+      {/* Deep Flow System – Pulse 2.0 */}
+      <DeepFlowSection />
 
       {/* How It Works */}
       <section id="como-funciona" className="py-24 sm:py-32 px-6 bg-[#1A1A2E] border-t border-white/5">
