@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Gerador de escalas do ministério infantil FONTE KIDS. Cadastre voluntárias (Tias), classes, horários e datas; gere a escala e exporte em CSV ou PDF. Funciona offline.">
+<meta name="theme-color" content="#F0603A">
+<title>FONTE KIDS · Gerador de Escalas</title>
+</head>
+<body>
+<style>
+  :root{
+    --ground:#FCF8F2; --surface:#FFFFFF; --surface-2:#F7F0E6;
+    --ink:#16343A; --muted:#5E7176; --line:#E7DFD3; --line-strong:#D8CCBA;
+    --accent:#F0603A; --accent-ink:#B23c1f; --accent-soft:#FDECE6;
+    --water:#1E8A8B; --water-soft:#E1F1F0; --amber:#F4A421;
+    --good:#2E9E6B; --good-soft:#E5F4EC; --warn:#C6462B; --warn-soft:#FBE7E2;
+    --radius:14px; --radius-sm:10px;
+    --shadow:0 1px 2px rgba(22,52,58,.05), 0 8px 24px rgba(22,52,58,.06);
+    --font:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#0E1B1E; --surface:#16282C; --surface-2:#1B3034;
+      --ink:#EAF2F0; --muted:#9DB2B4; --line:#254045; --line-strong:#315055;
+      --accent:#FF7754; --accent-ink:#FFB39C; --accent-soft:#2C221E;
+      --water:#3FB6B4; --water-soft:#16302F; --amber:#F4B454;
+      --good:#4CBB86; --good-soft:#12302A; --warn:#E8785C; --warn-soft:#33201B;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0E1B1E; --surface:#16282C; --surface-2:#1B3034;
+    --ink:#EAF2F0; --muted:#9DB2B4; --line:#254045; --line-strong:#315055;
+    --accent:#FF7754; --accent-ink:#FFB39C; --accent-soft:#2C221E;
+    --water:#3FB6B4; --water-soft:#16302F; --amber:#F4B454;
+    --good:#4CBB86; --good-soft:#12302A; --warn:#E8785C; --warn-soft:#33201B;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --ground:#FCF8F2; --surface:#FFFFFF; --surface-2:#F7F0E6;
+    --ink:#16343A; --muted:#5E7176; --line:#E7DFD3; --line-strong:#D8CCBA;
+    --accent:#F0603A; --accent-ink:#B23c1f; --accent-soft:#FDECE6;
+    --water:#1E8A8B; --water-soft:#E1F1F0; --amber:#F4A421;
+    --good:#2E9E6B; --good-soft:#E5F4EC; --warn:#C6462B; --warn-soft:#FBE7E2;
+    --shadow:0 1px 2px rgba(22,52,58,.05), 0 8px 24px rgba(22,52,58,.06);
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font);
+    line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px 80px;}
+
+  /* Header */
+  header.masthead{position:relative;overflow:hidden;background:
+    radial-gradient(120% 140% at 88% -20%, color-mix(in srgb,var(--water) 22%, transparent), transparent 60%),
+    radial-gradient(120% 130% at 0% 0%, color-mix(in srgb,var(--accent) 16%, transparent), transparent 55%);
+    border-bottom:1px solid var(--line);}
+  .masthead .wrap{padding-top:26px;padding-bottom:26px;display:flex;align-items:center;
+    gap:16px;flex-wrap:wrap;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:14px;min-width:0;}
+  .logo{width:52px;height:52px;border-radius:16px;flex:none;display:grid;place-items:center;
+    background:linear-gradient(150deg,var(--accent),var(--amber));box-shadow:var(--shadow);}
+  .logo svg{width:30px;height:30px;display:block}
+  .brand h1{margin:0;font-size:1.4rem;letter-spacing:-.02em;font-weight:800;line-height:1.05;}
+  .brand h1 span{color:var(--accent);}
+  .brand p{margin:2px 0 0;font-size:.82rem;color:var(--muted);font-weight:600;
+    text-transform:uppercase;letter-spacing:.08em;}
+  .head-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+
+  /* Tabs */
+  .tabs{display:flex;gap:6px;margin:22px 0 20px;background:var(--surface-2);
+    padding:6px;border-radius:14px;border:1px solid var(--line);width:fit-content;max-width:100%;overflow:auto;}
+  .tab{appearance:none;border:0;background:transparent;color:var(--muted);font:inherit;
+    font-weight:700;padding:9px 18px;border-radius:10px;cursor:pointer;white-space:nowrap;}
+  .tab[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);}
+  .tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+  /* Cards */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:20px 20px;margin-bottom:18px;}
+  .card > h2{margin:0 0 4px;font-size:1.06rem;letter-spacing:-.01em;display:flex;align-items:center;gap:9px;}
+  .card > h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;}
+  .card .hint{margin:0 0 16px;color:var(--muted);font-size:.86rem;}
+  .grid-cards{display:grid;grid-template-columns:1fr;gap:0;}
+  @media(min-width:760px){.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
+    .two-col .card{margin-bottom:0;}}
+
+  /* Forms */
+  label.fld{display:block;font-size:.78rem;font-weight:700;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--muted);margin:0 0 6px;}
+  input[type=text],input[type=date],input[type=number],select{
+    width:100%;font:inherit;color:var(--ink);background:var(--surface);
+    border:1px solid var(--line-strong);border-radius:var(--radius-sm);padding:10px 12px;}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent;}
+  .row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;}
+  .row .grow{flex:1 1 200px;min-width:0;}
+  .num{font-variant-numeric:tabular-nums;}
+
+  /* Buttons */
+  .btn{appearance:none;font:inherit;font-weight:700;border-radius:10px;padding:10px 16px;
+    border:1px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:7px;
+    white-space:nowrap;transition:transform .04s ease, background .15s ease;}
+  .btn:active{transform:translateY(1px);}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-primary:hover{background:var(--accent-ink);}
+  .btn-water{background:var(--water);color:#fff;}
+  .btn-ghost{background:transparent;border-color:var(--line-strong);color:var(--ink);}
+  .btn-ghost:hover{background:var(--surface-2);}
+  .btn-sm{padding:6px 11px;font-size:.85rem;}
+  .btn-icon{padding:7px;border-radius:9px;background:transparent;border:1px solid var(--line);
+    color:var(--muted);cursor:pointer;line-height:0;}
+  .btn-icon:hover{color:var(--warn);border-color:var(--warn);background:var(--warn-soft);}
+
+  /* Chips / lists */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
+  .chip{display:inline-flex;align-items:center;gap:7px;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.88rem;font-weight:600;}
+  .chip .x{cursor:pointer;color:var(--muted);line-height:0;display:inline-flex;}
+  .chip .x:hover{color:var(--warn);}
+
+  .toggle{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;
+    border:1px solid var(--line-strong);background:var(--surface);color:var(--muted);
+    font-size:.82rem;font-weight:600;cursor:pointer;user-select:none;}
+  .toggle[aria-pressed="true"]{background:var(--water-soft);border-color:var(--water);color:var(--water);}
+  .toggle.cl[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink);}
+
+  .vol{border:1px solid var(--line);border-radius:12px;padding:14px 15px;margin-bottom:12px;background:var(--surface);}
+  .vol .vhead{display:flex;align-items:center;gap:10px;justify-content:space-between;}
+  .vol .vname{font-weight:800;font-size:1.02rem;display:flex;align-items:center;gap:9px;}
+  .avatar{width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;
+    background:var(--water-soft);color:var(--water);font-weight:800;font-size:.82rem;}
+  .vol .prefs{margin-top:12px;display:grid;gap:12px;}
+  .prefs .plabel{font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:7px;}
+  .allbadge{font-size:.72rem;color:var(--water);font-weight:700;}
+
+  .empty{color:var(--muted);font-size:.9rem;padding:14px 0;text-align:center;font-style:italic;}
+
+  /* Escala */
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px;}
+  .toolbar .spacer{flex:1;}
+  .daygroup{margin-bottom:26px;}
+  .dayhead{display:flex;align-items:baseline;gap:12px;margin:0 0 12px;padding-bottom:8px;
+    border-bottom:2px solid var(--accent);flex-wrap:wrap;}
+  .dayhead .date{font-size:1.15rem;font-weight:800;letter-spacing:-.01em;}
+  .dayhead .weekday{color:var(--accent);font-weight:700;text-transform:capitalize;}
+  .svc{margin:0 0 16px;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .svc .svchead{background:var(--surface-2);padding:9px 14px;font-weight:700;font-size:.92rem;
+    display:flex;align-items:center;gap:8px;}
+  .svc .svchead .clock{color:var(--water);}
+  table.esc{width:100%;border-collapse:collapse;}
+  table.esc th,table.esc td{text-align:left;padding:9px 14px;border-top:1px solid var(--line);vertical-align:middle;}
+  table.esc th{font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);
+    font-weight:700;border-top:0;background:var(--surface);}
+  table.esc td.cls{font-weight:700;width:34%;}
+  .cellsel{display:flex;flex-direction:column;gap:6px;}
+  .cellsel select{padding:7px 10px;}
+  .miss{color:var(--warn);font-weight:700;font-size:.85rem;display:inline-flex;align-items:center;gap:5px;}
+
+  .summary{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+  .scount{display:inline-flex;align-items:center;gap:7px;background:var(--surface-2);border:1px solid var(--line);
+    border-radius:999px;padding:5px 12px;font-size:.85rem;font-weight:600;}
+  .scount b{font-variant-numeric:tabular-nums;color:var(--water);}
+  .scount.zero b{color:var(--warn);}
+
+  .banner{display:flex;gap:10px;align-items:flex-start;background:var(--water-soft);
+    border:1px solid color-mix(in srgb,var(--water) 30%,transparent);border-radius:12px;
+    padding:12px 14px;font-size:.88rem;margin-bottom:18px;color:var(--ink);}
+  .banner svg{flex:none;color:var(--water);margin-top:1px;}
+
+  .hidden{display:none !important;}
+
+  /* Toast */
+  #toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:var(--ground);padding:11px 18px;border-radius:11px;font-weight:600;
+    font-size:.9rem;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.25s;z-index:50;}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* Print */
+  @media print{
+    body{background:#fff;color:#000;}
+    header.masthead,.tabs,.toolbar,.head-actions,.banner,.no-print{display:none !important;}
+    .wrap{padding:0;max-width:none;}
+    .card{box-shadow:none;border:0;padding:0;}
+    #view-cadastro{display:none !important;}
+    #view-escala{display:block !important;}
+    .cellsel select{border:0;padding:0;font-weight:600;-webkit-appearance:none;appearance:none;background:none;}
+    .svc,table.esc th,table.esc td{border-color:#bbb !important;}
+    .dayhead{border-color:#000;}
+    .printhead{display:block !important;margin-bottom:14px;}
+  }
+  .printhead{display:none;}
+</style>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5c3.6 4.2 6 7.4 6 10.4a6 6 0 1 1-12 0c0-3 2.4-6.2 6-10.4Z" fill="#fff" opacity=".95"/><circle cx="9.7" cy="12.5" r="1.5" fill="#F0603A"/></svg>
+      </span>
+      <div>
+        <h1>FONTE <span>KIDS</span></h1>
+        <p>Gerador de Escalas · Ministério Infantil</p>
+      </div>
+    </div>
+    <div class="head-actions">
+      <button class="btn btn-ghost btn-sm" id="themeBtn" title="Alternar tema">🌙 Tema</button>
+      <button class="btn btn-ghost btn-sm" id="resetBtn" title="Apagar tudo e recomeçar">Recomeçar</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="cadastro">Cadastro</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="escala">Escala</button>
+  </div>
+
+  <!-- ===================== CADASTRO ===================== -->
+  <section id="view-cadastro">
+
+    <div class="banner">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5v.5"/></svg>
+      <div>Cadastre as <b>Tias</b>, as <b>classes</b>, os <b>horários de culto</b> e as <b>datas</b>. Depois vá em <b>Escala</b> e clique em <b>Gerar escala</b>. Tudo fica salvo automaticamente neste navegador.</div>
+    </div>
+
+    <!-- Voluntárias -->
+    <div class="card">
+      <h2><span class="dot"></span>Voluntárias (Tias)</h2>
+      <p class="hint">Adicione cada Tia. Marque em quais classes ela pode servir e em quais datas está disponível. Se não marcar nada, ela conta como disponível para <b>todas</b>.</p>
+      <div class="row">
+        <div class="grow">
+          <label class="fld" for="tiaNome">Nome da Tia</label>
+          <input type="text" id="tiaNome" placeholder="Ex.: Tia Ana" autocomplete="off">
+        </div>
+        <button class="btn btn-primary" id="addTia">+ Adicionar Tia</button>
+      </div>
+      <div id="tiaList" style="margin-top:16px;"></div>
+    </div>
+
+    <div class="two-col">
+      <!-- Classes -->
+      <div class="card">
+        <h2><span class="dot"></span>Classes</h2>
+        <p class="hint">As salas / faixas etárias do FONTE KIDS.</p>
+        <div class="row">
+          <div class="grow">
+            <label class="fld" for="clsNome">Nome da classe</label>
+            <input type="text" id="clsNome" placeholder="Ex.: Berçário" autocomplete="off">
+          </div>
+          <div style="flex:0 0 92px;">
+            <label class="fld" for="clsCap" title="Quantas Tias por culto nesta classe">Tias/culto</label>
+            <input type="number" id="clsCap" class="num" min="1" max="9" value="1">
+          </div>
+          <button class="btn btn-water" id="addCls">+</button>
+        </div>
+        <div id="clsList" class="chips" style="margin-top:14px;"></div>
+      </div>
+
+      <!-- Horários -->
+      <div class="card">
+        <h2><span class="dot"></span>Horários de culto</h2>
+        <p class="hint">Os cultos em que há FONTE KIDS.</p>
+        <div class="row">
+          <div class="grow">
+            <label class="fld" for="hrNome">Culto / horário</label>
+            <input type="text" id="hrNome" placeholder="Ex.: Domingo · Manhã 9h" autocomplete="off">
+          </div>
+          <button class="btn btn-water" id="addHr">+</button>
+        </div>
+        <div id="hrList" class="chips" style="margin-top:14px;"></div>
+      </div>
+    </div>
+
+    <!-- Datas -->
+    <div class="card">
+      <h2><span class="dot"></span>Datas da escala</h2>
+      <p class="hint">Os domingos / dias que entram nesta escala. O dia da semana é calculado automaticamente.</p>
+      <div class="row">
+        <div style="flex:0 0 200px;max-width:100%;">
+          <label class="fld" for="dtInput">Adicionar data</label>
+          <input type="date" id="dtInput">
+        </div>
+        <button class="btn btn-water" id="addDt">+ Adicionar</button>
+        <button class="btn btn-ghost btn-sm" id="addSundays" title="Adiciona os próximos 4 domingos a partir da data escolhida">+ Próx. 4 domingos</button>
+      </div>
+      <div id="dtList" class="chips" style="margin-top:14px;"></div>
+    </div>
+
+  </section>
+
+  <!-- ===================== ESCALA ===================== -->
+  <section id="view-escala" class="hidden">
+    <div class="toolbar no-print">
+      <button class="btn btn-primary" id="genBtn">✦ Gerar escala automática</button>
+      <button class="btn btn-ghost" id="clearBtn">Limpar escala</button>
+      <span class="spacer"></span>
+      <button class="btn btn-water" id="csvBtn">⤓ Exportar CSV</button>
+      <button class="btn btn-water" id="pdfBtn">⎙ Exportar PDF</button>
+    </div>
+
+    <div class="printhead">
+      <div style="font-size:1.5rem;font-weight:800;">FONTE KIDS — Escala do Ministério Infantil</div>
+      <div id="printSub" style="color:#555;"></div>
+    </div>
+
+    <div id="escOut"></div>
+
+    <div class="card no-print" id="summaryCard" style="display:none;">
+      <h2><span class="dot"></span>Distribuição por Tia</h2>
+      <p class="hint">Quantidade de vezes escalada — ajuste manualmente nos seletores acima se quiser equilibrar.</p>
+      <div id="summary" class="summary"></div>
+    </div>
+  </section>
+</main>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  const $ = s => document.querySelector(s);
+  const uid = () => Math.random().toString(36).slice(2,9);
+  const KEY = "fontekids_escala_v1";
+
+  const DEFAULT = {
+    tias: [],
+    classes: [
+      {id:uid(), nome:"Berçário", cap:1},
+      {id:uid(), nome:"Maternal", cap:1},
+      {id:uid(), nome:"Jardim", cap:1},
+      {id:uid(), nome:"Primários", cap:1},
+    ],
+    horarios: [
+      {id:uid(), nome:"Domingo · Manhã 9h"},
+      {id:uid(), nome:"Domingo · Noite 18h"},
+    ],
+    datas: [],
+    escala: {}
+  };
+
+  let state = load();
+
+  function load(){
+    try{
+      const raw = localStorage.getItem(KEY);
+      if(raw){ const p = JSON.parse(raw); return Object.assign({escala:{}}, DEFAULT, p); }
+    }catch(e){}
+    return JSON.parse(JSON.stringify(DEFAULT));
+  }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+  function toast(msg){
+    const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+    clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove("show"), 2200);
+  }
+
+  const WD = ["domingo","segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado"];
+  const MON = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+  function parseDate(s){ const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); }
+  function weekday(s){ return WD[parseDate(s).getDay()]; }
+  function fmtDate(s){ const d=parseDate(s); return d.getDate()+" de "+["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"][d.getMonth()]; }
+  function fmtShort(s){ const d=parseDate(s); return String(d.getDate()).padStart(2,"0")+"/"+MON[d.getMonth()]; }
+  function initials(n){ const p=n.replace(/tia/i,"").trim().split(/\s+/).filter(Boolean); return ((p[0]||"?")[0]+(p[1]?p[1][0]:"")).toUpperCase(); }
+
+  /* ---------- Tabs ---------- */
+  document.querySelectorAll(".tab").forEach(t=>{
+    t.addEventListener("click", ()=>{
+      document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected","false"));
+      t.setAttribute("aria-selected","true");
+      const tab=t.dataset.tab;
+      $("#view-cadastro").classList.toggle("hidden", tab!=="cadastro");
+      $("#view-escala").classList.toggle("hidden", tab!=="escala");
+      if(tab==="escala") renderEscala();
+    });
+  });
+
+  /* ---------- Theme ---------- */
+  const root=document.documentElement;
+  $("#themeBtn").addEventListener("click", ()=>{
+    const cur=root.getAttribute("data-theme");
+    const dark = cur ? cur==="dark" : window.matchMedia("(prefers-color-scheme:dark)").matches;
+    root.setAttribute("data-theme", dark?"light":"dark");
+  });
+
+  /* ---------- Voluntárias ---------- */
+  $("#addTia").addEventListener("click", addTia);
+  $("#tiaNome").addEventListener("keydown", e=>{ if(e.key==="Enter") addTia(); });
+  function addTia(){
+    const inp=$("#tiaNome"); const nome=inp.value.trim();
+    if(!nome){ inp.focus(); return; }
+    state.tias.push({id:uid(), nome, classes:[], datas:[]});
+    inp.value=""; inp.focus(); save(); renderTias();
+  }
+
+  function renderTias(){
+    const box=$("#tiaList"); box.innerHTML="";
+    if(!state.tias.length){ box.innerHTML='<div class="empty">Nenhuma Tia cadastrada ainda.</div>'; return; }
+    state.tias.forEach(t=>{
+      const el=document.createElement("div"); el.className="vol";
+      const clsChips = state.classes.map(c=>{
+        const on=t.classes.includes(c.id);
+        return `<button class="toggle cl" data-k="cls" data-tia="${t.id}" data-id="${c.id}" aria-pressed="${on}">${esc(c.nome)}</button>`;
+      }).join("") || '<span class="empty" style="padding:0">Cadastre classes primeiro.</span>';
+      const dtChips = state.datas.slice().sort().map(d=>{
+        const on=t.datas.includes(d);
+        return `<button class="toggle" data-k="dt" data-tia="${t.id}" data-id="${d}" aria-pressed="${on}">${fmtShort(d)}</button>`;
+      }).join("") || '<span class="empty" style="padding:0">Cadastre datas primeiro.</span>';
+      const allCls = t.classes.length===0 ? '<span class="allbadge">todas as classes</span>' : '';
+      const allDt  = t.datas.length===0 ? '<span class="allbadge">todas as datas</span>' : '';
+      el.innerHTML=`
+        <div class="vhead">
+          <span class="vname"><span class="avatar">${initials(t.nome)}</span>${esc(t.nome)}</span>
+          <button class="btn-icon" data-del="${t.id}" title="Remover Tia" aria-label="Remover">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m2 0-1 13a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1L6 7"/></svg>
+          </button>
+        </div>
+        <div class="prefs">
+          <div><div class="plabel">Pode servir em ${allCls}</div><div class="chips">${clsChips}</div></div>
+          <div><div class="plabel">Disponível nas datas ${allDt}</div><div class="chips">${dtChips}</div></div>
+        </div>`;
+      box.appendChild(el);
+    });
+    box.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>{
+      state.tias=state.tias.filter(x=>x.id!==b.dataset.del); save(); renderTias();
+    }));
+    box.querySelectorAll(".toggle").forEach(b=>b.addEventListener("click",()=>{
+      const tia=state.tias.find(x=>x.id===b.dataset.tia); if(!tia) return;
+      const arr = b.dataset.k==="cls" ? tia.classes : tia.datas;
+      const id=b.dataset.id; const i=arr.indexOf(id);
+      if(i>=0) arr.splice(i,1); else arr.push(id);
+      save(); renderTias();
+    }));
+  }
+
+  /* ---------- Classes ---------- */
+  $("#addCls").addEventListener("click", addCls);
+  $("#clsNome").addEventListener("keydown", e=>{ if(e.key==="Enter") addCls(); });
+  function addCls(){
+    const nome=$("#clsNome").value.trim();
+    const cap=Math.max(1, parseInt($("#clsCap").value,10)||1);
+    if(!nome) return;
+    state.classes.push({id:uid(), nome, cap});
+    $("#clsNome").value=""; $("#clsCap").value=1; $("#clsNome").focus();
+    save(); renderClasses(); renderTias();
+  }
+  function renderClasses(){
+    const box=$("#clsList"); box.innerHTML="";
+    if(!state.classes.length){ box.innerHTML='<div class="empty">Nenhuma classe.</div>'; return; }
+    state.classes.forEach(c=>{
+      const el=document.createElement("span"); el.className="chip";
+      el.innerHTML=`${esc(c.nome)} <small class="num" style="color:var(--muted)">·${c.cap}</small>
+        <span class="x" title="Remover" data-del="${c.id}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>`;
+      box.appendChild(el);
+    });
+    box.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>{
+      state.classes=state.classes.filter(x=>x.id!==b.dataset.del);
+      state.tias.forEach(t=>t.classes=t.classes.filter(id=>id!==b.dataset.del));
+      save(); renderClasses(); renderTias();
+    }));
+  }
+
+  /* ---------- Horários ---------- */
+  $("#addHr").addEventListener("click", addHr);
+  $("#hrNome").addEventListener("keydown", e=>{ if(e.key==="Enter") addHr(); });
+  function addHr(){
+    const nome=$("#hrNome").value.trim(); if(!nome) return;
+    state.horarios.push({id:uid(), nome});
+    $("#hrNome").value=""; $("#hrNome").focus(); save(); renderHorarios();
+  }
+  function renderHorarios(){
+    const box=$("#hrList"); box.innerHTML="";
+    if(!state.horarios.length){ box.innerHTML='<div class="empty">Nenhum horário.</div>'; return; }
+    state.horarios.forEach(h=>{
+      const el=document.createElement("span"); el.className="chip";
+      el.innerHTML=`${esc(h.nome)} <span class="x" title="Remover" data-del="${h.id}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>`;
+      box.appendChild(el);
+    });
+    box.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>{
+      state.horarios=state.horarios.filter(x=>x.id!==b.dataset.del); save(); renderHorarios();
+    }));
+  }
+
+  /* ---------- Datas ---------- */
+  $("#addDt").addEventListener("click", ()=>{
+    const v=$("#dtInput").value; if(!v) return;
+    if(!state.datas.includes(v)) state.datas.push(v);
+    save(); renderDatas(); renderTias();
+  });
+  $("#addSundays").addEventListener("click", ()=>{
+    let base = $("#dtInput").value ? parseDate($("#dtInput").value) : new Date();
+    let d=new Date(base); let added=0;
+    while(added<4){
+      if(d.getDay()===0){
+        const s=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+        if(!state.datas.includes(s)) state.datas.push(s);
+        added++;
+      }
+      d.setDate(d.getDate()+1);
+    }
+    save(); renderDatas(); renderTias(); toast("Domingos adicionados");
+  });
+  function renderDatas(){
+    const box=$("#dtList"); box.innerHTML="";
+    const ds=state.datas.slice().sort();
+    if(!ds.length){ box.innerHTML='<div class="empty">Nenhuma data.</div>'; return; }
+    ds.forEach(d=>{
+      const el=document.createElement("span"); el.className="chip";
+      el.innerHTML=`${fmtShort(d)} <small style="color:var(--muted);text-transform:capitalize">${weekday(d).replace("-feira","")}</small>
+        <span class="x" title="Remover" data-del="${d}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></span>`;
+      box.appendChild(el);
+    });
+    box.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>{
+      state.datas=state.datas.filter(x=>x!==b.dataset.del);
+      state.tias.forEach(t=>t.datas=t.datas.filter(x=>x!==b.dataset.del));
+      save(); renderDatas(); renderTias();
+    }));
+  }
+
+  /* ---------- Helpers de disponibilidade ---------- */
+  const cellKey=(dt,hr,cl)=> dt+"__"+hr+"__"+cl;
+  function tiaCanClass(t,clId){ return t.classes.length===0 || t.classes.includes(clId); }
+  function tiaAvailDate(t,dt){ return t.datas.length===0 || t.datas.includes(dt); }
+  function tiaName(id){ const t=state.tias.find(x=>x.id===id); return t?t.nome:""; }
+
+  /* ---------- Geração automática ---------- */
+  $("#genBtn").addEventListener("click", generate);
+  function generate(){
+    if(!state.datas.length || !state.horarios.length || !state.classes.length){
+      toast("Cadastre datas, horários e classes primeiro"); return;
+    }
+    if(!state.tias.length){ toast("Cadastre as Tias primeiro"); return; }
+
+    const counts={}; state.tias.forEach(t=>counts[t.id]=0);
+    const esc={};
+    const dates=state.datas.slice().sort();
+
+    dates.forEach(dt=>{
+      state.horarios.forEach(h=>{
+        const usedThisService=new Set(); // evita mesma Tia em 2 classes no mesmo culto
+        state.classes.forEach(c=>{
+          const arr=[];
+          for(let i=0;i<c.cap;i++){
+            const cands=state.tias.filter(t=>
+              tiaAvailDate(t,dt) && tiaCanClass(t,c.id) && !usedThisService.has(t.id)
+            );
+            if(!cands.length){ arr.push(null); continue; }
+            cands.sort((a,b)=>{
+              const d=counts[a.id]-counts[b.id];
+              return d!==0 ? d : (Math.random()-0.5);
+            });
+            const pick=cands[0];
+            counts[pick.id]++; usedThisService.add(pick.id); arr.push(pick.id);
+          }
+          esc[cellKey(dt,h.id,c.id)]=arr;
+        });
+      });
+    });
+    state.escala=esc; save(); renderEscala();
+    toast("Escala gerada! Você pode ajustar manualmente.");
+  }
+
+  $("#clearBtn").addEventListener("click", ()=>{
+    state.escala={}; save(); renderEscala(); toast("Escala limpa");
+  });
+
+  /* ---------- Render escala ---------- */
+  function renderEscala(){
+    const out=$("#escOut"); out.innerHTML="";
+    const dates=state.datas.slice().sort();
+    if(!dates.length || !state.horarios.length || !state.classes.length){
+      out.innerHTML='<div class="card"><div class="empty">Cadastre <b>datas</b>, <b>horários</b> e <b>classes</b> na aba Cadastro para montar a escala.</div></div>';
+      $("#summaryCard").style.display="none"; return;
+    }
+    dates.forEach(dt=>{
+      const dg=document.createElement("div"); dg.className="daygroup";
+      dg.innerHTML=`<div class="dayhead"><span class="date">${fmtDate(dt)}</span><span class="weekday">${weekday(dt)}</span></div>`;
+      state.horarios.forEach(h=>{
+        const svc=document.createElement("div"); svc.className="svc";
+        let rows="";
+        state.classes.forEach(c=>{
+          const key=cellKey(dt,h.id,c.id);
+          const arr=state.escala[key] || new Array(c.cap).fill(null);
+          const sels=arr.map((val,i)=>buildSelect(dt,h.id,c,val,i)).join("");
+          rows+=`<tr><td class="cls">${escapeH(c.nome)}</td><td><div class="cellsel">${sels}</div></td></tr>`;
+        });
+        svc.innerHTML=`<div class="svchead"><span class="clock">◷</span>${escapeH(h.nome)}</div>
+          <table class="esc"><thead><tr><th>Classe</th><th>Voluntária(s)</th></tr></thead><tbody>${rows}</tbody></table>`;
+        dg.appendChild(svc);
+      });
+      out.appendChild(dg);
+    });
+    // bind selects
+    out.querySelectorAll("select[data-key]").forEach(sel=>{
+      sel.addEventListener("change", ()=>{
+        const key=sel.dataset.key, idx=+sel.dataset.idx;
+        if(!state.escala[key]) state.escala[key]=[];
+        state.escala[key][idx]= sel.value || null;
+        save(); renderSummary();
+      });
+    });
+    renderSummary();
+    $("#printSub").textContent = `${fmtShort(dates[0])} a ${fmtShort(dates[dates.length-1])} · gerado em ${new Date().toLocaleDateString("pt-BR")}`;
+  }
+
+  function buildSelect(dt,hrId,c,val,idx){
+    const key=cellKey(dt,hrId,c.id);
+    const avail=state.tias.filter(t=>tiaAvailDate(t,dt)&&tiaCanClass(t,c.id));
+    let opts=`<option value="">— vazio —</option>`;
+    const seen=new Set();
+    avail.forEach(t=>{ seen.add(t.id); opts+=`<option value="${t.id}" ${t.id===val?"selected":""}>${escapeH(t.nome)}</option>`; });
+    // valor atual mesmo que fora da disponibilidade
+    if(val && !seen.has(val)){
+      opts+=`<option value="${val}" selected>${escapeH(tiaName(val))} (fora da disponib.)</option>`;
+    }
+    const missing = !val ? `<span class="miss no-print">⚠ sem voluntária</span>` : "";
+    return `<select data-key="${key}" data-idx="${idx}">${opts}</select>${missing}`;
+  }
+
+  function renderSummary(){
+    const card=$("#summaryCard"), box=$("#summary");
+    if(!state.tias.length || !Object.keys(state.escala).length){ card.style.display="none"; return; }
+    const counts={}; state.tias.forEach(t=>counts[t.id]=0);
+    Object.values(state.escala).forEach(arr=>arr.forEach(id=>{ if(id&&counts[id]!=null) counts[id]++; }));
+    box.innerHTML="";
+    state.tias.slice().sort((a,b)=>counts[b.id]-counts[a.id]).forEach(t=>{
+      const el=document.createElement("span");
+      el.className="scount"+(counts[t.id]===0?" zero":"");
+      el.innerHTML=`${escapeH(t.nome)} <b>${counts[t.id]}</b>`;
+      box.appendChild(el);
+    });
+    card.style.display="";
+  }
+
+  /* ---------- Export CSV ---------- */
+  $("#csvBtn").addEventListener("click", ()=>{
+    const dates=state.datas.slice().sort();
+    if(!dates.length){ toast("Nada para exportar"); return; }
+    const rows=[["Data","Dia da semana","Horario","Classe","Voluntaria(s)"]];
+    dates.forEach(dt=>state.horarios.forEach(h=>state.classes.forEach(c=>{
+      const arr=state.escala[cellKey(dt,h.id,c.id)]||[];
+      const names=arr.map(id=>id?tiaName(id):"").filter(Boolean).join(" / ") || "(sem voluntaria)";
+      rows.push([fmtShort(dt).replace("/"," "), cap1(weekday(dt)), h.nome, c.nome, names]);
+    })));
+    const csv=rows.map(r=>r.map(csvCell).join(";")).join("\r\n");
+    download("﻿"+csv, "escala-fonte-kids.csv", "text/csv;charset=utf-8;");
+    toast("CSV exportado");
+  });
+  function csvCell(v){ v=String(v); return /[";\r\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
+  function cap1(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+  function download(content,name,type){
+    const blob=new Blob([content],{type}); const url=URL.createObjectURL(blob);
+    const a=document.createElement("a"); a.href=url; a.download=name; document.body.appendChild(a); a.click();
+    a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+
+  /* ---------- Export PDF (impressão) ---------- */
+  $("#pdfBtn").addEventListener("click", ()=>{
+    if(!Object.keys(state.escala).length && !confirm("A escala está vazia. Deseja imprimir mesmo assim?")) return;
+    window.print();
+  });
+
+  /* ---------- Reset ---------- */
+  $("#resetBtn").addEventListener("click", ()=>{
+    if(confirm("Isto apaga todas as Tias, classes, horários, datas e a escala deste navegador. Continuar?")){
+      state=JSON.parse(JSON.stringify(DEFAULT)); save(); renderAll(); toast("Recomeçado do zero");
+    }
+  });
+
+  /* ---------- utils ---------- */
+  function escapeH(s){ return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
+  const esc=escapeH;
+
+  function renderAll(){ renderTias(); renderClasses(); renderHorarios(); renderDatas(); }
+  renderAll();
+})();
+</script>
+</body>
+</html>
